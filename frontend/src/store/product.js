@@ -1,4 +1,8 @@
+// Carson Chang
+// TODO : Look into using the useProductStoreWithAuth custom hook in the hooks folder to decouple authorization from the product store. This will allow the product store to be used in other contexts without needing to pass the user token as an argument.
+
 import { create } from "zustand";
+import { useAuthContext } from "../hooks/useAuthContext.hook";
 
 export const useProductStore = create((set) => ({
 	products: [],
@@ -11,6 +15,7 @@ export const useProductStore = create((set) => ({
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				// "Authorization": `Bearer ${user.token}`
 			},
 			body: JSON.stringify(newProduct),
 		});
