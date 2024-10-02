@@ -3,20 +3,31 @@ import { useProductStore } from "../store/product";
 import { useDisclosure } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useAuthContext } from "../hooks/useAuthContext.hook";
+import { deleteProduct, updateProduct } from "../utils/fetchUtils";
 
 const ProductCard = ({ product }) => {
+  const { user } = useAuthContext();
+
   const [updatedProduct, setUpdatedProduct] = useState(product);
 
-  const { deleteProduct, updateProduct } = useProductStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteProduct = async (pid) => {
-    const { success, message } = await deleteProduct(pid);
+    if (!user) {
+      alert("Please login to delete a product.");
+      return;
+    }
+    const { success, message } = await deleteProduct(user.token, pid);
     alert(success ? `Success: ${message}` : `Error: ${message}`);
   };
 
   const handleUpdateProduct = async (pid, updatedProduct) => {
-    const { success, message } = await updateProduct(pid, updatedProduct);
+    if (!user) {
+      alert("Please login to update a product.");
+      return;
+    }
+    const { success, message } = await updateProduct(user.token, pid, updatedProduct);
     onClose();
     alert(success ? `Success: ${message}` : `Error: ${message}`);
   };

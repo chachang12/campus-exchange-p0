@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { useProductStore } from "../store/product";
+import { useEffect, useState } from "react";
+import { createProduct } from "../utils/fetchUtils";
+import { useAuthContext } from "../hooks/useAuthContext.hook";
 import { useToast } from "@chakra-ui/react";
 
 const CreatePage = () => {
+  const { user } = useAuthContext();
+
   const [newProduct, setNewProduct] = useState({
     name: "",
     price: "",
@@ -10,10 +13,19 @@ const CreatePage = () => {
   });
   const toast = useToast();
 
-  const { createProduct } = useProductStore();
 
   const handleAddProduct = async () => {
-    const { success, message } = await createProduct(newProduct);
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please login to post a new listing.",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+
+    const { success, message } = await createProduct(user.token, newProduct);
     if (!success) {
       toast({
         title: "Error",

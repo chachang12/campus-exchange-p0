@@ -2,8 +2,17 @@ import { Link } from "react-router-dom";
 import { CiSquarePlus,  } from "react-icons/ci";
 import { logo } from "../assets";
 import { MdPerson } from "react-icons/md";
+import { useLogout } from "../hooks/useLogout.hook";
+import { useAuthContext } from "../hooks/useAuthContext.hook";
 
 const Navbar = () => {
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+
+  const handleClick = () => {
+    logout();
+  };
+
   return (
     <div className="h-screen bg-darkblue">
       <div className="w-full flex flex-col h-full items-center p-4">
@@ -19,11 +28,16 @@ const Navbar = () => {
               Caleb Shim
             </span>
             <span>
+              {user?.data.email}
+            </span>
+            <span>
               Spalding Cove
             </span>
           </div>
-          
         </div>
+        <button onClick={handleClick}>
+          Log Out
+        </button>
         <div className="flex flex-col items-center mt-4 space-y-4 w-full">
           <Link to="/create" className="w-5/6">
             <button className="w-full py-4 bg-lightgray rounded-lg">
