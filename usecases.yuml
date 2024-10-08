@@ -1,0 +1,13 @@
+// {type:usecase}
+// {direction:leftToRight}
+(note: figure 1.2{bg:beige})
+[User]-(Login)
+[User]-(Buy/sell items/services)
+(Buy/sell items/services)>(Preview items/services)
+[User]-(Browse items/services)
+[User]-(Message other users)
+[User]-(Write reviews)
+[User]-(See profiles)
+(See profiles)>(view number of orders completed)
+(See profiles)>(view others/own reviews)
+(See profiles)>(view active orders)
