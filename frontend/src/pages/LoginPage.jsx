@@ -1,6 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useLogin } from '../hooks/useLogin.hook';
+import GoogleLogin from '../components/GoogleLogin';
+import { googlelogo } from '../assets';
+import './WelcomePage.css'; 
+import CXLogo from '../components/icons/logo';
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -13,9 +16,18 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <form className="w-full max-w-md bg-white p-8 rounded-lg shadow-md" onSubmit={handleSubmit}>
-                <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen custom-bg">
+            <CXLogo className='' width="100" height="100" fill="white" />
+            <h1 className='text-white text-3xl'>
+                Sign In
+            </h1>
+            <div className="rounded-lg shadow-md mt-4">
+                <GoogleLogin />
+            </div>
+            <form className="p-8 rounded-lg shadow-md" onSubmit={handleSubmit}>
+                <h1 className="text-2xl font-bold mb-6 text-center">
+                    
+                </h1>
                 <div className="form-group mb-4">
                     <label htmlFor="email" className="block text-gray-700">Email</label>
                     <input

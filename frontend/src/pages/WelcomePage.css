@@ -1,0 +1,5 @@
+.custom-bg {
+  background: radial-gradient(circle, rgb(5, 35, 57) 0%, rgb(0, 0, 0) 100%),
+              radial-gradient(circle at top left, rgba(255,255,0,0.5) 0%, rgba(255,0,0,0) 70%),
+              radial-gradient(circle at bottom right, rgba(0,255,255,0.5) 0%, rgba(0,0,255,0) 70%);
+}

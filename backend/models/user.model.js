@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import validator from "validator";
 
 const userSchema = mongoose.Schema({
     email: {
@@ -8,78 +6,62 @@ const userSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    password: {
+    googleId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstName: {
         type: String,
         required: true
     },
-    id: {
-        type: String
-    }
+    lastName: {
+        type: String,
+        required: true
+    },
+    // Add other fields as necessary
 });
 
-// Static login method to login a user
-userSchema.statics.login = async function (email, password) {
+// Static method to find or create a user based on Google profile
+userSchema.statics.findOrCreate = async function (profile) {
     // Log the collection name
     console.log('Using collection:', this.collection.name);
 
-    // Check if email and password are provided
-    if (!email || !password) {
-        throw new Error('Email and password are required');
+    // Check if Google ID is provided
+    if (!profile.id) {
+        throw new Error('Google ID is required');
     }
 
-    // Find the user with the email
-    const user = await this.findOne({ email });
+    // Log the profile object to see what data is being returned
+    console.log('Google profile:', JSON.stringify(profile, null, 2));
 
-    // Check if user exists
+    // Check if the profile contains an email array and has at least one element
+    const email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
+    if (!email) {
+        throw new Error('Email is required');
+    }
+
+    // Extract first and last names from the profile
+    const firstName = profile.name?.givenName || '';
+    const lastName = profile.name?.familyName || '';
+
+    // Find the user with the Google ID
+    let user = await this.findOne({ googleId: profile.id });
+
+    // If user does not exist, create a new user
     if (!user) {
-        throw new Error('Email not found');
-    }
-
-    // Compare the password
-    const match = await bcrypt.compare(password, user.password);
-
-    // Check if password is correct
-    if (!match) {
-        throw new Error('Password is incorrect');
+        user = await this.create({
+            googleId: profile.id,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            // Add other fields as necessary
+        });
     }
 
     return user;
-}
+};
 
-// Static register method to register a user
-userSchema.statics.register = async function (email, password) {
-    // Log the collection name
-    console.log('Using collection:', this.collection.name);
-
-    // Check if email and password are provided
-    if (!email || !password) {
-        throw new Error('Email and password are required');
-    }
-
-    // Check if email is valid
-    if (!validator.isEmail(email)) {
-        throw new Error('Email is invalid');
-    }
-
-    // Check if password is strong
-    if (!validator.isStrongPassword(password)) {
-        throw new Error('Password is not strong enough');
-    }
-
-    // Check if email already exists
-    const exists = await this.findOne({ email });
-    if (exists) {
-        throw new Error('Email alread in use.');
-    }
-
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-
-    const user = await this.create({ email, password: hash });
-
-    return user;
-}
 const User = mongoose.model('User', userSchema);
 
 export default User;
