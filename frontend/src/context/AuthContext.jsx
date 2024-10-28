@@ -1,52 +1,70 @@
+// AuthContext.js
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import axios from 'axios';
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
-// Define initial state
 const initialState = {
     user: null,
     isAuthenticated: false,
 };
 
-// Define reducer
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
-            return {
-                ...state,
-                user: action.payload,
-                isAuthenticated: true,
-            };
+            return { ...state, user: action.payload, isAuthenticated: true };
         case 'LOGOUT':
-            return {
-                ...state,
-                user: null,
-                isAuthenticated: false,
-            };
+            return { ...state, user: null, isAuthenticated: false };
         default:
             return state;
     }
 };
 
-// AuthProvider component
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
 
+    // Check if user is already logged in
     useEffect(() => {
-        // Checks if user is already logged in by checking local json storage
-        const user = JSON.parse(localStorage.getItem('user'))
-    
-        if (user) {
-          dispatch({ type: 'LOGIN', payload: user }) 
-        }
-    }, [])
+        const fetchUser = async () => {
+            console.log('Checking user session...');
+            try {
+                const response = await axios.get('http://localhost:8080/auth/login/success', {
+                    withCredentials: true,
+                });
+                if (response.data.user) {
+                    console.log('User data: ', response.data.user);
+                    dispatch({ type: 'LOGIN', payload: response.data.user });
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
+                }
+            } catch (error) {
+                console.error('Failed to fetch authenticated user:', error);
+            }
+        };
 
-    console.log('Authentication State:', state);
+        // Check local storage or backend session
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            dispatch({ type: 'LOGIN', payload: storedUser });
+        } else {
+            fetchUser();
+        }
+    }, []);
+
+    const logout = async () => {
+        try {
+            await axios.get('http://localhost:8080/auth/logout', { withCredentials: true });
+            localStorage.removeItem('user');
+            dispatch({ type: 'LOGOUT' });
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
 
     return (
-        <AuthContext.Provider value={{ ...state, dispatch }}>
+        <AuthContext.Provider value={{ ...state, dispatch, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);

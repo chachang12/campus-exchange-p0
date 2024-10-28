@@ -1,15 +1,18 @@
 import express from 'express';
 
-import { loginUser, registerUser } from '../controllers/user.controller.js';
+// import { loginUser, registerUser, getCurrentUser } from '../controllers/user.controller.js';
+import { getCurrentUser } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
-// Login Route
+// // Login Route
 
-router.post('/login', loginUser);
+// router.post('/login', loginUser);
 
-// Register Route
+// // Register Route
 
-router.post('/register', registerUser);
+// router.post('/register', registerUser);
+
+router.get('/current', getCurrentUser); 
 
 export default router; // Exports the router so that it can be used in other files
