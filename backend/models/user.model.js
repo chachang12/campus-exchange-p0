@@ -19,6 +19,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    profilePicture: {
+        type: String
+    }
     // Add other fields as necessary
 });
 
@@ -42,8 +45,8 @@ userSchema.statics.findOrCreate = async function (profile) {
     }
 
     // Extract first and last names from the profile
-    const firstName = profile.name?.givenName || '';
-    const lastName = profile.name?.familyName || '';
+    const [firstName, lastName] = profile.displayName.split(' ');
+    const profilePicture = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : '';
 
     // Find the user with the Google ID
     let user = await this.findOne({ googleId: profile.id });
@@ -52,10 +55,10 @@ userSchema.statics.findOrCreate = async function (profile) {
     if (!user) {
         user = await this.create({
             googleId: profile.id,
-            email: email,
             firstName: firstName,
             lastName: lastName,
-            // Add other fields as necessary
+            email: email,
+            profilePicture: profilePicture,
         });
     }
 

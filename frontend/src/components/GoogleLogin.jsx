@@ -1,35 +1,20 @@
-import React from "react";
-import { useGoogleLogin } from "@react-oauth/google";
-import { googleAuth } from "../services/api";
-import { googlelogo } from "../assets";
-                              
+// GoogleLogin.js
+import React, { useContext } from 'react';
+import { googlelogo } from '../assets';
+import { AuthContext } from '../context/AuthContext';
 
-export default (props) => {
-	const responseGoogle = async (authResult) => {
-		try {
-			if (authResult["code"]) {
-				console.log(authResult.code);
-				const result = await googleAuth(authResult.code);
-				props.setUser(result.data.data.user);
-				alert("successfuly logged in");
-			} else {
-				console.log(authResult);
-				throw new Error(authResult);
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	};
+const GoogleLogin = () => {
+    const { isAuthenticated } = useContext(AuthContext);
 
-	const googleLogin = useGoogleLogin({
-		onSuccess: responseGoogle,
-		onError: responseGoogle,
-		flow: "auth-code",
-	});
+    const handleLogin = () => {
+        window.location.href = 'http://localhost:8080/auth/google';
+    };
 
-	return (
-		<button onClick={googleLogin} className="">
-			<img src={googlelogo} alt="google" className="w-10 h-10" />
-		</button>
-	);
+    return (
+        <button onClick={handleLogin} className="">
+            <img src={googlelogo} alt="google" className="w-10 h-10" />
+        </button>
+    );
 };
+
+export default GoogleLogin;
