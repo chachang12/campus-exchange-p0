@@ -13,22 +13,29 @@ export const getProducts = async (req, res) => {
 }
 
 export const createProduct = async (req, res) => {
-    const product = req.body; // Retrieves the products from the request body (The user will send this data.)
-
-    if (!product.name || !product.price || !product.image) {
-        return res.status(400).json({ success:false, message: 'Please provide name, price and image' }); // Sends an error response if the user did not provide the required fields
+    const { name, price, image, condition, categories, creatorId } = req.body;
+  
+    if (!name || !price || !image || !condition || !creatorId) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
     }
-
-    const newProduct = new Product(product) // Creates a new product from the request body
-
+  
     try {
-        await newProduct.save(); // Saves the new product to the database
-        return res.status(201).json({ success:true, data: newProduct }); // Sends a success response with the new product
+      const newProduct = new Product({
+        name,
+        price,
+        image,
+        condition,
+        categories,
+        creatorId,
+      });
+  
+      const savedProduct = await newProduct.save();
+      return res.status(201).json({ success: true, message: 'Product created successfully', data: savedProduct });
     } catch (error) {
-        console.error(`Error in creating products: ${error.message}`);
-        res.status(500).json({ success:false, message: 'Server Error' }); // Sends an error response if the server encountered an error
+      console.error('Error creating product:', error);
+      return res.status(500).json({ success: false, message: 'Server error' });
     }
-}
+  };
 
 export const updateProduct = async (req, res) => {
     const { id } = req.params; // Retrieves the product ID from the request parameters

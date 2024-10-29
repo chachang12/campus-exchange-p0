@@ -1,25 +1,40 @@
 import React, { useState } from 'react';
 import { useUser } from '../context/UserContext';
+import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 
 const Profile = () => {
+  const { user, logout } = useUser();
+  console.log('User:', user);
   // const { user } = useUser();
+  // const { logout } = useUser();
 
   // Static User Data for development
-  const user = {
-    firstName: 'Carson',
-    lastName: 'Chang',
-    email: 'cadchang@gmail.com',
-    profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
-    listings: 5,
-    rating: 4.5,
-  };
+  // const user = {
+  //   _id: '1',
+  //   firstName: 'Carson',
+  //   lastName: 'Chang',
+  //   email: 'cadchang@gmail.com',
+  //   profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
+  //   listings: 5,
+  //   rating: 4.5,
+  // };
+
+  
 
   // State variables for listings and ratings
   const [listings, setListings] = useState([
     // Example listings
-    { id: 1, name: 'Product 1', price: 100 },
-    { id: 2, name: 'Product 2', price: 200 },
+    {
+      _id: "1",
+      name: "Kith Seoul Hoodie",
+      category: "Clothing",
+      image: "https://eu.kith.com/cdn/shop/files/KHM032123-001-FRONT.jpg?v=1716536682&width=1920",
+      price: 80.00,
+      size: "M",
+      condition: "New",
+      description: "Kith Seoul Hoodie in Black. Made from 100% cotton, this hoodie features a kangaroo pocket, a drawstring hood, and a Kith logo on the chest. The hoodie is in new condition and has never been worn. Size M.",
+    },
   ]);
   const [ratings, setRatings] = useState([
     // Example ratings
@@ -54,17 +69,26 @@ const Profile = () => {
       {/* Tab bar */}
       <div className='flex justify-center space-x-4 mb-4'>
         <button
-          className={`py-2 px-4 rounded ${selectedTab === 'listings' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+          className={`py-2 px-4 rounded-3xl ${selectedTab === 'listings' ? 'bg-white text-black' : 'bg-implicit text-white outline outline-1 outline-white'}`}
           onClick={() => setSelectedTab('listings')}
         >
           Listings
         </button>
         <button
-          className={`py-2 px-4 rounded ${selectedTab === 'ratings' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+          className={`py-2 px-4 rounded-3xl ${selectedTab === 'ratings' ? 'bg-white text-black' : 'bg-implicit text-white outline outline-1 outline-white'}`}
           onClick={() => setSelectedTab('ratings')}
         >
           Ratings
         </button>
+        {/* Logout Button */}
+      
+        <button
+          className='py-2 px-4 bg-red-500 text-white rounded-3xl'
+          onClick={logout}
+        >
+          Logout
+        </button>
+      
       </div>
 
       {/* Conditional content */}
@@ -72,15 +96,12 @@ const Profile = () => {
         <div>
           {listings.length > 0 ? (
             <div className='space-y-4'>
-              {listings.map((listing) => (
-                <div key={listing.id} className='p-4 bg-gray-800 rounded'>
-                  <h3 className='text-lg font-bold'>{listing.name}</h3>
-                  <p className='text-sm'>Price: ${listing.price}</p>
-                </div>
+              {listings.map((product) => (
+                <ProductCard key={product._id} product={product} showButtons={true} />
               ))}
             </div>
           ) : (
-            <p>No listings available.</p>
+            <p>No listings found.</p>
           )}
         </div>
       ) : (
@@ -88,9 +109,9 @@ const Profile = () => {
           {ratings.length > 0 ? (
             <div className='space-y-4'>
               {ratings.map((rating) => (
-                <div key={rating.id} className='p-4 bg-gray-800 rounded'>
-                  <h3 className='text-lg font-bold'>{rating.reviewer}</h3>
-                  <p className='text-sm'>{rating.comment}</p>
+                <div key={rating.id} className='bg-white bg-opacity-5 p-4 rounded-xl'>
+                  <p className='font-semibold'>{rating.reviewer}</p>
+                  <p>{rating.comment}</p>
                   <div className='flex'>
                     {Array.from({ length: rating.rating }).map((_, index) => (
                       <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
@@ -100,10 +121,11 @@ const Profile = () => {
               ))}
             </div>
           ) : (
-            <p>No ratings available.</p>
+            <p>No ratings found.</p>
           )}
         </div>
       )}
+      
     </div>
   );
 };

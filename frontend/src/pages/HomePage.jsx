@@ -21,6 +21,7 @@ const HomePage = () => {
       size: "M",
       condition: "New",
       description: "Kith Seoul Hoodie in Black. Made from 100% cotton, this hoodie features a kangaroo pocket, a drawstring hood, and a Kith logo on the chest. The hoodie is in new condition and has never been worn. Size M.",
+      creatorId: "1"
     },
     {
       _id: "2",

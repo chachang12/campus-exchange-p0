@@ -3,14 +3,12 @@ import { useDisclosure } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useUser } from "../context/UserContext";
-
 import { deleteProduct, updateProduct } from "../utils/fetchUtils";
+import { deleteIcon, edit } from "../assets";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, showButtons }) => {
   const { user } = useUser();
-
   const [updatedProduct, setUpdatedProduct] = useState(product);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteProduct = async (pid) => {
@@ -40,6 +38,16 @@ const ProductCard = ({ product }) => {
         <p className="font-medium text-lg text-white">${product.price}</p>
         <p>{product.size}</p>
         <p>{product.condition}</p>
+        {showButtons && (
+          <div className="flex space-x-2 mt-2">
+            <button onClick={onOpen} className="text-blue-500">
+              <img src={edit} className="w-4"/>
+            </button>
+            <button onClick={() => handleDeleteProduct(product._id)} className="text-red-500">
+              <img src={deleteIcon} className="w-4"/>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

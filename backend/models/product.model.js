@@ -13,6 +13,19 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    condition:{
+        type: String,
+        required: true
+    },
+    categories:{
+        type: [String],
+        required: true
+    },
+    creatorId:{
+        type: String,
+        required: true
+    }
+
 }, {
     timestamps: true // createdAt, updatedAt fields are written to each document
 });
