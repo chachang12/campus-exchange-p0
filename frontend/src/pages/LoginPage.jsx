@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-
-import GoogleLogin from '../components/GoogleLogin';
 import { googlelogo } from '../assets';
 import './WelcomePage.css'; 
 import CXLogo from '../components/icons/logo';

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { createProduct } from "../utils/fetchUtils";
-// import { useAuthContext } from "../hooks/useAuthContext.hook";
 import { useUser } from "../context/UserContext";
-import { useToast } from "@chakra-ui/react";
 import CategoriesScrollBar from "../components/CreatePageComponents/CategoriesScrollBar"; // Import the CategoriesScrollBar component
 
 const CreatePage = () => {
@@ -14,37 +12,29 @@ const CreatePage = () => {
     image: "",
     condition: "", // Add condition to the state
     categories: [], // Add categories to the state
+    creatorId: "", // Add creator to the state
   });
-  const toast = useToast();
 
   const handleAddProduct = async () => {
     if (!user) {
-      toast({
-        title: "Error",
-        description: "Please login to post a new listing.",
-        status: "error",
-        isClosable: true,
-      });
+      alert("Please login to post a new listing.");
       return;
     }
 
-    const { success, message } = await createProduct(user.token, newProduct);
-    if (!success) {
-      toast({
-        title: "Error",
-        description: message,
-        status: "error",
-        isClosable: true,
-      });
+    // Set the creator field to the user's ID
+    const productWithCreator = { ...newProduct, creatorId: user._id };
+    console.log("Product with creator: ", productWithCreator);
+
+    const response = await createProduct(productWithCreator);
+
+    console.log("Response: ", response);
+    
+    if (!response.success) {
+      alert(`Error: ${response.message}`);
     } else {
-      toast({
-        title: "Success",
-        description: message,
-        status: "success",
-        isClosable: true,
-      });
+      alert(`Success: ${response.message}`);
     }
-    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [] });
+    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "" });
   };
 
   const categories = [
@@ -115,7 +105,7 @@ const CreatePage = () => {
           </div>
         </div>
       </div>
-      <p className="opacity-50 text-center">
+      <p className="opacity-50 text-center font-light">
         Please note that by publishing this listing, you agree to our Terms of Service and Privacy Policy.
       </p>
     </div>

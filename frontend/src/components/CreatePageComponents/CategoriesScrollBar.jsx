@@ -11,7 +11,7 @@ const CategoriesScrollBar = ({ categories, selectedCategories, setSelectedCatego
   };
 
   return (
-    <div className="w-full overflow-x-scroll custom-scrollbar">
+    <div className="w-full overflow-x-scroll px-2 custom-scrollbar">
       <div className="flex space-x-4 py-4">
         {categories.map((category, index) => (
           <button

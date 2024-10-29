@@ -4,6 +4,8 @@ import star from './star.png';
 import messageIcon from './messenger.png';
 import close from './close.png';
 import share from './share.png';
+import edit from './edit.png';
+import deleteIcon from './delete.png';
 
 
 export {
@@ -12,5 +14,7 @@ export {
     star,
     messageIcon,
     close,
-    share
+    share,
+    edit,
+    deleteIcon
 };

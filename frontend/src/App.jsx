@@ -25,7 +25,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/product/:id" element={<ProductPage />} /> 
       </Routes>

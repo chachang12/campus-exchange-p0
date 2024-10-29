@@ -1,14 +1,10 @@
 import express from 'express';
-
 import { getProducts, createProduct, updateProduct, deleteProduct } from '../controllers/product.controller.js';
-
-import { requireAuth } from '../middleware/requireAuth.js';
+import { ensureAuthenticated } from '../middleware/authMiddleware.js';
 
 const router = express.Router(); // Initializes the express router
 
-// An express router allows us to define all of the endpoints for product routes in this file.
-
-router.use(requireAuth);
+router.use(ensureAuthenticated); // Protects the routes below this line
 
 router.get('/', getProducts);
 

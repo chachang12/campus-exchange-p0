@@ -21,7 +21,11 @@ const userSchema = mongoose.Schema({
     },
     profilePicture: {
         type: String
-    }
+    },
+    rating: {
+        type: Number,
+        default: 0
+    },
     // Add other fields as necessary
 });
 
