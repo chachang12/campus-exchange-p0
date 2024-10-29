@@ -6,6 +6,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -13,17 +14,19 @@ export const UserProvider = ({ children }) => {
         const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
         console.log('User data: ', data);
         setUser(data);
-        console.log('User: ', user);
         Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
       } catch (error) {
         setUser(null);
         Cookies.remove('user'); // Remove user session from cookies if fetch fails
+      } finally {
+        setLoading(false);
       }
     };
 
     const storedUser = Cookies.get('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      setLoading(false);
     } else {
       fetchUser();
     }
@@ -50,7 +53,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, logout }}>
+    <UserContext.Provider value={{ user, setUser, login, logout, loading }}>
       {children}
     </UserContext.Provider>
   );

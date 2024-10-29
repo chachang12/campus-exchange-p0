@@ -7,6 +7,7 @@ import ChatBox from "../components/ChatComponents/ChatBox";
 
 const MessagesPage = () => {
     //const {user} = useContext(AuthContext);
+    
     const user = {
       _id: '671ff74a17e6c584dddf74ee',
       firstName: 'Carson',
