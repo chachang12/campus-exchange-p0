@@ -6,22 +6,7 @@ import UserChat from "../components/ChatComponents/UserChat";
 import ChatBox from "../components/ChatComponents/ChatBox";
 
 const MessagesPage = () => {
-<<<<<<< HEAD
-    //const {user} = useContext(AuthContext);
-    
-    const user = {
-      _id: '671ff74a17e6c584dddf74ee',
-      firstName: 'Carson',
-      lastName: 'Chang',
-      email: 'cadchang@gmail.com',
-      profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
-      listings: 5,
-      rating: 4.5,
-    };
-
-=======
     const {user} = useUser();
->>>>>>> merging
 
     const {userChats, isUserChatsLoading, updateCurrentChat} = useContext(ChatContext);
 
