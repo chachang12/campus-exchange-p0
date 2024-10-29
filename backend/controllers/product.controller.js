@@ -69,3 +69,13 @@ export const deleteProduct = async (req, res) => {
         res.status(500).json({ success:false, message: 'Server error' }); // Sends an error response if there is a server error.
     }
 }
+
+export const getProductsByCreatorId = async (req, res) => {
+    const { creatorId } = req.params;
+    try {
+      const products = await Product.find({ creatorId });
+      res.status(200).json({ success: true, data: products });
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Server Error' });
+    }
+  };

@@ -74,3 +74,13 @@ products = [
       condition: "New",
     }
   ]
+
+  const user = {
+      _id: '1',
+      firstName: 'Carson',
+      lastName: 'Chang',
+      email: 'cadchang@gmail.com',
+      profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
+      listings: 5,
+      rating: 4.5,
+    };
