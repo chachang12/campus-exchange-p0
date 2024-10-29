@@ -5,6 +5,7 @@ import { fetchProducts } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
 import Logo from "../components/icons/Logo";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   // const { user } = useUser();
@@ -18,7 +19,8 @@ const HomePage = () => {
       image: "https://eu.kith.com/cdn/shop/files/KHM032123-001-FRONT.jpg?v=1716536682&width=1920",
       price: 80.00,
       size: "M",
-      condition: "New"
+      condition: "New",
+      description: "Kith Seoul Hoodie in Black. Made from 100% cotton, this hoodie features a kangaroo pocket, a drawstring hood, and a Kith logo on the chest. The hoodie is in new condition and has never been worn. Size M.",
     },
     {
       _id: "2",
@@ -123,11 +125,12 @@ const HomePage = () => {
           <img src={user.profilePicture} className="w-[50px] rounded-full" />
         </a>
       </div>
-      {/* <Browsebar /> */}
       <CategoriesScrollBar categories={categories} />
       <div className="flex flex-col gap-4 p-4 bg-[#1A1E26]">
         {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
+            <ProductCard product={product} />
+          </Link>
         ))}
         {products.length === 0 && (
           <p className="text-xl text-center font-bold text-darkgray">No products found.</p>
