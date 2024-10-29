@@ -1,14 +1,8 @@
-import { useState } from 'react';
-import { useRegister } from '../hooks/useRegister.hook';
-
 export const RegisterPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { register, error, isLoading } = useRegister();
+
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        await register(email, password);
+        
     }
 
     return (

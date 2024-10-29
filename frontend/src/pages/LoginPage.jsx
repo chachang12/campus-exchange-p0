@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
-import { useLogin } from '../hooks/useLogin.hook';
+
 import GoogleLogin from '../components/GoogleLogin';
 import { googlelogo } from '../assets';
 import './WelcomePage.css'; 
 import CXLogo from '../components/icons/logo';
 
 export const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { login, error, isLoading } = useLogin();
 
     const handleLogin = () => {
         window.location.href = 'http://localhost:8080/auth/google';
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen custom-bg">
-            <CXLogo className='' width="100" height="100" fill="white" />
-            <h1 className='text-white text-3xl'>
-                Sign In
-            </h1>
-            <div className="rounded-lg shadow-md mt-4">
-                <button onClick={handleLogin} className="">
-                    <img src={googlelogo} alt="google" className="w-10 h-10" />
-                </button>
+        <div className="flex flex-col items-center justify-between min-h-screen custom-bg">
+            <div className='my-20'>
+                <CXLogo className='' width="100" height="100" fill="white" />
             </div>
-            
+
+            <div className='bg-white w-full flex-grow rounded-t-[40px] backdrop-blur-md flex flex-col items-center justify-start bg-opacity-5'>
+                <h1 className='text-white text-3xl mt-20 mb-6 weight font-semibold'>
+                    Sign In
+                </h1>
+                <div className="">
+                    <button onClick={handleLogin} className="">
+                        <img src={googlelogo} alt="google" className="w-20 h-20" />
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
