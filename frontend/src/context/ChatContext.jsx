@@ -19,7 +19,7 @@ export const ChatContextProvider = ({children, user}) => {
     const [onlineUsers, setOnlineUsers] = useState([]);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:8081");
+        const newSocket = io("http://localhost:8082");
         setSocket(newSocket);
 
         return () => {
