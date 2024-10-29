@@ -27,6 +27,14 @@ app.use(cors({
     credentials: true // mandoatory for google auths
 }));
 
+// Set COEP headers
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    next();
+  });
+  
+
 
 app.use(
 session({
@@ -42,6 +50,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json()); // Allows the server to accept JSON
+
+// Proxy route for profile pictures
+app.get('/proxy', async (req, res) => {
+    const { url } = req.query;
+    try {
+      const response = await axios.get(url, { responseType: 'arraybuffer' });
+      res.set('Content-Type', response.headers['content-type']);
+      res.send(response.data);
+    } catch (error) {
+      res.status(500).send('Error fetching image');
+    }
+  });
 
 app.use('/api/products', productRoutes);
 // app.use('/api/users', userRoutes);
