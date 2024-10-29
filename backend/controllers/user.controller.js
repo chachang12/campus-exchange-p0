@@ -52,3 +52,30 @@ export const getCurrentUser = async (req, res) => {
         res.status(401).json({ message: 'Unauthorized' });
     }
 };
+
+export const findUser = async(req, res) => {
+    const userId = req.params.userId;
+    try
+    {
+        const user = await User.findById(userId)
+
+        res.status(200).json(user);
+    }
+    catch
+    {
+        console.log(error);
+        res.status(500).json(error);
+    }
+};
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    }
+    catch (error)
+    {
+        console.log(error);
+        res.status(500).json(error);
+    }
+};
