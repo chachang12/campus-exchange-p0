@@ -7,7 +7,7 @@ const UserChat = ({chat, user}) => {
 
     return ( <section role="button" className="rounded">
         <div className="pb-4 grid grid-cols-5">
-            <a className="col-span-1"><img src={user.profilePicture} className="w-[50px] rounded-full" /></a>
+            {/* <a className="col-span-1"><img src={user.profilePicture} className="w-[50px] rounded-full" /></a> */}
             <div className="col-span-2">
                 <div className ="text-white font-semibold">{recipientUser?.firstName}</div>
                 <div className="text-white">{mostRecentMessage?.text}</div>
@@ -17,7 +17,7 @@ const UserChat = ({chat, user}) => {
                 <div className="text-white this-user-notifcations">2</div>
             </div>
         </div>
-        <hr class="border-white"/>
+        <hr className="border-white"/>
     </section> );
 };
 
