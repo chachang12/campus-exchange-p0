@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
 import Navbar from './components/Navbar';
-import { WelcomePage, MessagesPage } from './pages';
+import { WelcomePage, MessagesPage, ProductPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage'; // Import the ProfilePage component
 import { UserProvider, useUser } from './context/UserContext.jsx';
@@ -27,6 +27,7 @@ function App() {
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/product/:id" element={<ProductPage />} /> 
       </Routes>
     </div>
   );
