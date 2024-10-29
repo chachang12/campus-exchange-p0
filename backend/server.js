@@ -5,6 +5,8 @@ import { connectDB } from './config/db.js';
 import productRoutes from './routes/product.route.js';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
+import chatRoutes from './routes/chat.route.js';
+import messageRoutes from './routes/message.route.js';
 import passport from 'passport';
 import './config/passport.js';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
@@ -67,6 +69,8 @@ app.use('/api/products', productRoutes);
 // app.use('/api/users', userRoutes);
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes); // Use the new auth routes
+app.use('/chats', chatRoutes);
+app.use('/messages', messageRoutes);
 
 app.listen(port, () => {
     console.log('Server started at http://localhost:' + port);
