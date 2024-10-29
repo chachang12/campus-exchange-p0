@@ -6,15 +6,26 @@ import { WelcomePage, MessagesPage, ProductPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage'; // Import the ProfilePage component
 import { UserProvider, useUser } from './context/UserContext.jsx';
+import { ChatContextProvider } from './context/ChatContext.jsx';
 
 function App() {
-  const { user } = useUser();
+  //const { user } = useUser();
+  const user = {
+    _id: '671ff74a17e6c584dddf74ee',
+    firstName: 'Carson',
+    lastName: 'Chang',
+    email: 'cadchang@gmail.com',
+    profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
+    listings: 5,
+    rating: 4.5,
+  };
   const location = useLocation();
 
   // Define routes where the Navbar should be hidden
   const hideNavbarRoutes = ['/welcome', '/login', '/register'];
 
   return (
+    <ChatContextProvider user = {user}>
     <div className="h-screen font-inter bg-[#1A1E26]">
       {/* Conditionally render the Navbar */}
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
@@ -30,6 +41,7 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} /> 
       </Routes>
     </div>
+    </ChatContextProvider>
   );
 };
 
