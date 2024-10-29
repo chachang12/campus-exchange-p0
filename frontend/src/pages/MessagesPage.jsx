@@ -6,6 +6,7 @@ import UserChat from "../components/ChatComponents/UserChat";
 import ChatBox from "../components/ChatComponents/ChatBox";
 
 const MessagesPage = () => {
+<<<<<<< HEAD
     //const {user} = useContext(AuthContext);
     
     const user = {
@@ -18,6 +19,9 @@ const MessagesPage = () => {
       rating: 4.5,
     };
 
+=======
+    const {user} = useUser();
+>>>>>>> merging
 
     const {userChats, isUserChatsLoading, updateCurrentChat} = useContext(ChatContext);
 

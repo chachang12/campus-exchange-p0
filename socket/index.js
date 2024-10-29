@@ -19,7 +19,14 @@ io.on("connection", (socket) => {
 //add message
 
     socket.on("sendMessage", (message) => {
-        const user = onlineUsers.find(user => user.userId === message.recipientId);
+        try
+        {
+            const user = onlineUsers.find(user => user.userId === message.recipientId);
+        }
+        catch(error)
+        {
+            console.log("No active users");
+        }
 
         if(user) {
             io.to(user.socketId).emit("getMessage", message);
