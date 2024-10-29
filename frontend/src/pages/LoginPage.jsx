@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { googlelogo } from '../assets';
 import './WelcomePage.css'; 
-import CXLogo from '../components/icons/logo';
+import CXLogo from '../components/icons/Logo';
 
 export const LoginPage = () => {
 

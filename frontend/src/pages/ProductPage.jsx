@@ -9,17 +9,17 @@ const ProductPage = () => {
   const { product } = location.state;
   const navigate = useNavigate();
   const {createChat} = useContext(ChatContext);
-  //const {user} = useUser();
+  const {user} = useUser();
 
-  const user = {
-    _id: "67204b014e8dad2e12cd9aa3",
-    firstName: 'Caleb',
-    lastName: 'shim',
-    email: 'poop@gmail.com',
-    profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
-    listings: 5,
-    rating: 4.5,
-  };
+  // const user = {
+  //   _id: "67204b014e8dad2e12cd9aa3",
+  //   firstName: 'Caleb',
+  //   lastName: 'shim',
+  //   email: 'poop@gmail.com',
+  //   profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
+  //   listings: 5,
+  //   rating: 4.5,
+  // };
 
   // Function to handle back navigation
   const handleBack = () => {
@@ -43,7 +43,7 @@ const ProductPage = () => {
       
       {/* TODO : Implement this button to start a new chat with the seller revolving around the product id.  */}
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={() => createChat(user._id, product.ownerId, product._id)} className=''>
+        <button onClick={() => createChat(user._id, product.creatorId, product._id)} className=''>
             <img src={messageIcon} alt="Message Seller" className="w-8 h-8" />
         </button>
         <button>
