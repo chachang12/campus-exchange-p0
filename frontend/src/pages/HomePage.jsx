@@ -3,7 +3,7 @@ import ProductCard from "../components/ProductCard";
 import Browsebar from "../components/Browsebar";
 import { fetchProducts } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
-import Logo from "../components/icons/Logo";
+import Logo from "../components/icons/logo";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
 import { Link } from "react-router-dom";
 

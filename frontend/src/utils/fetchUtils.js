@@ -1,78 +1,3 @@
-// import axios from 'axios';
-
-// // Set the base URL for Axios
-// const axiosInstance = axios.create({
-//   baseURL: 'http://localhost:8080',
-// });
-
-// export const fetchProducts = async (token) => {
-//   try {
-//     const res = await axiosInstance.get('/api/products', {
-//       headers: {
-//         'Authorization': `Bearer ${token}`,
-//       },
-//     });
-//     return res.data.data;
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//     throw error;
-//   }
-// };
-
-// export const createProduct = async (token, newProduct) => {
-//   // Validation of fields for creating a new product
-//   if (!newProduct.name || !newProduct.image || !newProduct.price || !newProduct.condition) {
-//     return { success: false, message: 'Please fill in all fields.' };
-//   }
-
-//   // Validation of categories for creating a new product
-//   if (newProduct.categories.length === 0) {
-//     return { success: false, message: 'Please select at least one category.' };
-//   }
-
-//   try {
-//     const res = await axiosInstance.post('/api/products', newProduct, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${token}`,
-//       },
-//     });
-//     return { success: true, message: 'Product created successfully', data: res.data.data };
-//   } catch (error) {
-//     console.error('Error creating product:', error);
-//     return { success: false, message: 'Error creating product.' };
-//   }
-// };
-
-// export const deleteProduct = async (token, pid) => {
-//   try {
-//     const res = await axiosInstance.delete(`/api/products/${pid}`, {
-//       headers: {
-//         'Authorization': `Bearer ${token}`,
-//       },
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.error('Error deleting product:', error);
-//     throw error;
-//   }
-// };
-
-// export const updateProduct = async (token, pid, updatedProduct) => {
-//   try {
-//     const res = await axiosInstance.put(`/api/products/${pid}`, updatedProduct, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${token}`,
-//       },
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.error('Error updating product:', error);
-//     throw error;
-//   }
-// };
-
 import axios from 'axios';
 
 // Set the base URL for Axios
@@ -135,6 +60,36 @@ export const updateProduct = async (pid, updatedProduct) => {
     return res.data;
   } catch (error) {
     console.error('Error updating product:', error);
+    throw error;
+  }
+};
+
+export const getProductsByCreatorId = async (creatorId) => {
+  try {
+    const res = await axiosInstance.get(`/api/products/creator/${creatorId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+};
+
+export const getUserById = async (userId) => {
+  try {
+    const res = await axiosInstance.get(`/user/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+export const getProductById = async (productId) => {
+  try {
+    const res = await axiosInstance.get(`/api/products/${productId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching product:', error);
     throw error;
   }
 };

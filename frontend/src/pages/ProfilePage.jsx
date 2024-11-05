@@ -1,61 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { IoMenu, IoPersonCircleOutline } from 'react-icons/io5';
+import { getProductsByCreatorId, updateProduct } from '../utils/fetchUtils';
 import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 
 const Profile = () => {
   const { user, logout } = useUser();
-  console.log('User:', user);
-  // const { user } = useUser();
-  // const { logout } = useUser();
-
-  // Static User Data for development
-  // const user = {
-  //   _id: '1',
-  //   firstName: 'Carson',
-  //   lastName: 'Chang',
-  //   email: 'cadchang@gmail.com',
-  //   profilePicture: 'https://avatars.githubusercontent.com/u/136373179?v=4',
-  //   listings: 5,
-  //   rating: 4.5,
-  // };
-
-  
-
-  // State variables for listings and ratings
-  const [listings, setListings] = useState([
-    // Example listings
-    {
-      _id: "1",
-      name: "Kith Seoul Hoodie",
-      category: "Clothing",
-      image: "https://eu.kith.com/cdn/shop/files/KHM032123-001-FRONT.jpg?v=1716536682&width=1920",
-      price: 80.00,
-      size: "M",
-      condition: "New",
-      description: "Kith Seoul Hoodie in Black. Made from 100% cotton, this hoodie features a kangaroo pocket, a drawstring hood, and a Kith logo on the chest. The hoodie is in new condition and has never been worn. Size M.",
-    },
-  ]);
+  const navigate = useNavigate();
+  const [listings, setListings] = useState([]);
   const [ratings, setRatings] = useState([
-    // Example ratings
     { id: 1, reviewer: 'John Doe', comment: 'Great product!', rating: 5 },
     { id: 2, reviewer: 'Jane Smith', comment: 'Good value for money.', rating: 4 },
   ]);
-
-  // State variable to track the selected tab
   const [selectedTab, setSelectedTab] = useState('listings');
 
-  // Floor the rating
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await getProductsByCreatorId(user._id);
+        console.log('Listings:', response.data);
+        setListings(response.data);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      }
+    };
+
+    fetchListings();
+  }, [user]);
+
+  const handleMarkAsSold = async (productId) => {
+    try {
+      const updatedProduct = { isSold: true };
+      await updateProduct(productId, updatedProduct);
+      setListings(listings.filter((product) => product._id !== productId));
+    } catch (error) {
+      console.error('Error marking product as sold:', error);
+    }
+  };
+
   const flooredRating = Math.floor(user.rating);
 
   return (
-    <div className='mx-4 text-white'>
+    <div className='mx-4 text-white flex flex-col pb-20 pt-4'>
+      <div className="flex flex-row mb-2 justify-between items-center">
+      <div className="w-[60px]"></div>
+        <h1 className='text-xl font-semibold mx-auto'>
+            Profile
+        </h1>
+        <button className='items-end' onClick={() => navigate('/profile-menu')}>
+          <IoMenu size={40} />
+        </button>
+      </div>
       <div className='flex flex-row items-center py-4'>
-        <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='rounded-full w-[150px]'/>
+        {user.profilePicture ? (
+          <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='rounded-full w-[150px]' />
+        ) : (
+          <IoPersonCircleOutline size={150} />
+        )}
         <div className='flex-col ml-4'>
           <h1 className='text-white font-semibold text-xl'>{user.firstName}</h1>
           <div className='flex flex-row'>
-            <h4 className=''>{user.listings}</h4>
+            <h4 className=''>{listings.length}</h4>
             <h4 className='font-light ml-1 opacity-60'> listings</h4>
           </div>
           <div className='flex flex-row items-center'>
@@ -79,16 +86,7 @@ const Profile = () => {
           onClick={() => setSelectedTab('ratings')}
         >
           Ratings
-        </button>
-        {/* Logout Button */}
-      
-        <button
-          className='py-2 px-4 bg-red-500 text-white rounded-3xl'
-          onClick={logout}
-        >
-          Logout
-        </button>
-      
+        </button> 
       </div>
 
       {/* Conditional content */}
@@ -97,7 +95,7 @@ const Profile = () => {
           {listings.length > 0 ? (
             <div className='space-y-4'>
               {listings.map((product) => (
-                <ProductCard key={product._id} product={product} showButtons={true} />
+                <ProductCard key={product._id} product={product} showButtons={true} onMarkAsSold={handleMarkAsSold} />
               ))}
             </div>
           ) : (
@@ -125,7 +123,6 @@ const Profile = () => {
           )}
         </div>
       )}
-      
     </div>
   );
 };
