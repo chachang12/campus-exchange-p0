@@ -3,11 +3,17 @@ import ExploreIcon from './ExploreIcon';
 import ProfileIcon from './ProfileIcon';
 import Arrow from './Arrow';
 import CourtIcon from './CourtIcon';
+import MessageIcon from './MessageIcon';
+import SearchIcon from './SearchIcon';
+import TagIcon from './TagIcon';
 
 export { 
     HomeIcon,
     ExploreIcon,
     ProfileIcon,
     Arrow,
-    CourtIcon
+    CourtIcon,
+    MessageIcon,
+    SearchIcon,
+    TagIcon
 };

@@ -13,6 +13,7 @@ const CreatePage = () => {
     condition: "", // Add condition to the state
     categories: [], // Add categories to the state
     creatorId: "", // Add creator to the state
+    description: "" // Add description to the state
   });
 
   const handleAddProduct = async () => {
@@ -34,7 +35,7 @@ const CreatePage = () => {
     } else {
       alert(`Success: ${response.message}`);
     }
-    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "" });
+    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "", description: "" });
   };
 
   const categories = [
@@ -47,61 +48,70 @@ const CreatePage = () => {
 
   return (
     <div className="flex flex-col max-w-lg mx-auto p-4 text-white justify-between">
-      <div className="justify-start mb-4">
-        <div className="flex flex-row mb-4">
-          <a className="" href="/home">
-            Cancel
-          </a>
-        </div>
-        <div className="space-y-8">
-          <div className="w-full">
-            <div className="space-y-4">
-              <input
-                className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
-                placeholder="Title"
-                name="name"
-                value={newProduct.name}
-                onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-              />
-              <input
-                className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
-                placeholder="Price"
-                name="price"
-                type="number"
-                value={newProduct.price}
-                onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-              />
-              <input
-                className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
-                placeholder="Image URL"
-                name="image"
-                value={newProduct.image}
-                onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-              />
-              <select
-                className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
-                name="condition"
-                value={newProduct.condition}
-                onChange={(e) => setNewProduct({ ...newProduct, condition: e.target.value })}
-              >
-                <option className="text-black" value="" disabled>Select Condition</option>
-                <option className="text-black" value="new">New</option>
-                <option className="text-black" value="like new">Like New</option>
-                <option className="text-black" value="used">Used</option>
-                <option className="text-black" value="very used">Very Used</option>
-              </select>
-              <CategoriesScrollBar
-                categories={categories}
-                selectedCategories={newProduct.categories}
-                setSelectedCategories={(selectedCategories) => setNewProduct({ ...newProduct, categories: selectedCategories })}
-              />
-              <button
-                className="w-full p-2 bg-darkblue text-white rounded"
-                onClick={handleAddProduct}
-              >
-                Publish
-              </button>
-            </div>
+      <div className="flex flex-row mb-4 justify-between items-center">
+        <a className="" href="/home">
+          Cancel
+        </a>
+        <h1 className="text-xl font-semibold mx-auto">
+          Listing Details
+        </h1>
+        <div className="w-[60px]"></div>
+      </div>
+      <div className="space-y-8">
+        <div className="w-full">
+          <div className="space-y-4">
+            <input
+              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+              placeholder="Title"
+              name="name"
+              value={newProduct.name}
+              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+            />
+            <input
+              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+              placeholder="Price"
+              name="price"
+              type="number"
+              value={newProduct.price}
+              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+            />
+            <input
+              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+              placeholder="Image URL"
+              name="image"
+              value={newProduct.image}
+              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+            />
+            <select
+              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+              name="condition"
+              value={newProduct.condition}
+              onChange={(e) => setNewProduct({ ...newProduct, condition: e.target.value })}
+            >
+              <option className="text-black" value="" disabled>Select Condition</option>
+              <option className="text-black" value="new">New</option>
+              <option className="text-black" value="like new">Like New</option>
+              <option className="text-black" value="used">Used</option>
+              <option className="text-black" value="very used">Very Used</option>
+            </select>
+            <textarea
+              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+              placeholder="Description"
+              name="description"
+              value={newProduct.description}
+              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+            />
+            <CategoriesScrollBar
+              categories={categories}
+              selectedCategories={newProduct.categories}
+              setSelectedCategories={(selectedCategories) => setNewProduct({ ...newProduct, categories: selectedCategories })}
+            />
+            <button
+              className="w-full p-2 bg-darkblue text-white rounded"
+              onClick={handleAddProduct}
+            >
+              Publish
+            </button>
           </div>
         </div>
       </div>

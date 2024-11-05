@@ -24,8 +24,15 @@ const productSchema = new mongoose.Schema({
     creatorId:{
         type: String,
         required: true
+    },
+    isSold:{
+        type: Boolean,
+        default: false
+    },
+    description:{
+        type: String,
+        required: true
     }
-
 }, {
     timestamps: true // createdAt, updatedAt fields are written to each document
 });
