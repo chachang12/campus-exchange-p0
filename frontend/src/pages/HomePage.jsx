@@ -35,7 +35,7 @@ const HomePage = () => {
   console.log("products", products);
 
   return (
-    <div className="">
+    <div className="homepage-container">
       <div className="flex flex-row justify-between mx-4 py-4">
         <Logo width={50} fill={"white"} />
         <a>
