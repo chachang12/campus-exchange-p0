@@ -43,8 +43,12 @@ const Profile = () => {
   const flooredRating = Math.floor(user.rating);
 
   return (
-    <div className='mx-4 text-white flex flex-col pb-20'>
-      <div className='flex justify-end pt-4'>
+    <div className='mx-4 text-white flex flex-col pb-20 pt-4'>
+      <div className="flex flex-row mb-2 justify-between items-center">
+      <div className="w-[60px]"></div>
+        <h1 className='text-xl font-semibold mx-auto'>
+            Profile
+        </h1>
         <button className='items-end' onClick={() => navigate('/profile-menu')}>
           <IoMenu size={40} />
         </button>

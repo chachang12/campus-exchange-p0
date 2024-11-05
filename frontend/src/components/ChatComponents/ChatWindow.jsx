@@ -16,6 +16,13 @@ const ChatWindow = () => {
     const navigate = useNavigate();
     const messagesEndRef = useRef(null);
 
+    let productData;
+    try {
+        productData = product ? product.data : null;
+    } catch (error) {
+        console.error('Error fetching product:', error);
+    }
+
     useEffect(() => {
         if (chatId) {
             const chat = userChats.find(chat => chat._id === chatId);
@@ -62,7 +69,7 @@ const ChatWindow = () => {
                 <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4" />
                 <div>
                     <strong className="text-white text-lg">{recipientUser?.firstName}</strong>
-                    {product && <p className="text-gray-400 text-sm">{product.name}</p>}
+                    {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}
                 </div>
             </div>
             <section id="chat-box" className="flex-1 flex-col-reverse p-4 overflow-y-auto items-start w-full pb-20">

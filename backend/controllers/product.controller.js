@@ -67,7 +67,7 @@ export const deleteProduct = async (req, res) => {
         res.status(200).json({ success:true, message: 'Product is deleted' }); // Sends a success response
     } catch (error) {
         console.log(`Error in deleting product: ${error.message}`);
-        res.status(500).json({ success:false, message: 'Server error' }); // Sends an error response if there is a server error.
+        res.status(500).json({ success:false, message: 'Server error' }); // Sends an error response if there is a server error
     }
 }
 
@@ -79,4 +79,23 @@ export const getProductsByCreatorId = async (req, res) => {
     } catch (error) {
       res.status(500).json({ success: false, message: 'Server Error' });
     }
-  };
+};
+
+export const getProductById = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ success: false, message: 'Invalid Product ID' });
+    }
+
+    try {
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+        res.status(200).json({ success: true, data: product });
+    } catch (error) {
+        console.error(`Error fetching product by ID: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};

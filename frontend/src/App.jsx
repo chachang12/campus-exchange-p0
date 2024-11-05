@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useLocation, matchPath } from 'react-router-do
 import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
 import Navbar from './components/Navbar';
-import { WelcomePage, MessagesPage, ProductPage } from './pages';
+import { WelcomePage, MessagesPage, ProductPage, SearchPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage';
 import ChatWindow from './components/ChatComponents/ChatWindow'; // Import the ChatWindow component
@@ -37,6 +37,7 @@ const App = () => {
           <Route path="/product/:id" element={<ProductPage />} /> 
           <Route path="/chat/:chatId" element={user ? <ChatWindow /> : <Navigate to="/login" />} />
           <Route path="/profile-menu" element={user ? <ProfileMenu /> : <Navigate to="/login" />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </div>
     </ChatContextProvider>

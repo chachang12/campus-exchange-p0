@@ -1,45 +1,43 @@
-import {useEffect, useState} from "react";
-import { baseUrl, getRequest} from "../utils/services";
+import { useEffect, useState } from "react";
+import { baseUrl, getRequest } from "../utils/services";
 
 export const useFetchRecipientUser = (chat, user) => {
-    const [recipientUser, setRecipientUser] = useState(null)
+    const [recipientUser, setRecipientUser] = useState(null);
     const [mostRecentMessage, setMostRecentMessage] = useState(null);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
-    const recipientId = chat?.members.find((id) => id !==user?._id)
+    const recipientId = chat?.members.find((id) => id !== user?._id);
     const chatId = chat?._id;
 
-    useEffect(()=> {
-        const getUser = async()=>{
-            if(!recipientId) return null;
+    useEffect(() => {
+        const getUser = async () => {
+            if (!recipientId) return null;
 
             const response = await getRequest(`${baseUrl}/user/find/${recipientId}`);
 
-            if(response.error)
-            {
-                return setError(error);
+            if (response.error) {
+                return setError(response.error);
             }
             setRecipientUser(response);
-        }
+        };
 
-        getUser()
-    }, [recipientId])
+        getUser();
+    }, [recipientId]);
 
     useEffect(() => {
-        const getMostRecentMessage = async()=>{
-            if(!chatId) return null;
+        const getMostRecentMessage = async () => {
+            if (!chatId) return null;
 
             const response = await getRequest(`${baseUrl}/messages/${chatId}/recent`);
 
-            if(response.error)
-            {
-                return setError(error)
+            if (response.error) {
+                return setError(response.error);
             }
             setMostRecentMessage(response);
-        }
+        };
 
         getMostRecentMessage();
-    }, [chatId])
+    }, [chatId]);
 
-    return {recipientUser, error, mostRecentMessage}
-}
+    return { recipientUser, mostRecentMessage, error };
+};
