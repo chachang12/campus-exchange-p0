@@ -5,5 +5,6 @@ import RegisterPage from "./RegisterPage";
 import WelcomePage from "./WelcomePage";
 import MessagesPage from "./MessagesPage";
 import ProductPage from "./ProductPage";
+import SearchPage from "./SearchPage";
 
-export { CreatePage, HomePage, LoginPage, RegisterPage, WelcomePage, MessagesPage, ProductPage };
+export { CreatePage, HomePage, LoginPage, RegisterPage, WelcomePage, MessagesPage, ProductPage, SearchPage };
