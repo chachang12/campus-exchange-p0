@@ -8,7 +8,7 @@ const CategoriesScrollBar = ({ categories }) => {
         {categories.map((category, index) => (
           <button
             key={index}
-            className="flex-shrink-0 text-white py-2 px-4 rounded-3xl outline outline-1 outline-white">
+            className="flex-shrink-0 bg-[#1F1F1F] text-white py-2 px-4 rounded-3xl outline outline-[1px] outline-gray-500">
             {category}
           </button>
         ))}

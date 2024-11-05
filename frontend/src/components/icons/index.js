@@ -6,6 +6,7 @@ import CourtIcon from './CourtIcon';
 import MessageIcon from './MessageIcon';
 import SearchIcon from './SearchIcon';
 import TagIcon from './TagIcon';
+import Logo from './Logo';
 
 export { 
     HomeIcon,
@@ -15,5 +16,6 @@ export {
     CourtIcon,
     MessageIcon,
     SearchIcon,
-    TagIcon
+    TagIcon,
+    Logo
 };

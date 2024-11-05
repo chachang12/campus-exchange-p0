@@ -23,7 +23,8 @@ const App = () => {
 
   return (
     <ChatContextProvider user={user}>
-      <div className="h-screen font-inter bg-[#1A1E26]">
+      {/* <div className="h-screen font-inter bg-[#1A1E26]"> */}
+      <div className="h-screen font-inter bg-[#121212] mb-40">
         {!shouldHideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={user ? <HomePage /> : <Navigate to="/welcome" />} />

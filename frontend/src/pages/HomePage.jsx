@@ -3,9 +3,12 @@ import ProductCard from "../components/ProductCard";
 import Browsebar from "../components/Browsebar";
 import { fetchProducts } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
-import Logo from "../components/icons/logo";
+import { Logo } from "../components/icons";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
 import { Link } from "react-router-dom";
+import { IoNotifications } from "react-icons/io5";
+import './HomePage.css'
+
 
 const HomePage = () => {
   const { user } = useUser();
@@ -36,14 +39,29 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
-      <div className="flex flex-row justify-between mx-4 py-4">
-        <Logo width={50} fill={"white"} />
-        <a>
-          <img crossOrigin="anonymous" src={user.profilePicture} className="w-[50px] rounded-full" />
-        </a>
+      <div className="fixed top-0 left-0 right-0 z-10 backdrop-blur-md bg-opacity-50 bg-inherit">
+        <section className="flex flex-col border-b border-gray-500">
+          <div className="flex justify-between mx-4">
+            <div className="flex items-center justify-center">
+              <img crossOrigin="anonymous" src={user.profilePicture} className="w-[54px] rounded-full mr-2" />
+              <div>
+                <h1 className="text-white font-medium text-[20px]">
+                  Welcome, {user.firstName}
+                </h1>
+                <h2 className="text-gray-500 text-[14px]">
+                  Picks for you
+                </h2>
+              </div>
+            </div>
+            <div className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
+              <IoNotifications color='#ffffff' size={20}/>
+            </div>
+          </div>
+          <CategoriesScrollBar categories={categories} />
+        </section>
       </div>
-      <CategoriesScrollBar categories={categories} />
-      <div className="flex flex-col gap-4 p-4 bg-[#1A1E26]">
+      
+      <div className="flex flex-col gap-4 p-4 bg-inherit mt-[125px] items-center">
         {products.map((product) => (
           <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
             <ProductCard product={product} />
@@ -52,6 +70,12 @@ const HomePage = () => {
         {products.length === 0 && (
           <p className="text-xl text-center font-bold text-darkgray">No products found.</p>
         )}
+        <span className="flex flex-col items-center">
+          <h1 className="text-gray-500 font-light mb-2">
+            You've reached the end of the page.
+          </h1>
+          <Logo fill={'white'} width={40} height={40}/>
+        </span>
       </div>
     </div>
   );
