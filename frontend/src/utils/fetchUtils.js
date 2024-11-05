@@ -73,3 +73,23 @@ export const getProductsByCreatorId = async (creatorId) => {
     throw error;
   }
 };
+
+export const getUserById = async (userId) => {
+  try {
+    const res = await axiosInstance.get(`/user/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+export const getProductById = async (productId) => {
+  try {
+    const res = await axiosInstance.get(`/api/products/${productId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    throw error;
+  }
+};

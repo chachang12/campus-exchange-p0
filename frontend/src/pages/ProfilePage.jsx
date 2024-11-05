@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { IoMenu, IoPersonCircleOutline } from 'react-icons/io5';
+import { getProductsByCreatorId, updateProduct } from '../utils/fetchUtils';
 import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
-import { getProductsByCreatorId } from '../utils/fetchUtils';
 
 const Profile = () => {
   const { user, logout } = useUser();
-  // const { user } = useUser();
-  // const { logout } = useUser();
-
-    
-
-  // State variables for listings and ratings
+  const navigate = useNavigate();
   const [listings, setListings] = useState([]);
   const [ratings, setRatings] = useState([
-    // Static Review Data
     { id: 1, reviewer: 'John Doe', comment: 'Great product!', rating: 5 },
     { id: 2, reviewer: 'Jane Smith', comment: 'Good value for money.', rating: 4 },
   ]);
-
+  const [selectedTab, setSelectedTab] = useState('listings');
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -34,17 +30,31 @@ const Profile = () => {
     fetchListings();
   }, [user]);
 
+  const handleMarkAsSold = async (productId) => {
+    try {
+      const updatedProduct = { isSold: true };
+      await updateProduct(productId, updatedProduct);
+      setListings(listings.filter((product) => product._id !== productId));
+    } catch (error) {
+      console.error('Error marking product as sold:', error);
+    }
+  };
 
-  // State variable to track the selected tab
-  const [selectedTab, setSelectedTab] = useState('listings');
-
-  // Floor the rating
   const flooredRating = Math.floor(user.rating);
 
   return (
-    <div className='mx-4 text-white'>
+    <div className='mx-4 text-white flex flex-col pb-20'>
+      <div className='flex justify-end pt-4'>
+        <button className='items-end' onClick={() => navigate('/profile-menu')}>
+          <IoMenu size={40} />
+        </button>
+      </div>
       <div className='flex flex-row items-center py-4'>
-        <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='rounded-full w-[150px]'/>
+        {user.profilePicture ? (
+          <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='rounded-full w-[150px]' />
+        ) : (
+          <IoPersonCircleOutline size={150} />
+        )}
         <div className='flex-col ml-4'>
           <h1 className='text-white font-semibold text-xl'>{user.firstName}</h1>
           <div className='flex flex-row'>
@@ -72,16 +82,7 @@ const Profile = () => {
           onClick={() => setSelectedTab('ratings')}
         >
           Ratings
-        </button>
-        {/* Logout Button */}
-      
-        <button
-          className='py-2 px-4 bg-red-500 text-white rounded-3xl'
-          onClick={logout}
-        >
-          Logout
-        </button>
-      
+        </button> 
       </div>
 
       {/* Conditional content */}
@@ -90,7 +91,7 @@ const Profile = () => {
           {listings.length > 0 ? (
             <div className='space-y-4'>
               {listings.map((product) => (
-                <ProductCard key={product._id} product={product} showButtons={true} />
+                <ProductCard key={product._id} product={product} showButtons={true} onMarkAsSold={handleMarkAsSold} />
               ))}
             </div>
           ) : (
@@ -118,7 +119,6 @@ const Profile = () => {
           )}
         </div>
       )}
-      
     </div>
   );
 };

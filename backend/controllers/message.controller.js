@@ -34,20 +34,21 @@ export const getMessages = async(req, res)=> {
     }
 };
 
-export const getMostRecentMessage = async(req, res)=> {
-    const {chatId} = req.params;
+export const getMostRecentMessage = async (req, res) => {
+    const { chatId } = req.params;
 
-    try
-    {
-        const message = await messageModel.find({chatId}).sort({$natural: -1}).limit(1);
-        res.status(200).json(message[0]);
-    }
-    catch(error)
-    {
-        console.log(error);
-        res.status(500).json(error);
+    try {
+        const message = await messageModel.findOne({ chatId }).sort({ createdAt: -1 });
+
+        if (!message) {
+            return res.status(200).json({ success: true, data: null });
+        }
+
+        res.status(200).json({ success: true, data: message });
+    } catch (error) {
+        console.error(`Error fetching most recent message: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
 
-
-export default { createMessage, getMessages, getMostRecentMessage }
+export default { createMessage, getMessages, getMostRecentMessage };

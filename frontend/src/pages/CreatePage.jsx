@@ -13,6 +13,7 @@ const CreatePage = () => {
     condition: "", // Add condition to the state
     categories: [], // Add categories to the state
     creatorId: "", // Add creator to the state
+    description: "" // Add description to the state
   });
 
   const handleAddProduct = async () => {
@@ -34,7 +35,7 @@ const CreatePage = () => {
     } else {
       alert(`Success: ${response.message}`);
     }
-    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "" });
+    setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "", description: "" });
   };
 
   const categories = [
@@ -90,6 +91,13 @@ const CreatePage = () => {
                 <option className="text-black" value="used">Used</option>
                 <option className="text-black" value="very used">Very Used</option>
               </select>
+              <textarea
+                className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
+                placeholder="Description"
+                name="description"
+                value={newProduct.description}
+                onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+              />
               <CategoriesScrollBar
                 categories={categories}
                 selectedCategories={newProduct.categories}
