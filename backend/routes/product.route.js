@@ -17,5 +17,4 @@ router.delete('/:id', deleteProduct);
 // Route to get all the listings of a specific creator
 router.get('/creator/:creatorId', getProductsByCreatorId);
 
-
 export default router;

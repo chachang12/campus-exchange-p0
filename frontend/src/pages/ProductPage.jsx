@@ -1,8 +1,9 @@
-import {React, useContext} from 'react';
+import {React, useContext, useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { messageIcon, close, share } from '../assets';
+import { messageIcon, close, share, star } from '../assets';
 import { useUser } from "../context/UserContext";
 import { ChatContext } from '../context/ChatContext';
+import { getUserById } from '../utils/fetchUtils';
 
 const ProductPage = () => {
   const location = useLocation();
@@ -10,6 +11,20 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const { createChat } = useContext(ChatContext);
   const { user } = useUser();
+  const [creator, setCreator] = useState(null);
+
+  useEffect(() => {
+    const fetchCreator = async () => {
+      try {
+        const response = await getUserById(product.creatorId);
+        setCreator(response.data);
+      } catch (error) {
+        console.error('Error fetching creator:', error);
+      }
+    };
+
+    fetchCreator();
+  }, [product.creatorId]);
 
   // Function to handle back navigation
   const handleBack = () => {
@@ -50,9 +65,31 @@ const ProductPage = () => {
         </button>
       </div>
       
-      <p className='font-light'>
-            {product.description}
-        </p>
+      <p className='font-light mb-6'>
+          {product.description}
+      </p>
+
+      <h1 className='font-[600] mb-2'>
+        Seller Information
+      </h1>
+      {creator && (
+        <div className='flex flex-row items-center'>
+          {creator.profilePicture ? (
+            <img crossOrigin="anonymous" src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px]' />
+          ) : (
+            <IoPersonCircleOutline size={50} />
+          )}
+          <div className='flex-col ml-4'>
+            <h2 className='text-white font-semibold text-lg'>
+              {creator.firstName} {creator.lastName && creator.lastName}
+            </h2>            <div className='flex flex-row items-center'>
+              {Array.from({ length: Math.floor(creator.rating) }).map((_, index) => (
+                <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

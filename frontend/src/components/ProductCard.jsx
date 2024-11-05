@@ -6,7 +6,7 @@ import { useUser } from "../context/UserContext";
 import { deleteProduct, updateProduct } from "../utils/fetchUtils";
 import { deleteIcon, edit } from "../assets";
 
-const ProductCard = ({ product, showButtons }) => {
+const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
   const { user } = useUser();
   const [updatedProduct, setUpdatedProduct] = useState(product);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,6 +45,9 @@ const ProductCard = ({ product, showButtons }) => {
             </button>
             <button onClick={() => handleDeleteProduct(product._id)} className="text-red-500">
               <img src={deleteIcon} className="w-4"/>
+            </button>
+            <button onClick={() => onMarkAsSold(product._id)} className="text-green-500">
+              Mark as Sold
             </button>
           </div>
         )}
