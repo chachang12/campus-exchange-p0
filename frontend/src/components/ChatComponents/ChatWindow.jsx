@@ -50,11 +50,11 @@ const ChatWindow = () => {
         }
     }, [messages]);
 
-    if (!recipientUser) return (
-        <p className="text-center text-white">
-            No conversation selected yet.
-        </p>
-    );
+    // if (!recipientUser) return (
+    //     <p className="text-center text-white">
+    //         No conversation selected yet.
+    //     </p>
+    // );
 
     if (isMessagesLoading) return (
         <p className="text-center text-white">
