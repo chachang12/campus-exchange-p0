@@ -48,7 +48,7 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
           <p className="text-xl font-light">
             {product.name}
           </p>
-          <p className="text-lg text-white font-[800]">
+          <p className="text-lg text-white font-semibold">
             ${product.price}
           </p>
           <p>

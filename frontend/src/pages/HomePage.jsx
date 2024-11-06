@@ -13,6 +13,8 @@ import './HomePage.css'
 const HomePage = () => {
   const { user } = useUser();
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const categories = [
     "Clothing",
@@ -27,6 +29,7 @@ const HomePage = () => {
       try {
         const products = await fetchProducts();
         setProducts(products);
+        setFilteredProducts(products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -35,11 +38,22 @@ const HomePage = () => {
     loadProducts();
   }, []);
 
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter(product =>
+        product.categories.some(category => selectedCategories.includes(category))
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [selectedCategories, products]);
+
   console.log("products", products);
 
   return (
-    <div className="homepage-container">
-      <div className="fixed top-0 left-0 right-0 z-10 backdrop-blur-md bg-opacity-50 bg-inherit">
+    <div className="">
+      <div className="fixed top-0 left-0 right-0 z-10 backdrop-blur-md bg-opacity-50 bg-inherit pt-4">
         <section className="flex flex-col border-b border-gray-500">
           <div className="flex justify-between mx-4">
             <div className="flex items-center justify-center">
@@ -48,8 +62,11 @@ const HomePage = () => {
                 <h1 className="text-white font-medium text-[20px]">
                   Welcome, {user.firstName}
                 </h1>
-                <h2 className="text-gray-500 text-[14px]">
+                {/* <h2 className="text-gray-500 text-[14px]">
                   Picks for you
+                </h2> */}
+                <h2 className="text-gray-500 text-[14px]">
+                  {user.university}
                 </h2>
               </div>
             </div>
@@ -57,17 +74,21 @@ const HomePage = () => {
               <IoNotifications color='#ffffff' size={20}/>
             </div>
           </div>
-          <CategoriesScrollBar categories={categories} />
+          <CategoriesScrollBar
+            categories={categories}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+          />
         </section>
       </div>
       
       <div className="flex flex-col gap-4 p-4 bg-inherit mt-[125px] items-center">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
             <ProductCard product={product} />
           </Link>
         ))}
-        {products.length === 0 && (
+        {filteredProducts.length === 0 && (
           <p className="text-xl text-center font-bold text-darkgray">No products found.</p>
         )}
         <span className="flex flex-col items-center">

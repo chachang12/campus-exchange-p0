@@ -47,7 +47,7 @@ const Profile = () => {
 
   return (
     <div className='mx-4 text-white flex flex-col pb-40 pt-4'>
-      <section className='fixed top-0 left-0 right-0 z-10 bg-[#121212] mt-1'>
+      <section className='fixed top-0 left-0 right-0 z-10 bg-[#121212] pt-4'>
         <div className="flex flex-row mb-2 justify-between items-center mx-4">
           <div className=''>
             <Logo fill={'white'} width={40} height={40}/>

@@ -26,6 +26,11 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    universityId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'University',
+        required: false
+    },
     // Add other fields as necessary
 });
 
