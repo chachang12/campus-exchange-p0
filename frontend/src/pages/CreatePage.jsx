@@ -22,8 +22,8 @@ const CreatePage = () => {
       return;
     }
 
-    // Set the creator field to the user's ID
-    const productWithCreator = { ...newProduct, creatorId: user._id };
+    // Set the creator field to the user's ID and include the university ID
+    const productWithCreator = { ...newProduct, creatorId: user._id, universityId: user.universityId };
     console.log("Product with creator: ", productWithCreator);
 
     const response = await createProduct(productWithCreator);

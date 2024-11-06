@@ -1,4 +1,5 @@
 import Product from '../models/product.model.js';
+import User from '../models/user.model.js';
 import mongoose from "mongoose";
 
 export const getProducts = async (req, res) => {
@@ -19,6 +20,11 @@ export const createProduct = async (req, res) => {
     }
   
     try {
+      const user = await User.findById(creatorId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
       const newProduct = new Product({
         name,
         price,
@@ -27,7 +33,8 @@ export const createProduct = async (req, res) => {
         categories,
         creatorId,
         isSold: false, // Set isSold to false when creating a new product
-        description
+        description,
+        universityId: user.universityId // Include the user's university ID
       });
   
       const savedProduct = await newProduct.save();
@@ -48,28 +55,34 @@ export const updateProduct = async (req, res) => {
 
     try {
         const updatedProduct = await Product.findByIdAndUpdate(id, product, {new:true}); // Updates the product in the database, and returns the updated product
+        if (!updatedProduct) {
+            return res.status(404).json({ success:false, message: 'Product not found' }); // Sends an error response if the product is not found
+        }
         res.status(200).json({ success:true, data: updatedProduct }); // Sends a success response with the updated product
     } catch (error) {
-        console.error(`Error in updating product: ${error.message}`);
-        res.status(404).json({ success:false, message: 'Product not found' }); // Sends an error response if the product is not found
+        console.error(`Error updating product: ${error.message}`);
+        res.status(500).json({ success:false, message: 'Server error' }); // Sends an error response if there is a server error
     }
-}
+};
 
 export const deleteProduct = async (req, res) => {
-    const {id} = req.params; // Retrieves the product ID from the request parameters
+    const { id } = req.params; // Retrieves the product ID from the request parameters
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ success:false, message: 'Invalid Product ID' }); // Sends an error response if the product ID is invalid
     }
 
     try {
-        await Product.findByIdAndDelete(id); // Deletes the product from the database
-        res.status(200).json({ success:true, message: 'Product is deleted' }); // Sends a success response
+        const deletedProduct = await Product.findByIdAndDelete(id); // Deletes the product from the database
+        if (!deletedProduct) {
+            return res.status(404).json({ success:false, message: 'Product not found' }); // Sends an error response if the product is not found
+        }
+        res.status(200).json({ success:true, message: 'Product deleted successfully' }); // Sends a success response with a message
     } catch (error) {
-        console.log(`Error in deleting product: ${error.message}`);
+        console.error(`Error deleting product: ${error.message}`);
         res.status(500).json({ success:false, message: 'Server error' }); // Sends an error response if there is a server error
     }
-}
+};
 
 export const getProductsByCreatorId = async (req, res) => {
     const { creatorId } = req.params;

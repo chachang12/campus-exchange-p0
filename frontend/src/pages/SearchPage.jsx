@@ -38,7 +38,7 @@ const SearchPage = () => {
   }, [query]);
 
   return (
-    <div className="p-4 text-white">
+    <div className="px-4 text-white">
       <h1 className='text-center mb-4 text-xl font-semibold'>
         Search
       </h1>

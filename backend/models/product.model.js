@@ -32,6 +32,11 @@ const productSchema = new mongoose.Schema({
     description:{
         type: String,
         required: true
+    },
+    universityId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'University',
+        required: false
     }
 }, {
     timestamps: true // createdAt, updatedAt fields are written to each document

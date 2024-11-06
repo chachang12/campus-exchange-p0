@@ -93,3 +93,23 @@ export const getProductById = async (productId) => {
     throw error;
   }
 };
+
+export const updateUserUniversity = async (userId, universityId) => {
+  try {
+    const res = await axiosInstance.put(`/user/${userId}/university`, { universityId });
+    return res.data;
+  } catch (error) {
+    console.error('Error updating university:', error);
+    throw error;
+  }
+};
+
+export const fetchUniversities = async () => {
+  try {
+    const res = await axiosInstance.get('/api/universities');
+    return res.data.data;
+  } catch (error) {
+    console.error('Error fetching universities:', error);
+    throw error;
+  }
+};

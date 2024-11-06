@@ -41,7 +41,7 @@ const ProfileMenu = () => {
         <button onClick={() => navigate(-1)} className="w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500">
           <SlArrowLeft size={20} />
         </button>
-        <h1 className="text-xl font-semibold">Settings and activity</h1>
+        <h1 className="text-white text-xl font-semibold">Settings and activity</h1>
         <button className='w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500'>
           <FaQuestion size={20} />
         </button>
