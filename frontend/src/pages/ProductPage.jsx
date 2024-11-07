@@ -12,6 +12,7 @@ const ProductPage = () => {
   const { createChat } = useContext(ChatContext);
   const { user } = useUser();
   const [creator, setCreator] = useState(null);
+  const [isChatExpanded, setIsChatExpanded] = useState(false);
 
   useEffect(() => {
     const fetchCreator = async () => {
@@ -57,7 +58,7 @@ const ProductPage = () => {
       
       {/* TODO : Implement this button to start a new chat with the seller revolving around the product id.  */}
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={handleCreateChat} className=''>
+        <button onClick={() => setIsChatExpanded((curr) => !curr)} className=''>
             <img src={messageIcon} alt="Message Seller" className="w-8 h-8" />
         </button>
         <button>
@@ -90,6 +91,25 @@ const ProductPage = () => {
           </div>
         </div>
       )}
+
+      {/* create a chat */}
+      <div className={`fixed pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#1A1E26] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
+        <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
+            <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
+            <div className="flex items-center space-x-3">
+              <img crossOrigin="anonymous" src={creator?.profilePicture} alt="Creator" className='rounded-full w-[40px]' />
+              <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
+            </div>
+        </div>
+        <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
+          <img crossOrigin="anonymous" src={product?.image} alt={product?.name} className="w-16 h-16 mb-2" />
+          <div className='truncate'>
+            <p className='font-bold truncate'>{product?.name}</p>
+            <p className='font-normal truncate'>{product?.description}</p>
+            ${product?.price}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
