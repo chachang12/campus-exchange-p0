@@ -89,7 +89,7 @@ const HomePage = () => {
           </Link>
         ))}
         {filteredProducts.length === 0 && (
-          <p className="text-xl text-center font-bold text-darkgray">No products found.</p>
+          <p className="text-xl text-center font-bold text-darkgray mt-4">No products found.</p>
         )}
         <span className="flex flex-col items-center">
           <h1 className="text-gray-500 font-light mb-2">

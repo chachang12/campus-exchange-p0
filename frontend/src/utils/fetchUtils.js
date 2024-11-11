@@ -113,3 +113,44 @@ export const fetchUniversities = async () => {
     throw error;
   }
 };
+
+export const getRatingsByUser = async (userId) => {
+  try {
+    const res = await axiosInstance.get(`/api/ratings/user/${userId}`);
+    return res.data.data;
+  } catch (error) {
+    console.error('Error fetching ratings:', error);
+    throw error;
+  }
+};
+
+// Axios requests for Favorites
+export const addFavorite = async (userId, productId) => {
+  try {
+    const res = await axiosInstance.post('/user/favorites/add', { userId, productId });
+    return res.data;
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    throw error;
+  }
+};
+
+export const removeFavorite = async (userId, productId) => {
+  try {
+    const res = await axiosInstance.post('/user/favorites/remove', { userId, productId });
+    return res.data;
+  } catch (error) {
+    console.error('Error removing favorite:', error);
+    throw error;
+  }
+};
+
+export const getFavorites = async (userId) => {
+  try {
+    const res = await axiosInstance.get(`/user/${userId}/favorites`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    throw error;
+  }
+};

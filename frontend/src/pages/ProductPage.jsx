@@ -5,7 +5,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import { FiMessageCircle } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
 import { ChatContext } from '../context/ChatContext';
-import { getUserById } from '../utils/fetchUtils';
+import { getUserById, addFavorite, removeFavorite } from '../utils/fetchUtils';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
@@ -49,9 +49,17 @@ const ProductPage = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    // Add logic to add/remove product from user's favorites
+  const toggleFavorite = async () => {
+    try {
+      if (isFavorite) {
+        await removeFavorite(user._id, product._id);
+      } else {
+        await addFavorite(user._id, product._id);
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
   };
 
   return (

@@ -82,3 +82,63 @@ export const updateUserUniversity = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
+export const addFavorite = async (req, res) => {
+    const { userId, productId } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        if (!user.favorites.includes(productId)) {
+            user.favorites.push(productId);
+            await user.save();
+        }
+
+        res.status(200).json({ success: true, message: 'Product added to favorites' });
+    } catch (error) {
+        console.error('Error adding favorite:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+// Control Logic for Favorites
+
+export const removeFavorite = async (req, res) => {
+    const { userId, productId } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        user.favorites = user.favorites.filter(fav => fav.toString() !== productId);
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Product removed from favorites' });
+    } catch (error) {
+        console.error('Error removing favorite:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+export const getFavorites = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId).populate('favorites');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        console.log('Fetched favorites:', user.favorites); // Add this line to log the fetched favorites
+
+        res.status(200).json({ success: true, data: user.favorites });
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};

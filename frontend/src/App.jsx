@@ -10,6 +10,8 @@ import { useUser } from './context/UserContext.jsx';
 import { ChatContextProvider } from './context/ChatContext.jsx';
 import { ProfileMenu } from './components/ProfilePageComponents';
 import { AccountSettingsPage } from './pages/ProfileMenu';
+import FavoriteProductsPage from './pages/ProfileMenu/FavoriteProductsPage'; // Import the FavoriteProducts component
+
 
 const App = () => {
   const { user, loading } = useUser();
@@ -25,7 +27,7 @@ const App = () => {
   return (
     <ChatContextProvider user={user}>
       {/* <div className="h-screen font-inter bg-[#1A1E26]"> */}
-      <div className="h-screen font-inter bg-[#121212] mb-40 mt-4">
+      <div className="h-screen font-inter bg-[#121212] mb-40">
         {!shouldHideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={user ? <HomePage /> : <Navigate to="/welcome" />} />
@@ -41,6 +43,7 @@ const App = () => {
           <Route path="/profile-menu" element={user ? <ProfileMenu /> : <Navigate to="/login" />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/account-settings" element={user ? <AccountSettingsPage /> : <Navigate to="/login" />} />
+          <Route path="/profile/favorites" element={user ? <FavoriteProductsPage /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </ChatContextProvider>
