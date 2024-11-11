@@ -72,8 +72,6 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
           )}
         </div>
       </section>
-      
-      
     </div>
   );
 };

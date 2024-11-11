@@ -13,6 +13,8 @@ import './config/passport.js';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
 import User from './models/user.model.js';
+import ratingRoutes from './routes/rating.route.js'; // Import rating routes
+
 
 dotenv.config(); // Initializes the dotenv configuration
 
@@ -69,10 +71,11 @@ app.get('/proxy', async (req, res) => {
 app.use('/api/products', productRoutes);
 // app.use('/api/users', userRoutes);
 app.use('/user', userRoutes);
-app.use('/auth', authRoutes); // Use the new auth routes
+app.use('/auth', authRoutes);
 app.use('/chats', chatRoutes);
 app.use('/messages', messageRoutes);
-app.use('/api/universities', universityRoutes); // Add university routes
+app.use('/api/universities', universityRoutes); 
+app.use('/api/ratings', ratingRoutes);
 
 
 app.listen(port, () => {

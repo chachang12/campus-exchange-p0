@@ -15,8 +15,7 @@ const ProfileMenu = () => {
   };
 
   const handleViewFavoritedListings = () => {
-    // Navigate to favorited listings page
-    navigate('/favorited-listings');
+    navigate('/profile/favorites');
   };
 
   const handleViewActiveListings = () => {
