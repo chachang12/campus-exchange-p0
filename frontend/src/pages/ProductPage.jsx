@@ -4,15 +4,21 @@ import { messageIcon, close, share, star } from '../assets';
 import { useUser } from "../context/UserContext";
 import { ChatContext } from '../context/ChatContext';
 import { getUserById } from '../utils/fetchUtils';
+import { fetchChat } from '../utils/fetchChat';
+import ChatBox from '../components/ChatComponents/ChatBox';
+import { FaArrowUp } from "react-icons/fa6";
 
 const ProductPage = () => {
   const location = useLocation();
   const { product } = location.state;
   const navigate = useNavigate();
   const { createChat } = useContext(ChatContext);
+  const [doesChatExist, setDoesChatExist] = useState(false);
   const { user } = useUser();
   const [creator, setCreator] = useState(null);
   const [isChatExpanded, setIsChatExpanded] = useState(false);
+  const [textMessage, setTextMessage] = useState("");
+  const { currentChat, sendTextMessage, updateCurrentChat} = useContext(ChatContext);
 
   useEffect(() => {
     const fetchCreator = async () => {
@@ -27,19 +33,36 @@ const ProductPage = () => {
     fetchCreator();
   }, [product.creatorId]);
 
+  const checkExistingChat = async () => {
+    const response = await fetchChat(user._id, product.creatorId, product._id);
+
+    if (response)
+    {
+      updateCurrentChat(response);
+      setDoesChatExist(true);
+    }
+  }
+
   // Function to handle back navigation
   const handleBack = () => {
     navigate(-1); // Navigate back to the previous page
   };
 
-  const handleCreateChat = async () => {
+  const handleCreateChat = async (textMessage, user, currentChatId, setTextMessage) => {
     try {
       await createChat(user._id, product.creatorId, product._id);
+      await sendTextMessage(textMessage, user, currentChatId, setTextMessage);
       console.log('Chat created successfully');
     } catch (error) {
       console.error('Error creating chat:', error);
     }
   };
+
+  // const handleSendMessage = async () => {
+  //   try {
+  //     await 
+  //   }
+  // }
 
   return (
     <div className="p-4 text-white">
@@ -58,7 +81,7 @@ const ProductPage = () => {
       
       {/* TODO : Implement this button to start a new chat with the seller revolving around the product id.  */}
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={() => setIsChatExpanded((curr) => !curr)} className=''>
+        <button onClick={() => {setIsChatExpanded((curr) => !curr); checkExistingChat()}} className=''>
             <img src={messageIcon} alt="Message Seller" className="w-8 h-8" />
         </button>
         <button>
@@ -109,6 +132,19 @@ const ProductPage = () => {
             ${product?.price}
           </div>
         </div>
+
+        {doesChatExist? (
+          <div><ChatBox></ChatBox></div>
+        ) : (
+          <div>Start the conversation.
+          <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+            <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
+            <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, currentChat, setTextMessage)}>
+                <FaArrowUp />
+            </button>
+          </section>
+          </div>
+        )}
       </div>
     </div>
   );
