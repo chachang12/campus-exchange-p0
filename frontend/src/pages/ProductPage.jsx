@@ -8,6 +8,9 @@ import { ChatContext } from '../context/ChatContext';
 import { getUserById, addFavorite, removeFavorite } from '../utils/fetchUtils';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { fetchChat } from '../utils/fetchChat';
+import ChatBox from '../components/ChatComponents/ChatBox';
+import { FaArrowUp } from "react-icons/fa6";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -15,8 +18,12 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const { createChat } = useContext(ChatContext);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [doesChatExist, setDoesChatExist] = useState(false);
   const { user } = useUser();
   const [creator, setCreator] = useState(null);
+  const [isChatExpanded, setIsChatExpanded] = useState(false);
+  const [textMessage, setTextMessage] = useState("");
+  const { currentChat, sendTextMessage, updateCurrentChat} = useContext(ChatContext);
 
   useEffect(() => {
     const fetchCreator = async () => {
@@ -31,14 +38,25 @@ const ProductPage = () => {
     fetchCreator();
   }, [product.creatorId]);
 
+  const checkExistingChat = async () => {
+    const response = await fetchChat(user._id, product.creatorId, product._id);
+
+    if (response)
+    {
+      updateCurrentChat(response);
+      setDoesChatExist(true);
+    }
+  }
+
   // Function to handle back navigation
   const handleBack = () => {
     navigate(-1); // Navigate back to the previous page
   };
 
-  const handleCreateChat = async () => {
+  const handleCreateChat = async (textMessage, user, currentChatId, setTextMessage) => {
     try {
       await createChat(user._id, product.creatorId, product._id);
+      await sendTextMessage(textMessage, user, currentChatId, setTextMessage);
       console.log('Chat created successfully');
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -62,6 +80,12 @@ const ProductPage = () => {
     }
   };
 
+  // const handleSendMessage = async () => {
+  //   try {
+  //     await 
+  //   }
+  // }
+
   return (
     <div className="p-4 text-white">
       <div className='mb-4 p-3 bg-[#1F1F1F] w-[40px] flex items-center justify-center rounded-full outline outline-1 outline-gray-500'>
@@ -79,7 +103,7 @@ const ProductPage = () => {
       
       {/* TODO : Implement this button to start a new chat with the seller revolving around the product id.  */}
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={handleCreateChat} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
+        <button onClick={() => {setIsChatExpanded((curr) => !curr); checkExistingChat()}} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
           < FiMessageCircle size={20}/>
           <span>Message</span>
         </button>
@@ -122,6 +146,38 @@ const ProductPage = () => {
           </div>
         </div>
       )}
+
+      {/* create a chat */}
+      <div className={`fixed pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#1A1E26] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
+        <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
+            <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
+            <div className="flex items-center space-x-3">
+              <img crossOrigin="anonymous" src={creator?.profilePicture} alt="Creator" className='rounded-full w-[40px]' />
+              <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
+            </div>
+        </div>
+        <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
+          <img crossOrigin="anonymous" src={product?.image} alt={product?.name} className="w-16 h-16 mb-2" />
+          <div className='truncate'>
+            <p className='font-bold truncate'>{product?.name}</p>
+            <p className='font-normal truncate'>{product?.description}</p>
+            ${product?.price}
+          </div>
+        </div>
+
+        {doesChatExist? (
+          <div><ChatBox></ChatBox></div>
+        ) : (
+          <div>Start the conversation.
+          <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+            <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
+            <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, currentChat, setTextMessage)}>
+                <FaArrowUp />
+            </button>
+          </section>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
