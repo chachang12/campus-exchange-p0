@@ -37,7 +37,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
-          <Route path="/messages" element={user ? <MessagesPage /> : <Navigate to="/login" />} />
+          <Route path="/messages" element={<MessagesPage />} />
           <Route path="/product/:id" element={<ProductPage />} /> 
           <Route path="/chat/:chatId" element={user ? <ChatWindow /> : <Navigate to="/login" />} />
           <Route path="/profile-menu" element={user ? <ProfileMenu /> : <Navigate to="/login" />} />
