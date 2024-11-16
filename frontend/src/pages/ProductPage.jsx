@@ -131,7 +131,7 @@ const ProductPage = () => {
       {creator && (
         <div className='flex flex-row items-center'>
           {creator.profilePicture ? (
-            <img crossOrigin="anonymous" src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px]' />
+            <img crossOrigin="anonymous" src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px] h-[50px] object-cover object-center' />
           ) : (
             <IoPersonCircleOutline size={50} />
           )}

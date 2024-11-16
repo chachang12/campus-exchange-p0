@@ -142,3 +142,29 @@ export const getFavorites = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { firstName, lastName, profilePicture } = req.body;
+  
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid User ID' });
+    }
+  
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { firstName, lastName, profilePicture },
+        { new: true }
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+  
+      res.status(200).json({ success: true, data: updatedUser });
+    } catch (error) {
+      console.error(`Error updating user: ${error.message}`);
+      res.status(500).json({ success: false, message: 'Server Error' });
+    }
+  };

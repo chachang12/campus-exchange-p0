@@ -10,7 +10,8 @@ import { useUser } from './context/UserContext.jsx';
 import { ChatContextProvider } from './context/ChatContext.jsx';
 import { ProfileMenu } from './components/ProfilePageComponents';
 import { AccountSettingsPage } from './pages/ProfileMenu';
-import FavoriteProductsPage from './pages/ProfileMenu/FavoriteProductsPage'; // Import the FavoriteProducts component
+import FavoriteProductsPage from './pages/ProfileMenu/FavoriteProductsPage';
+import EditProfilePage from './pages/ProfileMenu/EditProfilePage';
 
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/account-settings" element={user ? <AccountSettingsPage /> : <Navigate to="/login" />} />
           <Route path="/profile/favorites" element={user ? <FavoriteProductsPage /> : <Navigate to="/login" />} />
+          <Route path="/edit-profile" element={user ? <EditProfilePage /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </ChatContextProvider>

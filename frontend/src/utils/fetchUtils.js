@@ -154,3 +154,51 @@ export const getFavorites = async (userId) => {
     throw error;
   }
 };
+
+export const uploadImage = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await axiosInstance.post('/api/s3/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
+export const uploadProfilePicture = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await axiosInstance.post('/api/s3/upload-profile-picture', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    throw error;
+  }
+};
+
+export const updateUser = async (updatedUser) => {
+  try {
+    const res = await axiosInstance.put(`/user/${updatedUser._id}`, updatedUser, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};

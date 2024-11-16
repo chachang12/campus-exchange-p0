@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createProduct } from "../utils/fetchUtils";
+import { createProduct, uploadImage } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
 import CategoriesScrollBar from "../components/CreatePageComponents/CategoriesScrollBar"; // Import the CategoriesScrollBar component
 
@@ -10,11 +10,13 @@ const CreatePage = () => {
     name: "",
     price: "",
     image: "",
-    condition: "", // Add condition to the state
-    categories: [], // Add categories to the state
-    creatorId: "", // Add creator to the state
-    description: "" // Add description to the state
+    condition: "", 
+    categories: [],
+    creatorId: "",
+    description: "" 
   });
+
+  const [imageFile, setImageFile] = useState(null);
 
   const handleAddProduct = async () => {
     if (!user) {
@@ -22,8 +24,18 @@ const CreatePage = () => {
       return;
     }
 
+    let imageUrl = "";
+    if (imageFile) {
+      const uploadResponse = await uploadImage(imageFile);
+      if (!uploadResponse.success) {
+        alert(`Error uploading image: ${uploadResponse.message}`);
+        return;
+      }
+      imageUrl = uploadResponse.imageUrl;
+    }
+
     // Set the creator field to the user's ID and include the university ID
-    const productWithCreator = { ...newProduct, creatorId: user._id, universityId: user.universityId };
+    const productWithCreator = { ...newProduct, creatorId: user._id, universityId: user.universityId, image: imageUrl };
     console.log("Product with creator: ", productWithCreator);
 
     const response = await createProduct(productWithCreator);
@@ -36,6 +48,7 @@ const CreatePage = () => {
       alert(`Success: ${response.message}`);
     }
     setNewProduct({ name: "", price: "", image: "", condition: "", categories: [], creatorId: "", description: "" });
+    setImageFile(null);
   };
 
   const categories = [
@@ -79,8 +92,8 @@ const CreatePage = () => {
               className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
               placeholder="Image URL"
               name="image"
-              value={newProduct.image}
-              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+              type="file"
+              onChange={(e) => setImageFile(e.target.files[0])}
             />
             <select
               className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"

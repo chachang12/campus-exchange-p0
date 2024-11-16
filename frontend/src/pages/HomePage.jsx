@@ -57,7 +57,7 @@ const HomePage = () => {
         <section className="flex flex-col border-b border-gray-500">
           <div className="flex justify-between mx-4">
             <div className="flex items-center justify-center">
-              <img crossOrigin="anonymous" src={user.profilePicture} className="w-[54px] rounded-full mr-2" />
+              <img crossOrigin="anonymous" src={user.profilePicture} className="w-[54px] h-[54px] object-cover object-center rounded-full mr-2" />
               <div>
                 <h1 className="text-white font-medium text-[20px]">
                   Welcome, {user.firstName}
