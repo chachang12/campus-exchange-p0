@@ -8,7 +8,6 @@ import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 import { Logo } from '../components/icons';
 
-
 const Profile = () => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const Profile = () => {
         </div>
         <div className='flex flex-row items-center justify-center py-4'>
           {user.profilePicture ? (
-            <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='rounded-full w-[120px] outline outline-[1px] outline-gray-500' />
+            <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='w-[120px] h-[120px] object-cover object-center rounded-full outline outline-[1px] outline-gray-500' />
           ) : (
             <IoPersonCircleOutline size={150} />
           )}
@@ -99,7 +98,7 @@ const Profile = () => {
       
 
       {/* Conditional content */}
-      <section className='mt-[250px]'>
+      <section className='mt-[270px]'>
         {selectedTab === 'listings' ? (
           <div>
             {listings.length > 0 ? (

@@ -7,13 +7,15 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import chatRoutes from './routes/chat.route.js';
 import messageRoutes from './routes/message.route.js';
-import universityRoutes from './routes/university.route.js'; // Import university routes
+import universityRoutes from './routes/university.route.js';
 import passport from 'passport';
 import './config/passport.js';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
 import User from './models/user.model.js';
-import ratingRoutes from './routes/rating.route.js'; // Import rating routes
+import ratingRoutes from './routes/rating.route.js';
+import s3Routes from './routes/s3.route.js';
+
 
 
 dotenv.config(); // Initializes the dotenv configuration
@@ -76,6 +78,7 @@ app.use('/chats', chatRoutes);
 app.use('/messages', messageRoutes);
 app.use('/api/universities', universityRoutes); 
 app.use('/api/ratings', ratingRoutes);
+app.use('/api/s3', s3Routes);
 
 
 app.listen(port, () => {
