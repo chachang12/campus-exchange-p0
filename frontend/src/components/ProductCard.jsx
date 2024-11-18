@@ -17,7 +17,7 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
       alert("Please login to delete a product.");
       return;
     }
-    const { success, message } = await deleteProduct(user.token, pid);
+    const { success, message } = await deleteProduct(pid);
     alert(success ? `Success: ${message}` : `Error: ${message}`);
   };
 
@@ -26,7 +26,7 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
       alert("Please login to update a product.");
       return;
     }
-    const { success, message } = await updateProduct(user.token, pid, updatedProduct);
+    const { success, message } = await updateProduct(pid, updatedProduct);
     onClose();
     alert(success ? `Success: ${message}` : `Error: ${message}`);
   };

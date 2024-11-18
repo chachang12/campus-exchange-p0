@@ -1,11 +1,11 @@
 import {React, useContext, useEffect, useState} from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { messageIcon, close, share, star } from '../assets';
 import { IoIosShareAlt } from "react-icons/io";
 import { FiMessageCircle } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
 import { ChatContext } from '../context/ChatContext';
-import { getUserById, addFavorite, removeFavorite } from '../utils/fetchUtils';
+import { getUserById, addFavorite, removeFavorite, getFavorites } from '../utils/fetchUtils';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { fetchChat } from '../utils/fetchChat';
@@ -35,8 +35,20 @@ const ProductPage = () => {
       }
     };
 
+    const checkIfFavorite = async () => {
+      try {
+        const response = await getFavorites(user._id);
+        const favoriteProducts = response.data || [];
+        const isFav = favoriteProducts.some(favProduct => favProduct._id === product._id);
+        setIsFavorite(isFav);
+      } catch (error) {
+        console.error('Error checking if favorite:', error);
+      }
+    };
+
     fetchCreator();
-  }, [product.creatorId]);
+    checkIfFavorite();
+  }, [product.creatorId, user._id, product._id]);
 
   const checkExistingChat = async () => {
     const response = await fetchChat(user._id, product.creatorId, product._id);
@@ -80,12 +92,6 @@ const ProductPage = () => {
     }
   };
 
-  // const handleSendMessage = async () => {
-  //   try {
-  //     await 
-  //   }
-  // }
-
   return (
     <div className="p-4 text-white">
       <div className='mb-4 p-3 bg-[#1F1F1F] w-[40px] flex items-center justify-center rounded-full outline outline-1 outline-gray-500'>
@@ -101,7 +107,6 @@ const ProductPage = () => {
         </div>       
       </div>
       
-      {/* TODO : Implement this button to start a new chat with the seller revolving around the product id.  */}
       <div className='flex flex-row justify-between mb-4'>
         <button onClick={() => {setIsChatExpanded((curr) => !curr); checkExistingChat()}} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
           < FiMessageCircle size={20}/>
@@ -117,19 +122,13 @@ const ProductPage = () => {
         </button>
       </div>
 
-      <div className='border-b border-gray-500 mb-2'>
-
-      </div>
+      <div className='border-b border-gray-500 mb-2'></div>
       
-      <p className='font-light mb-6'>
-          {product.description}
-      </p>
+      <p className='font-light mb-6'>{product.description}</p>
 
-      <h1 className='font-[600] mb-2'>
-        Seller Information
-      </h1>
+      <h1 className='font-[600] mb-2'>Seller Information</h1>
       {creator && (
-        <div className='flex flex-row items-center'>
+        <Link to={`/user/${creator._id}`} className='flex flex-row items-center'>
           {creator.profilePicture ? (
             <img crossOrigin="anonymous" src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px] h-[50px] object-cover object-center' />
           ) : (
@@ -138,16 +137,16 @@ const ProductPage = () => {
           <div className='flex-col ml-4'>
             <h2 className='text-white font-semibold text-lg'>
               {creator.firstName} {creator.lastName && creator.lastName}
-            </h2>            <div className='flex flex-row items-center'>
+            </h2>
+            <div className='flex flex-row items-center'>
               {Array.from({ length: Math.floor(creator.rating) }).map((_, index) => (
                 <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
               ))}
             </div>
           </div>
-        </div>
+        </Link>
       )}
 
-      {/* create a chat */}
       <div className={`fixed pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#1A1E26] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
         <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
             <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />

@@ -54,7 +54,7 @@ export const updateProduct = async (req, res) => {
     }
 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, product, {new:true}); // Updates the product in the database, and returns the updated product
+        const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true }); // Updates the product in the database
         if (!updatedProduct) {
             return res.status(404).json({ success:false, message: 'Product not found' }); // Sends an error response if the product is not found
         }
@@ -90,6 +90,7 @@ export const getProductsByCreatorId = async (req, res) => {
       const products = await Product.find({ creatorId });
       res.status(200).json({ success: true, data: products });
     } catch (error) {
+      console.error('Error fetching products:', error);
       res.status(500).json({ success: false, message: 'Server Error' });
     }
 };

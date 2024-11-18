@@ -4,7 +4,7 @@ import { createRating, getRatingsByUser, getRatingsByProduct } from '../controll
 const router = express.Router();
 
 router.post('/', createRating);
-router.get('/user/:userId', getRatingsByUser);
+router.get('/user/:userId', getRatingsByUser); // Add this line
 router.get('/product/:productId', getRatingsByProduct);
 
 export default router;
