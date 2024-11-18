@@ -12,6 +12,10 @@ import { ProfileMenu } from './components/ProfilePageComponents';
 import { AccountSettingsPage } from './pages/ProfileMenu';
 import FavoriteProductsPage from './pages/ProfileMenu/FavoriteProductsPage';
 import EditProfilePage from './pages/ProfileMenu/EditProfilePage';
+import OtherUserProfilePage from './pages/OtherUserProfilePage'; // Import the new component
+import ChatActions from './components/ChatComponents/ChatActions'; // Import the ChatActions component
+
+
 
 
 const App = () => {
@@ -41,11 +45,13 @@ const App = () => {
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/product/:id" element={<ProductPage />} /> 
           <Route path="/chat/:chatId" element={user ? <ChatWindow /> : <Navigate to="/login" />} />
+          <Route path="/chat/:chatId/actions" element={user ? <ChatActions /> : <Navigate to="/login" />} /> {/* Add the new route */}
           <Route path="/profile-menu" element={user ? <ProfileMenu /> : <Navigate to="/login" />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/account-settings" element={user ? <AccountSettingsPage /> : <Navigate to="/login" />} />
           <Route path="/profile/favorites" element={user ? <FavoriteProductsPage /> : <Navigate to="/login" />} />
           <Route path="/edit-profile" element={user ? <EditProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/user/:userId" element={<OtherUserProfilePage />} /> {/* Add the new route */}
         </Routes>
       </div>
     </ChatContextProvider>
