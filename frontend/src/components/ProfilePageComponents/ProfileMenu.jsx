@@ -33,6 +33,11 @@ const ProfileMenu = () => {
     navigate('/account-settings');
   };
 
+  const handleViewArchivedListings = () => {
+    // Navigate to archived listings page
+    navigate('/archived-listings');
+  };
+
   const buttonStyle = 'flex justify-between w-full py-2 px-4 text-white text-left';
   return (
     <div className="flex flex-col items-center min-h-screen px-4 mt-1 text-white bg-dark-blue pb-28">
@@ -75,6 +80,13 @@ const ProfileMenu = () => {
           onClick={handleViewActiveListings}
         >
           View Active Listings
+          <SlArrowRight size={20} />
+        </button>
+        <button
+          className={buttonStyle}
+          onClick={handleViewReviews}
+        >
+          View Archived Listings
           <SlArrowRight size={20} />
         </button>
         <button
