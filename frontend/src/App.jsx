@@ -5,15 +5,17 @@ import Navbar from './components/Navbar';
 import { WelcomePage, MessagesPage, ProductPage, SearchPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage';
-import ChatWindow from './components/ChatComponents/ChatWindow'; // Import the ChatWindow component
+import ChatWindow from './components/ChatComponents/ChatWindow';
 import { useUser } from './context/UserContext.jsx';
 import { ChatContextProvider } from './context/ChatContext.jsx';
 import { ProfileMenu } from './components/ProfilePageComponents';
 import { AccountSettingsPage } from './pages/ProfileMenu';
 import FavoriteProductsPage from './pages/ProfileMenu/FavoriteProductsPage';
 import EditProfilePage from './pages/ProfileMenu/EditProfilePage';
-import OtherUserProfilePage from './pages/OtherUserProfilePage'; // Import the new component
-import ChatActions from './components/ChatComponents/ChatActions'; // Import the ChatActions component
+import OtherUserProfilePage from './pages/OtherUserProfilePage';
+import ChatActions from './components/ChatComponents/ChatActions';
+import ReviewCreationPage from './pages/ReviewCreationPage';
+
 
 
 
@@ -32,7 +34,7 @@ const App = () => {
   return (
     <ChatContextProvider user={user}>
       {/* <div className="h-screen font-inter bg-[#1A1E26]"> */}
-      <div className="h-screen font-inter bg-[#121212] mb-40">
+      <div className="h-screen font-inter bg-[#121212]">
         {!shouldHideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={user ? <HomePage /> : <Navigate to="/welcome" />} />
@@ -45,13 +47,14 @@ const App = () => {
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/product/:id" element={<ProductPage />} /> 
           <Route path="/chat/:chatId" element={user ? <ChatWindow /> : <Navigate to="/login" />} />
-          <Route path="/chat/:chatId/actions" element={user ? <ChatActions /> : <Navigate to="/login" />} /> {/* Add the new route */}
+          <Route path="/chat/:chatId/actions" element={user ? <ChatActions /> : <Navigate to="/login" />} /> 
           <Route path="/profile-menu" element={user ? <ProfileMenu /> : <Navigate to="/login" />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/account-settings" element={user ? <AccountSettingsPage /> : <Navigate to="/login" />} />
           <Route path="/profile/favorites" element={user ? <FavoriteProductsPage /> : <Navigate to="/login" />} />
           <Route path="/edit-profile" element={user ? <EditProfilePage /> : <Navigate to="/login" />} />
-          <Route path="/user/:userId" element={<OtherUserProfilePage />} /> {/* Add the new route */}
+          <Route path="/user/:userId" element={<OtherUserProfilePage />} />
+          <Route path="/write-review" element={<ReviewCreationPage />} />
         </Routes>
       </div>
     </ChatContextProvider>

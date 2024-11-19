@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserById } from '../utils/fetchUtils';
+import { getUserById, getProductsByCreatorId, getReviewsByUser } from '../utils/fetchUtils';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 import { Logo } from '../components/icons';
-import { getProductsByCreatorId, getRatingsByUser } from '../utils/fetchUtils';
 
 const OtherUserProfilePage = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [listings, setListings] = useState([]);
-  const [ratings, setRatings] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [selectedTab, setSelectedTab] = useState('listings');
 
   useEffect(() => {
@@ -33,25 +32,25 @@ const OtherUserProfilePage = () => {
       }
     };
 
-    const fetchRatings = async () => {
+    const fetchReviews = async () => {
       try {
-        const response = await getRatingsByUser(userId);
-        setRatings(response.data || []);
+        const response = await getReviewsByUser(userId);
+        setReviews(response || []);
       } catch (error) {
-        console.error('Error fetching ratings:', error);
+        console.error('Error fetching reviews:', error);
       }
     };
 
     fetchUser();
     fetchListings();
-    fetchRatings();
+    fetchReviews();
   }, [userId]);
 
   if (!user) {
     return <div>Loading...</div>;
   }
 
-  const flooredRating = Math.floor(user.rating);
+  const flooredReview = Math.floor(user.review);
 
   return (
     <div className='mx-4 text-white flex flex-col pb-40 pt-4'>
@@ -79,14 +78,13 @@ const OtherUserProfilePage = () => {
               <h4 className='font-light ml-1 opacity-60'> listings</h4>
             </div>
             <div className='flex flex-row items-center'>
-              {Array.from({ length: flooredRating }).map((_, index) => (
+              {Array.from({ length: flooredReview }).map((_, index) => (
                 <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
               ))}
             </div>
           </div>
         </div>
 
-        {/* Tab bar */}
         <div className='flex justify-center space-x-4 mb-4'>
           <button
             className={`py-2 px-4 rounded-3xl ${selectedTab === 'listings' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
@@ -95,10 +93,10 @@ const OtherUserProfilePage = () => {
             Listings
           </button>
           <button
-            className={`py-2 px-4 rounded-3xl ${selectedTab === 'ratings' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
-            onClick={() => setSelectedTab('ratings')}
+            className={`py-2 px-4 rounded-3xl ${selectedTab === 'reviews' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
+            onClick={() => setSelectedTab('reviews')}
           >
-            Ratings
+            Reviews
           </button> 
         </div>
       </section>
@@ -119,14 +117,14 @@ const OtherUserProfilePage = () => {
           </div>
         ) : (
           <div>
-            {ratings.length > 0 ? (
+            {reviews.length > 0 ? (
               <div className='space-y-4'>
-                {ratings.map((rating) => (
-                  <div key={rating.id} className='bg-white bg-opacity-5 p-4 rounded-xl'>
-                    <p className='font-semibold'>{rating.reviewer}</p>
-                    <p>{rating.comment}</p>
+                {reviews.map((review) => (
+                  <div key={review._id} className='bg-white bg-opacity-5 p-4 rounded-xl'>
+                    <p className='font-semibold'>{review.reviewer.firstName} {review.reviewer?.lastName}</p>
+                    <p className='mb-1'>{review.reviewBody}</p>
                     <div className='flex'>
-                      {Array.from({ length: rating.rating }).map((_, index) => (
+                      {Array.from({ length: review.starCount }).map((_, index) => (
                         <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
                       ))}
                     </div>
@@ -134,7 +132,7 @@ const OtherUserProfilePage = () => {
                 ))}
               </div>
             ) : (
-              <p>No ratings found.</p>
+              <p>No reviews found.</p>
             )}
           </div>
         )}

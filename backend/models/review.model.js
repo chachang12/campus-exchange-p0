@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ratingSchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
     starCount: {
         type: Number,
         required: true,
@@ -34,6 +34,6 @@ const ratingSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Rating = mongoose.model('Rating', ratingSchema);
+const Review = mongoose.model('Review', reviewSchema);
 
-export default Rating;
+export default Review;

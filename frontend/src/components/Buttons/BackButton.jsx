@@ -7,7 +7,7 @@ const BackButton = () => {
 
   return (
     <button onClick={() => navigate(-1)} className="w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500">
-      <SlArrowLeft size={20} />
+      <SlArrowLeft size={20} color={'white'}/>
     </button>
   );
 };

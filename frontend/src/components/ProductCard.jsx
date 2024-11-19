@@ -5,12 +5,14 @@ import { FaEdit, FaTrash, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useUser } from "../context/UserContext";
 import { deleteProduct, updateProduct } from "../utils/fetchUtils";
 import { deleteIcon, edit } from "../assets";
+import EditListingPopup from "../components/EditListingPopup";
 
 const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
   const { user } = useUser();
   const [updatedProduct, setUpdatedProduct] = useState(product);
   const [isFavorite, setIsFavorite] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
   const handleDeleteProduct = async (pid) => {
     if (!user) {
@@ -40,6 +42,14 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
     // Add logic to add/remove product from user's favorites
   };
 
+  const handleEditProduct = () => {
+    setIsEditPopupOpen(true);
+  };
+
+  const handleUpdateProductInList = (updatedProduct) => {
+    setUpdatedProduct(updatedProduct);
+  };
+
   return (
     <div className="flex flex-row shadow-lg rounded-xl overflow-hidden text-white w-full bg-[#1F1F1F]">
       <img crossOrigin="anonymous" src={product.image} alt={product.name} className="w-[150px] h-[150px] object-cover" />
@@ -59,7 +69,7 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
           </p>
           {showButtons && (
             <div className="flex space-x-2 mt-2">
-              <button onClick={onOpen} className="text-blue-500">
+              <button onClick={handleEditProduct} className="text-blue-500">
                 <img src={edit} className="w-4"/>
               </button>
               <button onClick={() => handleDeleteProduct(product._id)} className="text-red-500">
@@ -72,6 +82,13 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
           )}
         </div>
       </section>
+
+      <EditListingPopup
+        isOpen={isEditPopupOpen}
+        onClose={() => setIsEditPopupOpen(false)}
+        product={updatedProduct}
+        onUpdate={handleUpdateProductInList}
+      />
     </div>
   );
 };
