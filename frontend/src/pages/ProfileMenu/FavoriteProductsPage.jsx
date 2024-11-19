@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getFavorites } from '../../utils/fetchUtils';
 import ProductCard from '../../components/ProductCard';
 import { useUser } from '../../context/UserContext';
+import BackButton from '../../components/Buttons/BackButton';
+import { Link } from 'react-router-dom';
 
 const FavoriteProductsPage = () => {
   const { user } = useUser();
@@ -36,11 +38,18 @@ const FavoriteProductsPage = () => {
 
   return (
     <div className="p-4 text-white">
-      <h1 className="text-2xl font-bold mb-4">Favorite Products</h1>
+      <div className='flex justify-between items-center mb-4'>
+        <BackButton />
+        <h1 className="text-white text-xl font-semibold">Favorite Products</h1>
+        <div className='w-10 h-10'></div>
+      </div>
+      
       <div className="space-y-4">
         {favorites.length > 0 ? (
           favorites.map(product => (
-            <ProductCard key={product._id} product={product} />
+            <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
+              <ProductCard product={product} />
+            </Link>
           ))
         ) : (
           <p>No favorite products found.</p>

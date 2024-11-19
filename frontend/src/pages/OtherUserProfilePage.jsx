@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
-import { IoMenu, IoPersonCircleOutline } from 'react-icons/io5';
-import { IoIosMenu } from "react-icons/io";
-import { getProductsByCreatorId, updateProduct, getRatingsByUser } from '../utils/fetchUtils';
+import { useParams } from 'react-router-dom';
+import { getUserById } from '../utils/fetchUtils';
+import { IoPersonCircleOutline } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 import { Logo } from '../components/icons';
+import { getProductsByCreatorId, getRatingsByUser } from '../utils/fetchUtils';
 
-const Profile = () => {
-  const { user, logout } = useUser();
-  const navigate = useNavigate();
+const OtherUserProfilePage = () => {
+  const { userId } = useParams();
+  const [user, setUser] = useState(null);
   const [listings, setListings] = useState([]);
-  const [ratings, setRatings] = useState([
-    // { id: 1, reviewer: 'John Doe', comment: 'Great product!', rating: 5 },
-    // { id: 2, reviewer: 'Jane Smith', comment: 'Good value for money.', rating: 4 },
-  ]);
+  const [ratings, setRatings] = useState([]);
   const [selectedTab, setSelectedTab] = useState('listings');
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await getUserById(userId);
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
     const fetchListings = async () => {
       try {
-        const response = await getProductsByCreatorId(user._id);
-        console.log('Listings:', response.data);
+        const response = await getProductsByCreatorId(userId);
         setListings(response.data || []);
       } catch (error) {
         console.error('Error fetching listings:', error);
@@ -31,26 +35,21 @@ const Profile = () => {
 
     const fetchRatings = async () => {
       try {
-        const response = await getRatingsByUser(user._id);
+        const response = await getRatingsByUser(userId);
         setRatings(response.data || []);
       } catch (error) {
         console.error('Error fetching ratings:', error);
       }
     };
-    
+
+    fetchUser();
     fetchListings();
     fetchRatings();
-  }, [user]);
+  }, [userId]);
 
-  const handleMarkAsSold = async (productId) => {
-    try {
-      const updatedProduct = { isSold: true };
-      await updateProduct(productId, updatedProduct);
-      setListings(listings.filter((product) => product._id !== productId));
-    } catch (error) {
-      console.error('Error marking product as sold:', error);
-    }
-  };
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   const flooredRating = Math.floor(user.rating);
 
@@ -65,9 +64,7 @@ const Profile = () => {
           <h1 className='text-center justify-center text-xl font-semibold mx-auto'>
               Profile
           </h1>
-          <button className='w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500' onClick={() => navigate('/profile-menu')}>
-            <IoIosMenu size={30} />
-          </button>
+          <div className='w-10 h-10'></div>
         </div>
         <div className='flex flex-row items-center justify-center py-4'>
           {user.profilePicture ? (
@@ -113,7 +110,7 @@ const Profile = () => {
             {listings.length > 0 ? (
               <div className='space-y-4'>
                 {listings.map((product) => (
-                  <ProductCard key={product._id} product={product} showButtons={true} onMarkAsSold={handleMarkAsSold} />
+                  <ProductCard key={product._id} product={product} />
                 ))}
               </div>
             ) : (
@@ -147,4 +144,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default OtherUserProfilePage;

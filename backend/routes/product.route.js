@@ -15,7 +15,7 @@ router.put('/:id', updateProduct); // Handles the PUT request to update a produc
 router.delete('/:id', deleteProduct);
 
 // Route to get all the listings of a specific creator
-router.get('/creator/:creatorId', getProductsByCreatorId);
+router.get('/creator/:creatorId', getProductsByCreatorId); // Add this line
 
 // Route to get a product by ID
 router.get('/:id', getProductById);
