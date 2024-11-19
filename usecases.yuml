@@ -1,13 +1,41 @@
 // {type:usecase}
 // {direction:leftToRight}
-(note: figure 1.2{bg:beige})
-[User]-(Login)
-[User]-(Buy/sell items/services)
-(Buy/sell items/services)>(Preview items/services)
-[User]-(Browse items/services)
-[User]-(Message other users)
-[User]-(Write reviews)
-[User]-(See profiles)
-(See profiles)>(view number of orders completed)
-(See profiles)>(view others/own reviews)
-(See profiles)>(view active orders)
+// Users
+[Unauthenticated User]
+[Authenticated User]
+[Admin]
+
+// Authenticated User roles
+[Authenticated User]^[Buyer]
+[Authenticated User]^[Seller]
+
+// Use cases for Unauthenticated User
+[Unauthenticated User]-(Register)
+[Unauthenticated User]-(Login)
+
+// Use cases for Authenticated User
+[Authenticated User]-(Logout)
+[Authenticated User]-(Update Profile)
+[Authenticated User]-(View Messages)
+[Authenticated User]-(Send Messages)
+[Authenticated User]-(View Notifications)
+
+// Use cases for Buyer
+[Buyer]-(Search Products)
+[Buyer]-(View Product)
+[Buyer]-(Make Offer)
+[Buyer]-(Favorite Products)
+[Buyer]-(View Favorites)
+
+// Use cases for Seller
+[Seller]-(List Product)
+[Seller]-(Manage Listings)
+[Seller]-(View Sales)
+[Seller]-(Mark Product as Sold)
+
+
+// Use cases for Admin
+[Admin]-(Manage Users)
+[Admin]-(Manage Products)
+[Admin]-(View Reports)
+[Admin]-(Manage Listings)
