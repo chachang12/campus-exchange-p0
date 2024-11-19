@@ -13,7 +13,7 @@ import './config/passport.js';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
 import User from './models/user.model.js';
-import ratingRoutes from './routes/rating.route.js';
+import reviewRoutes from './routes/review.route.js';
 import s3Routes from './routes/s3.route.js';
 
 
@@ -77,7 +77,7 @@ app.use('/auth', authRoutes);
 app.use('/chats', chatRoutes);
 app.use('/messages', messageRoutes);
 app.use('/api/universities', universityRoutes); 
-app.use('/api/ratings', ratingRoutes);
+app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
 
 

@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     profilePicture: {
         type: String
     },
-    rating: {
+    review: {
         type: Number,
         default: 0
     },

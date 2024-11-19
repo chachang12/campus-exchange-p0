@@ -1,4 +1,4 @@
-import {React, useContext, useEffect, useState} from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { messageIcon, close, share, star } from '../assets';
 import { IoIosShareAlt } from "react-icons/io";
@@ -14,55 +14,57 @@ import { FaArrowUp } from "react-icons/fa6";
 
 const ProductPage = () => {
   const location = useLocation();
-  const { product } = location.state;
   const navigate = useNavigate();
   const { createChat } = useContext(ChatContext);
+  const { product } = location.state || {}; // Add a fallback to avoid destructuring null
   const [isFavorite, setIsFavorite] = useState(false);
   const [doesChatExist, setDoesChatExist] = useState(false);
   const { user } = useUser();
   const [creator, setCreator] = useState(null);
   const [isChatExpanded, setIsChatExpanded] = useState(false);
   const [textMessage, setTextMessage] = useState("");
-  const { currentChat, sendTextMessage, updateCurrentChat} = useContext(ChatContext);
+  const { currentChat, sendTextMessage, updateCurrentChat } = useContext(ChatContext);
 
   useEffect(() => {
-    const fetchCreator = async () => {
-      try {
-        const response = await getUserById(product.creatorId);
-        setCreator(response.data);
-      } catch (error) {
-        console.error('Error fetching creator:', error);
-      }
-    };
+    if (product) {
+      const fetchCreator = async () => {
+        try {
+          const response = await getUserById(product.creatorId);
+          setCreator(response.data);
+        } catch (error) {
+          console.error('Error fetching creator:', error);
+        }
+      };
 
-    const checkIfFavorite = async () => {
-      try {
-        const response = await getFavorites(user._id);
-        const favoriteProducts = response.data || [];
-        const isFav = favoriteProducts.some(favProduct => favProduct._id === product._id);
-        setIsFavorite(isFav);
-      } catch (error) {
-        console.error('Error checking if favorite:', error);
-      }
-    };
+      const checkIfFavorite = async () => {
+        try {
+          const response = await getFavorites(user._id);
+          const favoriteProducts = response.data || [];
+          const isFav = favoriteProducts.some(favProduct => favProduct._id === product._id);
+          setIsFavorite(isFav);
+        } catch (error) {
+          console.error('Error checking if favorite:', error);
+        }
+      };
 
-    fetchCreator();
-    checkIfFavorite();
-  }, [product.creatorId, user._id, product._id]);
+      fetchCreator();
+      checkIfFavorite();
+    }
+  }, [product, user._id]);
 
   const checkExistingChat = async () => {
-    const response = await fetchChat(user._id, product.creatorId, product._id);
+    if (product) {
+      const response = await fetchChat(user._id, product.creatorId, product._id);
 
-    if (response)
-    {
-      updateCurrentChat(response);
-      setDoesChatExist(true);
+      if (response) {
+        updateCurrentChat(response);
+        setDoesChatExist(true);
+      }
     }
-  }
+  };
 
-  // Function to handle back navigation
   const handleBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate(-1);
   };
 
   const handleCreateChat = async (textMessage, user, currentChatId, setTextMessage) => {
@@ -92,6 +94,10 @@ const ProductPage = () => {
     }
   };
 
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
   return (
     <div className="p-4 text-white">
       <div className='mb-4 p-3 bg-[#1F1F1F] w-[40px] flex items-center justify-center rounded-full outline outline-1 outline-gray-500'>
@@ -102,18 +108,18 @@ const ProductPage = () => {
         <h1 className="text-3xl font-bold">{product.name}</h1>
         <p className="text-lg font-semibold">${product.price}</p>
         <div className='flex flex-row justify-between mb-2'>
-            {product.condition && <p className="text-lg font-light text-gray-400">{capitalizeFirstLetter(product.condition)}</p>}
-            {product.size && <p className="text-lg">Size: {product.size}</p>}
-        </div>       
+          {product.condition && <p className="text-lg font-light text-gray-400">{capitalizeFirstLetter(product.condition)}</p>}
+          {product.size && <p className="text-lg">Size: {product.size}</p>}
+        </div>
       </div>
-      
+
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={() => {setIsChatExpanded((curr) => !curr); checkExistingChat()}} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
-          < FiMessageCircle size={20}/>
+        <button onClick={() => { setIsChatExpanded((curr) => !curr); checkExistingChat() }} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
+          <FiMessageCircle size={20} />
           <span>Message</span>
         </button>
         <button className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
-          < IoIosShareAlt size={20}/>
+          <IoIosShareAlt size={20} />
           <span>Share</span>
         </button>
         <button onClick={toggleFavorite} className="flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1">
@@ -123,7 +129,7 @@ const ProductPage = () => {
       </div>
 
       <div className='border-b border-gray-500 mb-2'></div>
-      
+
       <p className='font-light mb-6'>{product.description}</p>
 
       <h1 className='font-[600] mb-2'>Seller Information</h1>
@@ -139,7 +145,7 @@ const ProductPage = () => {
               {creator.firstName} {creator.lastName && creator.lastName}
             </h2>
             <div className='flex flex-row items-center'>
-              {Array.from({ length: Math.floor(creator.rating) }).map((_, index) => (
+              {Array.from({ length: Math.floor(creator.review) }).map((_, index) => (
                 <img key={index} src={star} alt="star" className='w-4 h-4 mr-1' />
               ))}
             </div>
@@ -149,11 +155,11 @@ const ProductPage = () => {
 
       <div className={`fixed pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#1A1E26] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
         <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
-            <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
-            <div className="flex items-center space-x-3">
-              <img crossOrigin="anonymous" src={creator?.profilePicture} alt="Creator" className='rounded-full w-[40px]' />
-              <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
-            </div>
+          <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
+          <div className="flex items-center space-x-3">
+            <img crossOrigin="anonymous" src={creator?.profilePicture} alt="Creator" className='rounded-full w-[40px]' />
+            <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
+          </div>
         </div>
         <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
           <img crossOrigin="anonymous" src={product?.image} alt={product?.name} className="w-16 h-16 mb-2" />
@@ -164,16 +170,16 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {doesChatExist? (
+        {doesChatExist ? (
           <div><ChatBox></ChatBox></div>
         ) : (
           <div>Start the conversation.
-          <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
-            <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
-            <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, currentChat, setTextMessage)}>
+            <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+              <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
+              <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, currentChat, setTextMessage)}>
                 <FaArrowUp />
-            </button>
-          </section>
+              </button>
+            </section>
           </div>
         )}
       </div>

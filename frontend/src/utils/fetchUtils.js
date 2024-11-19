@@ -114,12 +114,32 @@ export const fetchUniversities = async () => {
   }
 };
 
-export const getRatingsByUser = async (userId) => {
+export const createReview = async (reviewData) => {
   try {
-    const res = await axiosInstance.get(`/api/ratings/user/${userId}`);
+    const res = await axiosInstance.post('/api/reviews', reviewData);
+    return res.data;
+  } catch (error) {
+    console.error('Error creating review:', error);
+    throw error;
+  }
+};
+
+export const getReviewsByUser = async (userId) => {
+  try {
+    const res = await axiosInstance.get(`/api/reviews/user/${userId}`);
     return res.data.data;
   } catch (error) {
-    console.error('Error fetching ratings:', error);
+    console.error('Error fetching reviews by user:', error);
+    throw error;
+  }
+};
+
+export const getReviewsByProduct = async (productId) => {
+  try {
+    const res = await axiosInstance.get(`/api/reviews/product/${productId}`);
+    return res.data.data;
+  } catch (error) {
+    console.error('Error fetching reviews by product:', error);
     throw error;
   }
 };

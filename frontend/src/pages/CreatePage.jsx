@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { createProduct, uploadImage } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
 import CategoriesScrollBar from "../components/CreatePageComponents/CategoriesScrollBar"; // Import the CategoriesScrollBar component
+import { IoMdPhotos } from "react-icons/io";
+
 
 const CreatePage = () => {
   const { user } = useUser();
@@ -88,13 +90,22 @@ const CreatePage = () => {
               value={newProduct.price}
               onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
             />
-            <input
-              className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
-              placeholder="Image URL"
-              name="image"
-              type="file"
-              onChange={(e) => setImageFile(e.target.files[0])}
-            />
+            <div className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md">
+              <input
+                id="fileInput"
+                className=""
+                placeholder="Image URL"
+                name="image"
+                type="file"
+                onChange={(e) => setImageFile(e.target.files[0])}
+                style={{ display: 'none' }} 
+              />
+              <label htmlFor="fileInput" className="flex items-center cursor-pointer">
+                <IoMdPhotos size={24} />
+                <span className="ml-2">Choose File</span>
+              </label>
+            </div>
+            
             <select
               className="w-full p-4 border bg-inherit border-white border-opacity-50 rounded-md"
               name="condition"
