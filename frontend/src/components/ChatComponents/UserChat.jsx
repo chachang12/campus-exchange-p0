@@ -3,28 +3,28 @@ import moment from "moment";
 import "../../index.css";
 import { ChatContext } from "../../context/ChatContext";
 import { useContext } from "react";
+import { unreadNotificationsFunc } from "../../utils/unreadNotifications";
+import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage";
 
 const UserChat = ({ chat, user }) => {
-    const { recipientUser, mostRecentMessage, currentProduct } = useFetchRecipientUser(chat, user);
-
-    // let mostRecentMessageData;
-    // try {
-    //     mostRecentMessageData = mostRecentMessage ? mostRecentMessage.data : null;
-    // } catch (error) {
-    //     console.error('Error fetching most recent message:', error);
-    // }
+    const { recipientUser, currentProduct } = useFetchRecipientUser(chat, user);
+    const { notifications, markThisUserNotificationsAsRead } = useContext(ChatContext);
+    const unreadNotifications = unreadNotificationsFunc(notifications);
+    const thisUserNotifications = unreadNotifications?.filter(n => n.senderId === recipientUser?._id);
+    const {latestMessage} = useFetchLatestMessage(chat);
 
     return (
-        <section role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
-            <div className="flex">
+        <section onClick= {() => {if(thisUserNotifications?.length !== 0) {markThisUserNotificationsAsRead(thisUserNotifications, notifications)}}}role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
+            <div className="relative flex">
                 <img src={currentProduct?.image} crossOrigin="anonymous" className="w-[50px] h-[50px] aspect-square mr-4 object-cover" />
-                <div className="flex-1">
-                    <div className="text-white font-semibold"><span className="font-normal">From</span> {recipientUser?.firstName}</div>
-                    <div className="text-gray-300 text-sm truncate">{mostRecentMessage?.text}</div>
+                <div className="flex-1 truncate">
+                    <div className="text-white font-semibold"><span className="font-normal"></span> {recipientUser?.firstName}</div>
+                    <div className="text-gray-300 text-sm truncate">{latestMessage?.text}</div>
                 </div>
-                <div className="text-right">
-                    <div className="text-gray-400 text-xs">{moment(mostRecentMessage?.createdAt).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}</div>
+                <div className="items-center">
+                    <div className="text-gray-400 text-xs">{moment(latestMessage?.createdAt).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}</div>
                 </div>
+                {thisUserNotifications?.length > 0 ? (<div className="absolute bottom-0 right-0 w-5 rounded-full bg-blue-500 text-sm text-white text-center">{thisUserNotifications.length}</div>) : (null)}
             </div>
         </section>
     );
