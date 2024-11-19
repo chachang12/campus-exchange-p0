@@ -19,17 +19,16 @@ io.on("connection", (socket) => {
 //add message
 
     socket.on("sendMessage", (message) => {
-        try
-        {
-            const user = onlineUsers.find(user => user.userId === message.recipientId);
-        }
-        catch(error)
-        {
-            console.log("No active users");
-        }
+        const user = onlineUsers.find(user => user.userId === message.recipientId);
 
         if(user) {
             io.to(user.socketId).emit("getMessage", message);
+            io.to(user.socketId).emit("getNotification", {
+                senderId: message.senderId,
+                isRead: false,
+                date: new Date(),
+                text: message.text,
+            });
         }
     });
 

@@ -65,10 +65,17 @@ const ProductPage = () => {
     navigate(-1); // Navigate back to the previous page
   };
 
-  const handleCreateChat = async (textMessage, user, currentChatId, setTextMessage) => {
+  const handleCreateChat = async (textMessage, user, setTextMessage) => {
     try {
       await createChat(user._id, product.creatorId, product._id);
-      await sendTextMessage(textMessage, user, currentChatId, setTextMessage);
+      const chat = await fetchChat(user._id, product.creatorId, product._id);
+      console.log(chat);
+      if (chat)
+      {
+        updateCurrentChat(chat);
+        await sendTextMessage(textMessage, user, chat._id, setTextMessage);
+        setDoesChatExist(true);
+      }
       console.log('Chat created successfully');
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -148,32 +155,17 @@ const ProductPage = () => {
       )}
 
       <div className={`fixed pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#1A1E26] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
-        <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
-            <img src={close} alt="Close" className="fixed left-4 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
-            <div className="flex items-center space-x-3">
-              <img crossOrigin="anonymous" src={creator?.profilePicture} alt="Creator" className='rounded-full w-[40px]' />
-              <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
-            </div>
-        </div>
-        <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
-          <img crossOrigin="anonymous" src={product?.image} alt={product?.name} className="w-16 h-16 mb-2" />
-          <div className='truncate'>
-            <p className='font-bold truncate'>{product?.name}</p>
-            <p className='font-normal truncate'>{product?.description}</p>
-            ${product?.price}
-          </div>
-        </div>
-
         {doesChatExist? (
-          <div><ChatBox></ChatBox></div>
+          <div><img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} /><ChatBox></ChatBox></div>
         ) : (
-          <div>Start the conversation.
-          <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
-            <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
-            <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, currentChat, setTextMessage)}>
-                <FaArrowUp />
-            </button>
-          </section>
+          <div>
+            <p className="flex items-center justify-center text-white p-10">Start the conversation.</p>
+            <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+              <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
+              <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => handleCreateChat(textMessage, user, setTextMessage)}>
+                  <FaArrowUp />
+              </button>
+            </section>
           </div>
         )}
       </div>

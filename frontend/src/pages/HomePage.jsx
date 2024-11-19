@@ -6,8 +6,9 @@ import { useUser } from "../context/UserContext";
 import { Logo } from "../components/icons";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
 import { Link } from "react-router-dom";
-import { IoNotifications } from "react-icons/io5";
 import './HomePage.css'
+import { useNavigate } from "react-router-dom";
+import { IoNotifications } from "react-icons/io5";
 
 
 const HomePage = () => {
@@ -15,6 +16,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const navigate = useNavigate();
 
   const categories = [
     "Clothing",
@@ -70,8 +72,8 @@ const HomePage = () => {
                 </h2>
               </div>
             </div>
-            <div className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
-              <IoNotifications color='#ffffff' size={20}/>
+            <div onClick={() => navigate('/notifications')} className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
+            <IoNotifications color='#ffffff' size={20}/>
             </div>
           </div>
           <CategoriesScrollBar

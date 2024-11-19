@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useLocation, matchPath } from 'react-router-do
 import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
 import Navbar from './components/Navbar';
-import { WelcomePage, MessagesPage, ProductPage, SearchPage } from './pages';
+import { WelcomePage, MessagesPage, ProductPage, SearchPage, NotificationsPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage';
 import ChatWindow from './components/ChatComponents/ChatWindow'; // Import the ChatWindow component
@@ -52,6 +52,7 @@ const App = () => {
           <Route path="/profile/favorites" element={user ? <FavoriteProductsPage /> : <Navigate to="/login" />} />
           <Route path="/edit-profile" element={user ? <EditProfilePage /> : <Navigate to="/login" />} />
           <Route path="/user/:userId" element={<OtherUserProfilePage />} /> {/* Add the new route */}
+          <Route path="/notifications" element={user ? <NotificationsPage/> : <Navigate to="/login" />}/>
         </Routes>
       </div>
     </ChatContextProvider>
