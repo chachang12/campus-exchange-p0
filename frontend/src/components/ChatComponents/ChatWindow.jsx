@@ -4,7 +4,6 @@ import { useUser } from "../../context/UserContext";
 import { ChatContext } from "../../context/ChatContext";
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
 import moment from "moment";
-import { SlArrowLeft } from "react-icons/sl";
 import { FaArrowUp } from "react-icons/fa6";
 import ChatHeader from "./ChatHeader";
 
