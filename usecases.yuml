@@ -1,5 +1,6 @@
 // {type:usecase}
 // {direction:leftToRight}
+// {generate:true}
 // Users
 [Unauthenticated User]
 [Authenticated User]

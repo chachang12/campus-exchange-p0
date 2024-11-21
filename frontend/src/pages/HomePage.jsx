@@ -95,7 +95,10 @@ const HomePage = () => {
           <h1 className="text-gray-500 font-light mb-2">
             You've reached the end of the page.
           </h1>
-          <Logo fill={'white'} width={40} height={40}/>
+          <div className='mb-[100px]'>
+            <Logo fill={'white'} width={40} height={40} />
+          </div>
+
         </span>
       </div>
     </div>
