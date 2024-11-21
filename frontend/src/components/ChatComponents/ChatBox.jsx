@@ -26,8 +26,14 @@ const ChatBox = () => {
     //     </p>
     // );
 
+    useEffect(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, [messages]);
+
     return (
-        <section className="flex flex-col h-screen">
+        <section className="flex flex-col h-screen pb-10">
             <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
                 <div className="flex items-center space-x-3">
                 <img crossOrigin="anonymous" src={recipientUser?.profilePicture} alt="recipientUser" className='rounded-full w-[40px] h-[40px] object-cover object-center' />
@@ -42,7 +48,7 @@ const ChatBox = () => {
                 ${currentProduct?.price}
             </div>
             </div>
-            <section className="flex-1 p-4 max-h-[75%] overflow-y-auto">
+            <section className="flex-1 p-4 overflow-y-auto">
                 {messages && messages.map((message, index) => (
                     <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "text-right" : "text-left"}`}>
                         <div className={`inline-block px-4 py-2 rounded-full ${message?.senderId === user?._id ? "bg-blue-500 text-white" : "bg-gray-700 text-white"}`}>
@@ -53,6 +59,7 @@ const ChatBox = () => {
                         </div>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </section>
             <section className="p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
                 <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
