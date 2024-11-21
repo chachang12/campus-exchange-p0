@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import Browsebar from "../components/Browsebar";
 import { fetchProducts } from "../utils/fetchUtils";
@@ -6,8 +6,11 @@ import { useUser } from "../context/UserContext";
 import { Logo } from "../components/icons";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
 import { Link } from "react-router-dom";
-import { IoNotifications } from "react-icons/io5";
 import './HomePage.css'
+import { useNavigate } from "react-router-dom";
+import { IoNotifications } from "react-icons/io5";
+import { ChatContext } from "../context/ChatContext";
+import { unreadNotificationsFunc } from "../utils/unreadNotifications";
 
 
 const HomePage = () => {
@@ -15,6 +18,9 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const { notifications } = useContext(ChatContext)
+  const unreadNotifications = unreadNotificationsFunc(notifications);
+  const navigate = useNavigate();
 
   const categories = [
     "Clothing",
@@ -70,8 +76,9 @@ const HomePage = () => {
                 </h2>
               </div>
             </div>
-            <div className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
-              <IoNotifications color='#ffffff' size={20}/>
+            <div onClick={() => navigate('/notifications')} className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
+            <IoNotifications color='#ffffff' size={20}></IoNotifications>
+            {unreadNotifications.length > 0 ? <div className="absolute top-4 right-4 w-5 rounded-full bg-blue-500 text-sm text-white text-center">{unreadNotifications.length}</div> : (null)}
             </div>
           </div>
           <CategoriesScrollBar

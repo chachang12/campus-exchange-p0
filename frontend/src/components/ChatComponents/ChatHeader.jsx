@@ -7,10 +7,10 @@ import BackButton from "../Buttons/BackButton";
 
 const ChatHeader = () => {
   const { user } = useUser();
-  const { currentChat, product } = useContext(ChatContext);
+  const { currentChat, product, updateCurrentChat } = useContext(ChatContext);
   const { recipientUser } = useFetchRecipientUser(currentChat, user);
   const navigate = useNavigate();
-
+  
   let productData;
   try {
     productData = product ? product.data : null;
@@ -25,7 +25,7 @@ const ChatHeader = () => {
       </div>
       
         <div className='flex' onClick={() => navigate(`/chat/${currentChat._id}/actions`)}>
-          <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
+          <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-cover object-center" />
             <div>
               <strong className="text-white text-lg">{recipientUser?.firstName}</strong>
               {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}

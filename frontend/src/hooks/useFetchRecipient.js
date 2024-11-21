@@ -34,22 +34,6 @@ export const useFetchRecipientUser = (chat, user) => {
     }, [recipientId]);
 
     useEffect(() => {
-        const getMostRecentMessage = async () => {
-            if (!chatId) return null;
-
-            const response = await axiosInstance.get(`/messages/${chatId}/recent`);
-
-            if (response.error) {
-                return setError(response.error);
-            }
-
-            setMostRecentMessage(response.data.data);
-        };
-
-        getMostRecentMessage();
-    }, [chatId]);
-
-    useEffect(() => {
         const getProduct = async () => {
             if (!productId) return null;
 
