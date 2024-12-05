@@ -9,7 +9,7 @@ import moment from "moment";
 const NotificationsPage = () => {
     const {user} = useUser();
     const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead } = useContext(ChatContext);
-    const unreadNotifications = unreadNotificationsFunc(notifications);
+    const unreadNotifications = unreadNotificationsFunc(notifications, user);
 
     const modifiedNotifications = notifications.map((n) => {
         const sender = allUsers.find((user) => user._id === n.senderId)

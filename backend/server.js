@@ -29,7 +29,7 @@ connectDB(); // Initializes the connection to the database
 
 app.use(cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
     credentials: true // mandoatory for google auths
 }));
