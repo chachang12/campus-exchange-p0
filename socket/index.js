@@ -28,6 +28,7 @@ io.on("connection", (socket) => {
                 isRead: false,
                 date: new Date(),
                 text: message.text,
+                chatId: message.chatId
             });
         }
     });

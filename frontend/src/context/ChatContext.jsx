@@ -134,10 +134,8 @@ export const ChatContextProvider = ({ children, user }) => {
       const response = await axiosInstance.get(`/chats/${user?._id}`);
       const unreadMessagesPromises = response.data.map(chat => fetchUnreadMessages(chat._id));
       const allUnreadMessages = await Promise.all(unreadMessagesPromises);
-      console.log(allUnreadMessages)
 
       const flattenedUnreadMessages = allUnreadMessages.flat();
-      console.log(flattenedUnreadMessages)
       setNotifications(flattenedUnreadMessages);
     };
   
@@ -233,7 +231,7 @@ export const ChatContextProvider = ({ children, user }) => {
       socket.off("getMessage");
       socket.off("getNotification");
     };
-  }, [socket, currentChat]);
+  }, [socket]);
 
   const updateCurrentChat = useCallback((chat) => {
     setCurrentChat(chat);
