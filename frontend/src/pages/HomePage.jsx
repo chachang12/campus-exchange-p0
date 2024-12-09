@@ -19,6 +19,7 @@ const HomePage = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const { notifications } = useContext(ChatContext)
+
   const unreadNotifications = unreadNotificationsFunc(notifications, user);
   const navigate = useNavigate();
 

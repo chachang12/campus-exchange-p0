@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from "react";
+
 import { getProductById } from "../utils/fetchUtils";
 import { io } from "socket.io-client";
 import axios from 'axios';
@@ -8,6 +9,7 @@ const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
   withCredentials: true, // Ensure cookies are sent with requests
 });
+
 
 
 export const ChatContextProvider = ({ children, user }) => {
@@ -29,7 +31,7 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     try {
-      const newSocket = io("http://localhost:8082", {
+      const newSocket = io("http://localhost:8080", {
         reconnectionAttempts: 1,
         timeout: 10000,
       });
@@ -74,7 +76,9 @@ export const ChatContextProvider = ({ children, user }) => {
         return !isChatCreated;
       });
       setPotentialChats(pChats);
+
       setAllUsers(response.data);
+
     };
 
     getUsers();
@@ -144,6 +148,7 @@ export const ChatContextProvider = ({ children, user }) => {
       if (response.error) {
         return setMessagesError(response);
       }
+
 
       setMessages(response.data);
     };
@@ -262,16 +267,20 @@ export const ChatContextProvider = ({ children, user }) => {
       socket.off("getMessage");
       socket.off("getNotification");
     };
+
   }, [socket]);
+
 
   const updateCurrentChat = useCallback((chat) => {
     setCurrentChat(chat);
   }, []);
 
   const createChat = useCallback(async (firstId, secondId, productId) => {
+
     const response = await axiosInstance.post(
       `/chats`,
       { firstId, secondId, productId }
+
     );
 
     if (response.error) {

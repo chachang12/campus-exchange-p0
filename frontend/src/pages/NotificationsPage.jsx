@@ -4,14 +4,18 @@ import { ChatContext } from "../context/ChatContext";
 import { useUser } from "../context/UserContext";
 import { unreadNotificationsFunc } from "../utils/unreadNotifications";
 import moment from "moment";
+
 import { useNavigate } from 'react-router-dom';
+
 
 
 const NotificationsPage = () => {
     const {user} = useUser();
     const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead } = useContext(ChatContext);
+
     const unreadNotifications = unreadNotificationsFunc(notifications, user);
     const navigate = useNavigate();
+
 
     const modifiedNotifications = notifications.map((n) => {
         const sender = allUsers.find((user) => user._id === n.senderId)
@@ -36,7 +40,9 @@ const NotificationsPage = () => {
             <div className="">
                 {modifiedNotifications?.length === 0 ? <div className="absolute inset-0 flex items-center justify-center">No new notifications</div> : null}
                 {modifiedNotifications && modifiedNotifications.map((n, index) => {
+
                     return <div onClick = {()=> navigate(`/chat/${n.chatId}`)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
+
                         <img src={n.senderPicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
                         <div className="flex-1">
                             <div>{`${n.senderName}`}</div>

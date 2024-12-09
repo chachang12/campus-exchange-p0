@@ -11,30 +11,31 @@ const MessagesPage = () => {
     const { userChats, isUserChatsLoading, updateCurrentChat, setUserChats } = useContext(ChatContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchMessagesForChats = async () => {
-          const chatsWithLatestMessages = await Promise.all(
-            userChats.map(async (chat) => {
-              // Fetch the latest message for each chat using the custom hook
-              const { latestMessage } = useFetchLatestMessage(chat);
+    // useEffect(() => {
+    //     const fetchMessagesForChats = async () => {
+    //       const chatsWithLatestMessages = await Promise.all(
+    //         userChats.map(async (chat) => {
+    //           // Fetch the latest message for each chat using the custom hook
+    //           const { latestMessage } = useFetchLatestMessage(chat);
     
-              return { ...chat, latestMessage }; // Merge the latestMessage with the chat data
-            })
-          );
+    //           return { ...chat, latestMessage }; // Merge the latestMessage with the chat data
+    //         })
+    //       );
     
-          // Set the state with chats and their latest messages
-          setChatsWithMessages(chatsWithLatestMessages);
-        };
+    //       // Set the state with chats and their latest messages
+    //       setChatsWithMessages(chatsWithLatestMessages);
+    //     };
     
-        if (userChats?.length) {
-          fetchMessagesForChats();
-        }
-      }, [userChats]);
+    //     if (userChats?.length) {
+    //       fetchMessagesForChats();
+    //     }
+    //   }, [userChats]);
 
     const handleChatClick = (chat) => {
         updateCurrentChat(chat);
         navigate(`/chat/${chat._id}`);
     };
+
 
     return (
         <section className="flex flex-col h-screen">
