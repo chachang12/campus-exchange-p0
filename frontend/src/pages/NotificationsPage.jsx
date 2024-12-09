@@ -4,21 +4,18 @@ import { ChatContext } from "../context/ChatContext";
 import { useUser } from "../context/UserContext";
 import { unreadNotificationsFunc } from "../utils/unreadNotifications";
 import moment from "moment";
-<<<<<<< HEAD
-=======
+
 import { useNavigate } from 'react-router-dom';
->>>>>>> origin/caleb
+
 
 
 const NotificationsPage = () => {
     const {user} = useUser();
     const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead } = useContext(ChatContext);
-<<<<<<< HEAD
-    const unreadNotifications = unreadNotificationsFunc(notifications);
-=======
+
     const unreadNotifications = unreadNotificationsFunc(notifications, user);
     const navigate = useNavigate();
->>>>>>> origin/caleb
+
 
     const modifiedNotifications = notifications.map((n) => {
         const sender = allUsers.find((user) => user._id === n.senderId)
@@ -43,11 +40,9 @@ const NotificationsPage = () => {
             <div className="">
                 {modifiedNotifications?.length === 0 ? <div className="absolute inset-0 flex items-center justify-center">No new notifications</div> : null}
                 {modifiedNotifications && modifiedNotifications.map((n, index) => {
-<<<<<<< HEAD
-                    return <div onClick = {()=> markNotificationAsRead(n, userChats, user, notifications)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
-=======
+
                     return <div onClick = {()=> navigate(`/chat/${n.chatId}`)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
->>>>>>> origin/caleb
+
                         <img src={n.senderPicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
                         <div className="flex-1">
                             <div>{`${n.senderName}`}</div>

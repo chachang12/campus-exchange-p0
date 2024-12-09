@@ -1,43 +1,64 @@
-const { Server } = require("socket.io");
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { createServer } from 'http';
+import { connectDB } from './config/db.js';
+import productRoutes from './routes/product.route.js';
+import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
+import chatRoutes from './routes/chat.route.js';
+import messageRoutes from './routes/message.route.js';
+import universityRoutes from './routes/university.route.js';
+import passport from 'passport';
+import './config/passport.js';
+import session from 'express-session';
+import reviewRoutes from './routes/review.route.js';
+import s3Routes from './routes/s3.route.js';
+import { initializeSocket } from './config/socketConfig.js';
 
-const io = new Server({ cors: "http://localhost:5173" });
+dotenv.config({ path: '../.env' });
 
-let onlineUsers = [];
+const app = express();
+const port = process.env.PORT || 8080;
 
-io.on("connection", (socket) => {
+// Create HTTP server
+const httpServer = createServer(app);
 
-    socket.on("addNewUser", (userId) => {
-        !onlineUsers.some((user) => user.userId === userId) &&
-        onlineUsers.push({
-            userId,
-            socketId: socket.id
-        });
+// Initialize Socket.IO server
+initializeSocket(httpServer);
 
-        io.emit("getOnlineUsers", onlineUsers);
-    });
+// Connect to the database
+connectDB();
 
-//add message
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
+  credentials: true,
+}));
 
-    socket.on("sendMessage", (message) => {
-        const user = onlineUsers.find(user => user.userId === message.recipientId);
+app.use(express.json());
 
-        if(user) {
-            io.to(user.socketId).emit("getMessage", message);
-            io.to(user.socketId).emit("getNotification", {
-                senderId: message.senderId,
-                isRead: false,
-                date: new Date(),
-                text: message.text,
-                chatId: message.chatId
-            });
-        }
-    });
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false },
+}));
 
-    socket.on("disconnect", () => {
-        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
+app.use(passport.initialize());
+app.use(passport.session());
 
-        io.emit("getOnlineUsers", onlineUsers);
-    })
+app.use('/api/products', productRoutes);
+app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/chats', chatRoutes);
+app.use('/messages', messageRoutes);
+app.use('/api/universities', universityRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/s3', s3Routes);
+
+// Start the server
+httpServer.listen(port, () => {
+  console.log(`Server started at http://localhost:${port}`);
 });
-
-io.listen(8082);
