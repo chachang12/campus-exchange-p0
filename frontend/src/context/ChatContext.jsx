@@ -80,26 +80,57 @@ export const ChatContextProvider = ({ children, user }) => {
     getUsers();
   }, [userChats]);
 
+  // useEffect(() => {
+  //   const getUserChats = async () => {
+  //     if (user?._id) {
+  //       setIsUserChatsLoading(true);
+  //       setUserChatsError(null);
+
+  //       const response = await axiosInstance.get(`/chats/${user?._id}`);
+
+  //       setIsUserChatsLoading(false);
+
+  //       if (response.error) {
+  //         return setUserChatsError(response.data);
+  //       }
+
+  //       setUserChats(response.data);
+  //     }
+  //   };
+
+  //   getUserChats();
+  // }, [user], [userChats]);
+
   useEffect(() => {
     const getUserChats = async () => {
-      if (user?._id) {
-        setIsUserChatsLoading(true);
-        setUserChatsError(null);
-
-        const response = await axiosInstance.get(`/chats/${user?._id}`);
-
-        setIsUserChatsLoading(false);
-
-        if (response.error) {
-          return setUserChatsError(response.data);
-        }
-
-        setUserChats(response.data);
-      }
-    };
-
+      const chatsResponse = await axiosInstance.get(`/chats/${user?._id}`);
+      const userChats = chatsResponse.data;
+ 
+ 
+      const chatsWithRecentMessages = await Promise.all(
+          userChats.map(async (chat) => {
+              const recentMessageResponse = await axiosInstance.get(`/messages/${chat?._id}/recent`);
+              return {
+                  ...chat,
+                  recentMessage: recentMessageResponse.data, // Assuming the API returns the most recent message
+              };
+          })
+      );
+ 
+ 
+      // Step 3: Sort chats based on the recent message's timestamp
+      const sortedChats = chatsWithRecentMessages.sort((a, b) => {
+          const timeA = new Date(a.recentMessage.data.createdAt); // Adjust key if API response differs
+          const timeB = new Date(b.recentMessage.data.createdAt);
+          return timeB - timeA; // Newest first
+      });
+ 
+ 
+      console.log(sortedChats)
+      setUserChats(sortedChats);
+    }
     getUserChats();
-  }, [user], [userChats]);
+  }, [user, newMessage])
 
   useEffect(() => {
     const getMessages = async () => {
