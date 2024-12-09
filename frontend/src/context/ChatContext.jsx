@@ -1,9 +1,22 @@
 import { createContext, useState, useEffect, useCallback } from "react";
+<<<<<<< HEAD
 import { getRequest, baseUrl, postRequest } from "../utils/services";
 import { getProductById } from "../utils/fetchUtils";
 import { io } from "socket.io-client";
 
 export const ChatContext = createContext();
+=======
+import { getProductById } from "../utils/fetchUtils";
+import { io } from "socket.io-client";
+import axios from 'axios';
+
+export const ChatContext = createContext();
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8080',
+  withCredentials: true, // Ensure cookies are sent with requests
+});
+
+>>>>>>> origin/caleb
 
 export const ChatContextProvider = ({ children, user }) => {
   const [userChats, setUserChats] = useState([]);
@@ -51,12 +64,20 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     const getUsers = async () => {
+<<<<<<< HEAD
       const response = await getRequest(`${baseUrl}/user`);
+=======
+      const response = await axiosInstance.get(`/user`);
+>>>>>>> origin/caleb
       if (response.error) {
         return console.log("Error fetching users", response);
       }
 
+<<<<<<< HEAD
       const pChats = response.filter((u) => {
+=======
+      const pChats = response.data.filter((u) => {
+>>>>>>> origin/caleb
         let isChatCreated = false;
         if (user?._id === u._id) return false;
 
@@ -69,7 +90,11 @@ export const ChatContextProvider = ({ children, user }) => {
         return !isChatCreated;
       });
       setPotentialChats(pChats);
+<<<<<<< HEAD
       setAllUsers(response);
+=======
+      setAllUsers(response.data);
+>>>>>>> origin/caleb
     };
 
     getUsers();
@@ -81,38 +106,88 @@ export const ChatContextProvider = ({ children, user }) => {
         setIsUserChatsLoading(true);
         setUserChatsError(null);
 
+<<<<<<< HEAD
         const response = await getRequest(`${baseUrl}/chats/${user?._id}`);
+=======
+        const response = await axiosInstance.get(`/chats/${user?._id}`);
+>>>>>>> origin/caleb
 
         setIsUserChatsLoading(false);
 
         if (response.error) {
+<<<<<<< HEAD
           return setUserChatsError(response);
         }
 
         setUserChats(response);
+=======
+          return setUserChatsError(response.data);
+        }
+
+        setUserChats(response.data);
+>>>>>>> origin/caleb
       }
     };
 
     getUserChats();
+<<<<<<< HEAD
   }, [user]);
+=======
+  }, [user], [userChats]);
+>>>>>>> origin/caleb
 
   useEffect(() => {
     const getMessages = async () => {
       setIsMessagesLoading(true);
       setMessagesError(null);
 
+<<<<<<< HEAD
       const response = await getRequest(`${baseUrl}/messages/${currentChat?._id}`);
+=======
+      const response = await axiosInstance.get(`/messages/${currentChat?._id}`);
+>>>>>>> origin/caleb
 
       setIsMessagesLoading(false);
 
       if (response.error) {
         return setMessagesError(response);
       }
+<<<<<<< HEAD
       setMessages(response);
+=======
+
+      setMessages(response.data);
+>>>>>>> origin/caleb
     };
     getMessages();
   }, [currentChat]);
 
+<<<<<<< HEAD
+=======
+  const fetchUnreadMessages = async (chatId) => {
+    try {
+        const response = await axiosInstance.get(`/messages/${chatId}`);
+        return response.data.filter(message => !message.isRead);
+    } catch (error) {
+        console.error(`Error fetching unread messages for chat ${chatId}: `, error);
+        return [];
+    }
+};
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      const response = await axiosInstance.get(`/chats/${user?._id}`);
+      const unreadMessagesPromises = response.data.map(chat => fetchUnreadMessages(chat._id));
+      const allUnreadMessages = await Promise.all(unreadMessagesPromises);
+
+      const flattenedUnreadMessages = allUnreadMessages.flat();
+      setNotifications(flattenedUnreadMessages);
+    };
+  
+    getNotifications();
+  }, [user]);
+  
+>>>>>>> origin/caleb
   useEffect(() => {
     const fetchProduct = async () => {
       if (currentChat?.productId) {
@@ -132,6 +207,7 @@ export const ChatContextProvider = ({ children, user }) => {
     async (textMessage, sender, currentChatId, setTextMessage) => {
       if (!textMessage) return console.log("You must type something...");
 
+<<<<<<< HEAD
       const response = await postRequest(
         `${baseUrl}/messages`,
         JSON.stringify({
@@ -139,14 +215,29 @@ export const ChatContextProvider = ({ children, user }) => {
           senderId: sender._id,
           text: textMessage,
         })
+=======
+      const response = await axiosInstance.post(
+        `/messages`,
+        {
+          chatId: currentChatId,
+          senderId: sender._id,
+          text: textMessage,
+          isRead: false
+        }
+>>>>>>> origin/caleb
       );
 
       if (response.error) {
         return setSendTextMessageError(response);
       }
 
+<<<<<<< HEAD
       setNewMessage(response);
       setMessages((prev) => [...prev, response]);
+=======
+      setNewMessage(response.data);
+      setMessages((prev) => [...prev, response.data]);
+>>>>>>> origin/caleb
       setTextMessage("");
     },
     []
@@ -201,16 +292,26 @@ export const ChatContextProvider = ({ children, user }) => {
       socket.off("getMessage");
       socket.off("getNotification");
     };
+<<<<<<< HEAD
   }, [socket, currentChat]);
+=======
+  }, [socket]);
+>>>>>>> origin/caleb
 
   const updateCurrentChat = useCallback((chat) => {
     setCurrentChat(chat);
   }, []);
 
   const createChat = useCallback(async (firstId, secondId, productId) => {
+<<<<<<< HEAD
     const response = await postRequest(
       `${baseUrl}/chats`,
       JSON.stringify({ firstId, secondId, productId })
+=======
+    const response = await axiosInstance.post(
+      `/chats`,
+      { firstId, secondId, productId }
+>>>>>>> origin/caleb
     );
 
     if (response.error) {
@@ -220,12 +321,29 @@ export const ChatContextProvider = ({ children, user }) => {
     setUserChats((prev) => [...prev, response]);
   }, []);
 
+<<<<<<< HEAD
   const markAllNotificationsAsRead = useCallback((notifications) => {
     const mNotifications = notifications.map((n) => {
       return {...n, isRead: true}
     });
 
     setNotifications(mNotifications);
+=======
+  const markAllNotificationsAsRead = useCallback(async (notifications) => {
+    try {
+      const response = await axiosInstance.patch('/messages/read', {
+        messageIds: notifications.map((n) => n._id),
+      });
+
+      const mNotifications = notifications.map((n) => {
+        return { ...n, isRead: true}
+      });
+      setNotifications(mNotifications);
+    } catch (error) {
+      console.error('Error marking notifications as read:', error);
+    }
+
+>>>>>>> origin/caleb
   }, []);
 
   const markNotificationAsRead = useCallback((n, userChats, user, notifications) => {
@@ -252,6 +370,7 @@ export const ChatContextProvider = ({ children, user }) => {
     setNotifications(mNotifications);
   }, []);
 
+<<<<<<< HEAD
   const markThisUserNotificationsAsRead = useCallback((thisUserNotifications, notifications) => {
     const mNotifications = notifications.map(el => {
       let notification;
@@ -269,6 +388,38 @@ export const ChatContextProvider = ({ children, user }) => {
     })
 
     setNotifications(mNotifications);
+=======
+  const markThisUserNotificationsAsRead = useCallback(async (thisUserNotifications, notifications) => {
+    const messageIds = notifications
+    .filter(n => thisUserNotifications.some(u => u.senderId === n.senderId)) // Filter notifications based on senderId
+    .map(n => n._id);
+
+    if (messageIds.length > 0) {
+      try {
+        const response = await axiosInstance.patch('/messages/read', {
+          messageIds: messageIds,
+        });
+        
+      const mNotifications = notifications.map(el => {
+        let notification;
+  
+        thisUserNotifications.forEach(n => {
+          if (n.senderId === el.senderId) {
+            notification = {...n, isRead: true}
+          }
+          else {
+            notification = el
+          }
+        })
+  
+        return notification
+      })
+      setNotifications(mNotifications);
+      } catch (error) {
+        console.error('Error marking notifications as read:', error);
+      }
+    }
+>>>>>>> origin/caleb
   }, []);
 
   return (

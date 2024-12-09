@@ -19,7 +19,11 @@ const HomePage = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const { notifications } = useContext(ChatContext)
+<<<<<<< HEAD
   const unreadNotifications = unreadNotificationsFunc(notifications);
+=======
+  const unreadNotifications = unreadNotificationsFunc(notifications, user);
+>>>>>>> origin/caleb
   const navigate = useNavigate();
 
   const categories = [
