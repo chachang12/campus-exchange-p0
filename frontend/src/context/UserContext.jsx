@@ -36,7 +36,7 @@ export const UserProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const { data } = await axios.post('https://campus-exchange-p0.onrender.com/auth/login', credentials, { withCredentials: true });
+      const { data } = await axios.post('http://localhost:8080/auth/login', credentials, { withCredentials: true });
       setUser(data);
       Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
     } catch (error) {
@@ -46,7 +46,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.get('https://campus-exchange-p0.onrender.com/auth/logout', { withCredentials: true });
+      await axios.get('http://localhost:8080/auth/logout', { withCredentials: true });
       setUser(null);
       Cookies.remove('user'); // Remove user session from cookies
     } catch (error) {
