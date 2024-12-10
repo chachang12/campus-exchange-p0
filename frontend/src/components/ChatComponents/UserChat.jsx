@@ -1,19 +1,19 @@
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
+import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage"
 import moment from "moment";
 import "../../index.css";
 import { ChatContext } from "../../context/ChatContext";
 import { useContext } from "react";
-import { unreadNotificationsSpecificChat } from "../../utils/unreadNotifications";
-import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage";
+import { unreadNotificationsFunc, unreadNotificationsSpecificChat } from "../../utils/unreadNotifications";
 
 const UserChat = ({ chat, user }) => {
     const { recipientUser, currentProduct } = useFetchRecipientUser(chat, user);
-    const { notifications, markThisUserNotificationsAsRead } = useContext(ChatContext);
+    const { latestMessage } = useFetchLatestMessage(chat)
+    const { notifications, markThisChatNotificationsAsRead } = useContext(ChatContext);
     const unreadNotifications = unreadNotificationsSpecificChat(notifications, user, chat);
-    const {latestMessage} = useFetchLatestMessage(chat);
 
     return (
-        <section onClick= {() => {if(unreadNotifications?.length !== 0) {markThisUserNotificationsAsRead(unreadNotifications, notifications)}}}role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
+        <section onClick= {() => {if(unreadNotifications?.length !== 0) {markThisChatNotificationsAsRead(unreadNotifications, notifications, chat)}}}role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
             <div className="relative flex">
                 <img src={currentProduct?.image} crossOrigin="anonymous" className="w-[50px] h-[50px] aspect-square mr-4 object-cover" />
                 <div className="flex-1 truncate">

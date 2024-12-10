@@ -4,38 +4,21 @@ import { ChatContext } from "../context/ChatContext";
 import { useUser } from "../context/UserContext";
 import UserChat from "../components/ChatComponents/UserChat";
 import { useNavigate } from 'react-router-dom';
-import { useFetchLatestMessage } from '../hooks/useFetchLatestMessage';
 
 const MessagesPage = () => {
     const { user } = useUser();
-    const { userChats, isUserChatsLoading, updateCurrentChat, setUserChats } = useContext(ChatContext);
+    const { userChats, isUserChatsLoading, updateCurrentChat, setUserChats, notifications, newMessage } = useContext(ChatContext);
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const fetchMessagesForChats = async () => {
-    //       const chatsWithLatestMessages = await Promise.all(
-    //         userChats.map(async (chat) => {
-    //           // Fetch the latest message for each chat using the custom hook
-    //           const { latestMessage } = useFetchLatestMessage(chat);
-    
-    //           return { ...chat, latestMessage }; // Merge the latestMessage with the chat data
-    //         })
-    //       );
-    
-    //       // Set the state with chats and their latest messages
-    //       setChatsWithMessages(chatsWithLatestMessages);
-    //     };
-    
-    //     if (userChats?.length) {
-    //       fetchMessagesForChats();
-    //     }
-    //   }, [userChats]);
-
     const handleChatClick = (chat) => {
         updateCurrentChat(chat);
         navigate(`/chat/${chat._id}`);
     };
 
+    useEffect(() => {
+        // This useEffect will run whenever `notifications` changes
+        console.log("Notifications updated:", notifications);
+        // Optionally, you can trigger specific logic here
+    }, [notifications, newMessage]);
 
     return (
         <section className="flex flex-col h-screen">
