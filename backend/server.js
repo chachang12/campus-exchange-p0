@@ -39,6 +39,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'https://localhost:5173',
     'https://campus-exchange-p0.onrender.com',
+    'https://campus-exchange-p0-1.onrender.com'
   ];
   
   app.use(
@@ -97,7 +98,9 @@ const server = httpServer.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
 
-const io = new Server(server, { cors: "https://localhost:5173" });
+// const io = new Server(server, { cors: "https://localhost:5173" });
+const io = new Server(server, { cors: "https://campus-exchange-p0-1.onrender.com" });
+
 
 let onlineUsers = [];
 
