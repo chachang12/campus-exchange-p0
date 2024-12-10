@@ -11,8 +11,8 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
-        const { data } = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
+        const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
+        // const { data } = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
 
         console.log('User data: ', data);
         setUser(data);

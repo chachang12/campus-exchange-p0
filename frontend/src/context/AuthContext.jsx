@@ -28,8 +28,8 @@ export const AuthContextProvider = ({ children }) => {
         const fetchUser = async () => {
             console.log('Checking user session...');
             try {
-                // const response = await axios.get('http://localhost:8080/auth/login/success', {
-                const response = await axios.get('https://campus-exchange-p0.onrender.com/auth/login/success', {
+                const response = await axios.get('http://localhost:8080/auth/login/success', {
+                // const response = await axios.get('https://campus-exchange-p0.onrender.com/auth/login/success', {
                     withCredentials: true,
                 });
                 if (response.data.user) {
