@@ -5,10 +5,15 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 
 export const getCurrentUser = async (req, res) => {
-    if (req.isAuthenticated()) {
-        res.json(req.user); // Send user data as JSON
-    } else {
-        res.status(401).json({ message: 'Unauthorized' });
+    try {
+        if (req.isAuthenticated()) {
+            res.json(req.user); // Send user data as JSON
+        } else {
+            res.status(401).json({ success: false, message: 'Unauthorized: User is not authenticated' });
+        }
+    } catch (error) {
+        console.error('Error fetching current user:', error);
+        res.status(500).json({ success: false, message: 'Server error: Unable to fetch current user', error: error.message });
     }
 };
 
