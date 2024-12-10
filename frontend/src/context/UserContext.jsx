@@ -13,10 +13,12 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
+        const response = await axios.get('https://campus-exchange-p0.onrender.com/user/current', {
+          withCredentials: true,
+        });
         if (response.data) {
           setUser(response.data);
-          Cookies.set('user', JSON.stringify(response.data), { expires: 7 });
+          Cookies.set('user', JSON.stringify(response.data), { expires: 7, secure: true, sameSite: 'None' });
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -26,7 +28,7 @@ export const UserProvider = ({ children }) => {
         setLoading(false);
       }
     };
-
+  
     const storedUser = Cookies.get('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));

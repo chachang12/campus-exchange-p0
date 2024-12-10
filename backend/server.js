@@ -40,11 +40,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
+      const allowedOrigins = [
+        'https://campus-exchange-p0.onrender.com',
+        'https://campus-exchange-p0-1.onrender.com'
+      ];
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {
-        console.log('Received origin', orgin);
-        console.log('Allowed cors', allowedOrigins);
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -65,7 +67,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: true,      // Ensure the browser only sends the cookie over HTTPS
-      sameSite: 'none'
+      sameSite: 'none',  // Allow sending cookies in cross-origin requests
     },
   })
 );
