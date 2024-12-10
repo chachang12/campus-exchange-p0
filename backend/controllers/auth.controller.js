@@ -6,7 +6,7 @@ export const googleAuthCallback = passport.authenticate('google', { failureRedir
 
 export const googleAuthRedirect = (req, res) => {
     // res.redirect('https://localhost:5173/profile');
-    res.redirect('https://campus-exchange-p0-1.onrender.com/profile');
+    res.redirect('https://campus-exchange-p0-1.onrender.com');
 };
 
 export const logout = (req, res) => {
