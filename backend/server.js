@@ -28,21 +28,54 @@ const httpServer = createServer(app);
 // Connect to the database
 connectDB();
 
-app.use(cors({
-  origin: 'https://localhost:5173',
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: 'https://localhost:5173',
+//   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+//   allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
+//   credentials: true,
+// }));
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://localhost:5173',
+    'https://campus-exchange-p0.onrender.com',
+  ];
+  
+  app.use(
+    cors({
+      origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin) || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+  );
 
 app.use(express.json());
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: { secure: false },
-}));
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: true,
+//   saveUninitialized: true,
+//   cookie: { secure: false },
+// }));
+
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        secure: true,      // Ensure the browser only sends the cookie over HTTPS
+        sameSite: 'none',  // Allow sending cookies in cross-origin requests
+      },
+    })
+  );
 
 app.use(passport.initialize());
 app.use(passport.session());
