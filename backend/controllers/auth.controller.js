@@ -5,8 +5,7 @@ export const googleAuth = passport.authenticate('google', { scope: ['profile', '
 export const googleAuthCallback = passport.authenticate('google', { failureRedirect: '/' });
 
 export const googleAuthRedirect = (req, res) => {
-    // res.redirect('https://localhost:5173/profile');
-    res.redirect('https://campus-exchange-p0-1.onrender.com');
+    res.redirect('http://localhost:5173/profile');
 };
 
 export const logout = (req, res) => {
@@ -23,4 +22,3 @@ export const logout = (req, res) => {
       });
     });
   };
-

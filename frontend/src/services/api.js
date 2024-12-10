@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: 'http://localhost:8080',
-    baseURL: 'https://campus-exchange-p0.onrender.com',
+    baseURL: 'http://localhost:8080',
+    // baseURL: 'https://campus-exchange-p0.onrender.com',
     withCredentials: true,
 });
 

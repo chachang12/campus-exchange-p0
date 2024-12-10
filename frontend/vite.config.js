@@ -10,13 +10,13 @@ export default defineConfig({
     sourcemap: false, // Disable source maps for production
   },
   server: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2.pem')),
-    },
+    // https: {
+    //   key: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2-key.pem')),
+    //   cert: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2.pem')),
+    // },
     port: 5173,
     cors: {
-      origin: process.env.VITE_CORS_ORIGIN || 'https://localhost:5173',
+      origin: process.env.VITE_CORS_ORIGIN || 'http://localhost:5173',
       credentials: true,
     },
     headers: {

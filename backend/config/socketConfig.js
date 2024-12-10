@@ -3,8 +3,9 @@ import { Server } from 'socket.io';
 export const initializeSocket = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
+      origin: 'http://localhost:5173',
       // origin: 'https://localhost:5173',
-      origin: 'https://campus-exchange-p0-1.onrender.com',
+      // origin: 'https://campus-exchange-p0-1.onrender.com',
       methods: ['GET', 'POST'],
       credentials: true,
     },
