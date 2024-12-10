@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 export const getCurrentUser = async (req, res) => {
     try {
         console.log('Response: ', res);
+    console.log('Response: ', res);
       console.log('Authenticated:', req.isAuthenticated());
       console.log('User:', req.user);
       if (req.isAuthenticated()) {
