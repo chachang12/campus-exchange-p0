@@ -30,47 +30,44 @@ const httpServer = createServer(app);
 // Connect to the database
 connectDB();
 
-const allowedOrigins = [
-  // 'http://localhost:5173',
-  // 'https://localhost:5173',
-  'https://campus-exchange-p0.onrender.com',
-  'https://campus-exchange-p0-1.onrender.com'
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        'https://campus-exchange-p0.onrender.com',
-        'https://campus-exchange-p0-1.onrender.com'
-      ];
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
+// backend/server.js
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://campus-exchange-p0.onrender.com',
+      'https://campus-exchange-p0-1.onrender.com'
+    ];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.use(express.json());
 
 app.set('trust proxy', 1); // Trust the first proxy
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true,      // Ensure the browser only sends the cookie over HTTPS
-      sameSite: 'none',  // Allow sending cookies in cross-origin requests
-    },
-  })
-);
+// backend/server.js
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    sameSite: 'none',
+  },
+  store: new session.MemoryStore(), // Add a session store to persist sessions
+}));
+
+app.use((req, res, next) => {
+  console.log('Session:', req.session);
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
