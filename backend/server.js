@@ -13,6 +13,7 @@ import universityRoutes from './routes/university.route.js';
 import passport from 'passport';
 import './config/passport.js';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import reviewRoutes from './routes/review.route.js';
 import s3Routes from './routes/s3.route.js';
 import { initializeSocket } from './config/socketConfig.js';
@@ -30,7 +31,7 @@ const httpServer = createServer(app);
 // Connect to the database
 connectDB();
 
-// backend/server.js
+// CORS configuration
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
@@ -52,7 +53,7 @@ app.use(express.json());
 
 app.set('trust proxy', 1); // Trust the first proxy
 
-// backend/server.js
+// Session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -60,14 +61,13 @@ app.use(session({
   cookie: {
     secure: true,
     sameSite: 'none',
+    maxAge: 24 * 60 * 60 * 1000, // Set cookie expiration to 1 day
   },
-  store: new session.MemoryStore(), // Add a session store to persist sessions
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: 'sessions',
+  }),
 }));
-
-app.use((req, res, next) => {
-  console.log('Session:', req.session);
-  next();
-});
 
 app.use(passport.initialize());
 app.use(passport.session());
