@@ -1,3 +1,5 @@
+// frontend/src/context/UserContext.jsx
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -11,15 +13,15 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
-        const { data } = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
-
-        console.log('User data: ', data);
-        setUser(data);
-        Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
+        const response = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
+        if (response.data) {
+          setUser(response.data);
+          Cookies.set('user', JSON.stringify(response.data), { expires: 7 });
+        }
       } catch (error) {
+        console.error('Error fetching user:', error);
         setUser(null);
-        Cookies.remove('user'); // Remove user session from cookies if fetch fails
+        Cookies.remove('user');
       } finally {
         setLoading(false);
       }
@@ -34,21 +36,16 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (credentials) => {
-    try {
-      const { data } = await axios.post('https://campus-exchange-p0.onrender.com/auth/login', credentials, { withCredentials: true });
-      setUser(data);
-      Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
-    } catch (error) {
-      console.error('Login error:', error);
-    }
+  const login = async () => {
+    // Redirect to Google OAuth
+    window.location.href = 'https://campus-exchange-p0.onrender.com/auth/google';
   };
 
   const logout = async () => {
     try {
       await axios.get('https://campus-exchange-p0.onrender.com/auth/logout', { withCredentials: true });
       setUser(null);
-      Cookies.remove('user'); // Remove user session from cookies
+      Cookies.remove('user');
     } catch (error) {
       console.error('Logout error:', error);
     }

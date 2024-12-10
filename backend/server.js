@@ -64,6 +64,7 @@ app.use(
     cookie: {
       secure: true,      // Ensure the browser only sends the cookie over HTTPS
       sameSite: 'none',  // Allow sending cookies in cross-origin requests
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
   })
 );
@@ -92,10 +93,10 @@ app.use('/api/s3', s3Routes);
 
 // Start the server
 const server = httpServer.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
+  console.log(`Server started at https://campus-exchange-p0.onrender.com`);
 });
 
-const io = new Server(server, { cors: "https://localhost:5173" });
+const io = new Server(server, { cors: "https://campus-exchange-p0-1.onrender.com" });
 
 let onlineUsers = [];
 
