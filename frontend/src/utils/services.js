@@ -1,4 +1,7 @@
-export const baseUrl = "http://localhost:8080";
+export const baseUrl = "https://campus-exchange-p0.onrender.com";
+
+// http://localhost:8080
+
 
 export const postRequest = async(url, body) => {
     const response = await fetch(url, {
