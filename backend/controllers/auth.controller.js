@@ -5,6 +5,7 @@ export const googleAuth = passport.authenticate('google', { scope: ['profile', '
 export const googleAuthCallback = passport.authenticate('google', { failureRedirect: '/' });
 
 export const googleAuthRedirect = (req, res) => {
+    console.log('Redirecting to:', 'http://localhost:5173/profile');
     res.redirect('http://localhost:5173/profile');
 };
 

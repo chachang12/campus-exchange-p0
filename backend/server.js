@@ -62,7 +62,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
-      secure: true,      // Ensure the browser only sends the cookie over HTTPS
+      secure: false,      // Ensure the browser only sends the cookie over HTTPS
       sameSite: 'none',  // Allow sending cookies in cross-origin requests
     },
   })
