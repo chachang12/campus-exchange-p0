@@ -43,6 +43,8 @@ app.use(
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {
+        console.log('Received origin', origin)
+        console.log('Allowed cors', allowedOrigins)
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -63,7 +65,7 @@ app.use(
     saveUninitialized: true,
     cookie: {
       secure: false,      // Ensure the browser only sends the cookie over HTTPS
-      sameSite: 'none',  // Allow sending cookies in cross-origin requests
+      sameSite: 'lax',  // Allow sending cookies in cross-origin requests
     },
   })
 );
