@@ -1,36 +1,37 @@
 // import { defineConfig } from 'vite';
 // import react from '@vitejs/plugin-react';
 
-// // https://vitejs.dev/config/
 // export default defineConfig({
 //   plugins: [react()],
 //   server: {
-//     host: true, // This will allow the server to be accessed from the network
 //     proxy: {
-//       '/api': {
-//         target: 'http://localhost:8080',
-//         changeOrigin: true,
-//       },
+//       // 'auth': 'http://localhost:8080'
+//     },
+//     cors: {
+//       origin: 'http://localhost:5173',
+//       credentials: true,
+//     },
+//     headers: {
+//       'Cross-Origin-Opener-Policy': 'same-origin',
+//       'Cross-Origin-Embedder-Policy': 'require-corp',
 //     },
 //   },
 // });
 
+
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
-      // 'auth': 'http://localhost:8080'
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2.pem')),
     },
-    cors: {
-      origin: 'http://localhost:5173',
-      credentials: true,
-    },
-    headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-    },
+    port: 5173, // Optional: specify the port
   },
 });
