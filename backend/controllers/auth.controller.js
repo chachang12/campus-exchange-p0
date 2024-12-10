@@ -7,7 +7,13 @@ export const googleAuth = passport.authenticate('google', { scope: ['profile', '
 export const googleAuthCallback = passport.authenticate('google', { failureRedirect: '/' });
 
 export const googleAuthRedirect = (req, res) => {
-    res.redirect('https://campus-exchange-p0-1.onrender.com/profile'); // Ensure this is your frontend profile route
+  if (req.isAuthenticated()) {
+    console.log('User authenticated:', req.user);
+    res.redirect('https://campus-exchange-p0-1.onrender.com/profile');
+  } else {
+    console.log('Authentication failed.');
+    res.redirect('/login');
+  }
 };
 
 export const logout = (req, res) => {
