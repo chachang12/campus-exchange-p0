@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CXLogo from '../components/icons/logo';
+import CXLogo from '../components/icons/Logo';
 import './WelcomePage.css'; 
 import rightarrow from '../assets/rightarrow.png';
 
