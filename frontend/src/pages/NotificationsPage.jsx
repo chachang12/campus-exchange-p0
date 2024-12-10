@@ -17,15 +17,15 @@ const NotificationsPage = () => {
     const navigate = useNavigate();
 
 
-    const modifiedNotifications = notifications.map((n) => {
-        const sender = allUsers.find((user) => user._id === n.senderId)
-
-        return{
-            ...n,
-            senderName: sender?.firstName,
-            senderPicture: sender?.profilePicture,
-        };
-    });
+    const modifiedNotifications = notifications
+        .filter((n) => n.senderId !== user._id) // Exclude notifications from the current user
+        .map((n) => {
+            const sender = allUsers.find((user) => user._id === n.senderId);
+            return {
+                ...n,
+                senderName: sender?.firstName,
+            };
+        });
 
 
     return ( <div className="text-white">
