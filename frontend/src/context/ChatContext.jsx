@@ -132,7 +132,6 @@ export const ChatContextProvider = ({ children, user }) => {
       });
  
  
-      console.log(sortedChats)
       setUserChats(sortedChats);
     }
     getUserChats();
