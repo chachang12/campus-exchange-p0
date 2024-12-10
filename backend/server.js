@@ -64,6 +64,7 @@ app.use(express.json());
 //   saveUninitialized: true,
 //   cookie: { secure: false },
 // }));
+app.set('trust proxy', 1); // Trust the first proxy
 
 app.use(
     session({
