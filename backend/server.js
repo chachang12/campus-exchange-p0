@@ -63,8 +63,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: true,      // Ensure the browser only sends the cookie over HTTPS
-      sameSite: 'none',  // Allow sending cookies in cross-origin requests
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: 'none'
     },
   })
 );
