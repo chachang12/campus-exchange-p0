@@ -134,7 +134,7 @@ export const ChatContextProvider = ({ children, user }) => {
       setUserChats(sortedChats);
     }
     getUserChats();
-  }, [user, newMessage])
+  }, [user, newMessage, notifications])
 
   useEffect(() => {
     const getMessages = async () => {
@@ -362,6 +362,38 @@ export const ChatContextProvider = ({ children, user }) => {
     }
   }, []);
 
+  const markThisChatNotificationsAsRead = useCallback(async (thisUserNotifications, notifications) => {
+    const messageIds = notifications
+    .filter(n => thisUserNotifications.some(u => u.senderId === n.senderId)) // Filter notifications based on senderId
+    .map(n => n._id);
+
+    if (messageIds.length > 0) {
+      try {
+        const response = await axiosInstance.patch('/messages/read', {
+          messageIds: messageIds,
+        });
+        
+      const mNotifications = notifications.map(el => {
+        let notification;
+  
+        thisUserNotifications.forEach(n => {
+          if (n.senderId === el.senderId && n.chatId === el.chatId) {
+            notification = {...n, isRead: true}
+          }
+          else {
+            notification = el
+          }
+        })
+  
+        return notification
+      })
+      setNotifications(mNotifications);
+      } catch (error) {
+        console.error('Error marking notifications as read:', error);
+      }
+    }
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
@@ -383,6 +415,7 @@ export const ChatContextProvider = ({ children, user }) => {
         markAllNotificationsAsRead,
         markNotificationAsRead,
         markThisUserNotificationsAsRead,
+        markThisChatNotificationsAsRead,
       }}
     >
       {children}

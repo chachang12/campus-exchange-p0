@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { ChatContext } from "../context/ChatContext";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -8,21 +7,21 @@ const axiosInstance = axios.create({
   });
 
 export const useFetchLatestMessage = (chat) => {
-    const {newMessage, notifications} = useContext(ChatContext);
-    const [latestMessage, setLatestMessage] = useState(null);
+    const [latestMessage, setLatestMessage] = useState(null)
+
+    const chatId = chat?._id
 
     useEffect(() => {
         const getMostRecentMessage = async () => {
-            const response = await axiosInstance.get(`/messages/${chat?._id}/recent`);
-    
-            if (response.error) {
-                return setError(response.error);
+            try {
+                const recentMessageResponse = await axiosInstance.get(`/messages/${chatId}/recent`);
+                setLatestMessage(recentMessageResponse.data.data);
+            } catch (error) {
+                console.error("Error fetching latest message:", error);
             }
-            const lastMessage = response.data.data;
-            setLatestMessage(lastMessage)
-        }
+        };
         getMostRecentMessage();
-    }, [newMessage, notifications]);
+    }, [chatId]);
 
     return { latestMessage };
 };
