@@ -25,9 +25,6 @@ const port = process.env.PORT || 8080;
 // Create HTTP server
 const httpServer = createServer(app);
 
-// Initialize Socket.IO server
-initializeSocket(httpServer);
-
 // Connect to the database
 connectDB();
 

@@ -28,7 +28,8 @@ export const AuthContextProvider = ({ children }) => {
         const fetchUser = async () => {
             console.log('Checking user session...');
             try {
-                const response = await axios.get('http://localhost:8080/auth/login/success', {
+                // const response = await axios.get('http://localhost:8080/auth/login/success', {
+                const response = await axios.get('https://campus-exchange-p0.onrender.com/auth/login/success', {
                     withCredentials: true,
                 });
                 if (response.data.user) {
@@ -52,7 +53,8 @@ export const AuthContextProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.get('http://localhost:8080/auth/logout', { withCredentials: true });
+            // await axios.get('http://localhost:8080/auth/logout', { withCredentials: true });
+            await axios.get('https://campus-exchange-p0.onrender.com/auth/logout', { withCredentials: true });
             localStorage.removeItem('user');
             dispatch({ type: 'LOGOUT' });
         } catch (error) {

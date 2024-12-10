@@ -32,7 +32,8 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     try {
-      const newSocket = io("http://localhost:8080", {
+      // const newSocket = io("http://localhost:8080", {
+        const newSocket = io("https://campus-exchange-p0.onrender.com", {
         reconnectionAttempts: 1,
         timeout: 10000,
       });
