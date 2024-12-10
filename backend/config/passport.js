@@ -9,7 +9,7 @@ dotenv.config({ path: '../.env' });
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback',
+  callbackURL: 'https://campus-exchange-p0.onrender.com/auth/google/callback',
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     const existingUser = await User.findOne({ googleId: profile.id });
