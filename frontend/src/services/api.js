@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:8080", // Ensure this matches your backend URL
+    // baseURL: 'http://localhost:8080',
+    baseURL: 'https://campus-exchange-p0.onrender.com',
     withCredentials: true,
 });
 

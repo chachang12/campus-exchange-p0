@@ -3,7 +3,8 @@ import axios from 'axios';
 
 // Set the base URL for Axios
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://localhost:8080',
+  baseURL: 'https://campus-exchange-p0.onrender.com',
   withCredentials: true, // Ensure cookies are sent with requests
 });
 

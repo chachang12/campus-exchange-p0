@@ -7,7 +7,8 @@ import googlelogo from '../assets/google.png';
 const LoginPage = () => {
 
     const handleLogin = () => {
-        window.location.href = 'http://localhost:8080/auth/google';
+        // window.location.href = 'http://localhost:8080/auth/google';
+        window.location.href = 'https://campus-exchange-p0.onrender.com/api/auth/google';
     };
 
     return (
