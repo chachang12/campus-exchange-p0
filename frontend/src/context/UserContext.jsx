@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // frontend/src/context/UserContext.jsx
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -24,7 +25,7 @@ export const UserProvider = ({ children }) => {
       } catch (error) {
         console.error('Error fetching user:', error);
         setUser(null);
-        // Cookies.remove('user');
+        Cookies.remove('user');
       } finally {
         setLoading(false);
       }
