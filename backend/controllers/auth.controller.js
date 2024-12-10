@@ -1,3 +1,5 @@
+// backend/controllers/auth.controller.js
+
 import passport from 'passport';
 
 export const googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
@@ -5,8 +7,7 @@ export const googleAuth = passport.authenticate('google', { scope: ['profile', '
 export const googleAuthCallback = passport.authenticate('google', { failureRedirect: '/' });
 
 export const googleAuthRedirect = (req, res) => {
-    // res.redirect('https://localhost:5173/profile');
-    res.redirect('https://campus-exchange-p0-1.onrender.com/profile');
+    res.redirect('https://campus-exchange-p0-1.onrender.com/profile'); // Ensure this is your frontend profile route
 };
 
 export const logout = (req, res) => {
@@ -18,9 +19,8 @@ export const logout = (req, res) => {
         if (err) {
           return res.status(500).json({ message: 'Session destruction failed' });
         }
-        res.clearCookie('connect.sid'); // Adjust the cookie name if necessary
+        res.clearCookie('connect.sid', { path: '/' }); // Ensure the path matches your session cookie
         res.status(200).json({ message: 'Logout successful' });
       });
     });
-  };
-
+};

@@ -59,8 +59,8 @@ app.set('trust proxy', 1); // Trust the first proxy
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       secure: true,      // Ensure the browser only sends the cookie over HTTPS
       sameSite: 'none',  // Allow sending cookies in cross-origin requests
