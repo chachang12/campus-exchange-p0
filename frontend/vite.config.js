@@ -33,5 +33,13 @@ export default defineConfig({
       cert: fs.readFileSync(path.resolve(__dirname, './cert/localhost+2.pem')),
     },
     port: 5173, // Optional: specify the port
+    cors: {
+      origin: 'https://localhost:5173',
+      credentials: true,
+    },
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
   },
 });

@@ -29,7 +29,7 @@ const httpServer = createServer(app);
 connectDB();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://localhost:5173',
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
   credentials: true,
@@ -61,7 +61,7 @@ const server = httpServer.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
 
-const io = new Server(server, { cors: "http://localhost:5173" });
+const io = new Server(server, { cors: "https://localhost:5173" });
 
 let onlineUsers = [];
 
