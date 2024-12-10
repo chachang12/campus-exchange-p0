@@ -269,7 +269,7 @@ export const ChatContextProvider = ({ children, user }) => {
       socket.off("getNotification");
     };
 
-  }, [socket]);
+  }, [socket, currentChat]);
 
 
   const updateCurrentChat = useCallback((chat) => {

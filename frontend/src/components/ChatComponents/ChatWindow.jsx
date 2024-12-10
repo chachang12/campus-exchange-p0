@@ -23,15 +23,6 @@ const ChatWindow = () => {
     console.error('Error fetching product:', error);
   }
 
-  useEffect(() => {
-    if (chatId) {
-      const chat = userChats.find(chat => chat._id === chatId);
-      if (chat) {
-        updateCurrentChat(chat);
-      }
-    }
-  }, [chatId, userChats, updateCurrentChat]);
-
   // useEffect(() => {
   //   const handleResize = () => {
   //     const chatBox = document.getElementById('chat-box');
