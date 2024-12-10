@@ -23,18 +23,6 @@ const ChatWindow = () => {
     console.error('Error fetching product:', error);
   }
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const chatBox = document.getElementById('chat-box');
-  //     if (chatBox) {
-  //       chatBox.scrollTop = chatBox.scrollHeight;
-  //     }
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
-
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
