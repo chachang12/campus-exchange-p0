@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
       } catch (error) {
         console.error('Error fetching user:', error);
         setUser(null);
-        Cookies.remove('user');
+        // Cookies.remove('user');
       } finally {
         setLoading(false);
       }
