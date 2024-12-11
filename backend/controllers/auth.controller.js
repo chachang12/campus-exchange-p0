@@ -8,10 +8,10 @@ export const googleAuthCallback = passport.authenticate('google', { failureRedir
 
 export const googleAuthRedirect = (req, res) => {
   if (req.isAuthenticated()) {
-    console.log('User authenticated:', req.user);
+    console.log('User authenticated [auth.controller.js]:', req.user);
     res.redirect('https://campus-exchange-p0-1.onrender.com/profile');
   } else {
-    console.log('Authentication failed.');
+    console.log('Authentication failed. [auth.controller.js]');
     res.redirect('/login');
   }
 };

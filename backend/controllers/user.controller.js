@@ -9,12 +9,12 @@ import dotenv from 'dotenv';
 export const getCurrentUser = async (req, res) => {
     try {
         
-      console.log('Authenticated:', req.isAuthenticated());
-      console.log('User:', req.user);
+      console.log('Authenticated: [user.controller]', req.isAuthenticated());
+      console.log('User: [user.controller]', req.user);
       if (req.isAuthenticated()) {
         res.json(req.user);
       } else {
-        res.status(401).json({ success: false, message: 'Unauthorized: User is not authenticated' });
+        res.status(401).json({ success: false, message: 'Unauthorized [user.controller]: User is not authenticated' });
       }
     } catch (error) {
       console.error('Error fetching current user:', error);
