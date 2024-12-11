@@ -9,6 +9,7 @@ export const postRequest = async(url, body) => {
         headers: {
             "Content-Type" : "application/json",
         },
+        credentials: 'include',
         body,
     });
 

@@ -6,14 +6,14 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user);
+  console.log('Serializing user');
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
-    console.log('Deserializing user:', user);
+    console.log('Deserializing user');
     done(null, user);
   } catch (err) {
     done(err, null);

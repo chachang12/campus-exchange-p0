@@ -70,15 +70,22 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,
-    sameSite: 'none',
-    maxAge: 24 * 60 * 60 * 1000, // Set cookie expiration to 1 day
+    secure: true,           // Ensure HTTPS
+    sameSite: 'none',       // Necessary for cross-site cookies
+    domain: '.onrender.com',// Allow all subdomains
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   },
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
     collectionName: 'sessions',
   }),
 }));
+
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session Data:', req.session);
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -107,47 +114,46 @@ const server = httpServer.listen(port, () => {
   console.log(`Server started at https://campus-exchange-p0.onrender.com`);
 });
 
-// const io = new Server(server, { cors: 
-//   {
-//     "https://campus-exchange-p0-1.onrender.com",
-//     methods: ["GET", "POST"],
-//     credentials: true
+const io = new Server(server, { 
+  cors: {
+    origin: 'https://campus-exchange-p0-1.onrender.com',
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
-//   }
-//  });
+let onlineUsers = [];
 
-// let onlineUsers = [];
+io.on("connection", (socket) => {
 
-// io.on("connection", (socket) => {
+    socket.on("addNewUser", (userId) => {
+        !onlineUsers.some((user) => user.userId === userId) &&
+        onlineUsers.push({
+            userId,
+            socketId: socket.id
+        });
 
-//     socket.on("addNewUser", (userId) => {
-//         !onlineUsers.some((user) => user.userId === userId) &&
-//         onlineUsers.push({
-//             userId,
-//             socketId: socket.id
-//         });
+        io.emit("getOnlineUsers", onlineUsers);
+    });
 
-//         io.emit("getOnlineUsers", onlineUsers);
-//     });
+    socket.on("sendMessage", (message) => {
+        const user = onlineUsers.find(user => user.userId === message.recipientId);
 
-//     socket.on("sendMessage", (message) => {
-//         const user = onlineUsers.find(user => user.userId === message.recipientId);
+        if(user) {
+            io.to(user.socketId).emit("getMessage", message);
+            io.to(user.socketId).emit("getNotification", {
+                senderId: message.senderId,
+                isRead: false,
+                date: new Date(),
+                text: message.text,
+                chatId: message.chatId
+            });
+        }
+    });
 
-//         if(user) {
-//             io.to(user.socketId).emit("getMessage", message);
-//             io.to(user.socketId).emit("getNotification", {
-//                 senderId: message.senderId,
-//                 isRead: false,
-//                 date: new Date(),
-//                 text: message.text,
-//                 chatId: message.chatId
-//             });
-//         }
-//     });
+    socket.on("disconnect", () => {
+        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
 
-//     socket.on("disconnect", () => {
-//         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
-
-//         io.emit("getOnlineUsers", onlineUsers);
-//     })
-// });
+        io.emit("getOnlineUsers", onlineUsers);
+    })
+});
