@@ -19,6 +19,7 @@ import s3Routes from './routes/s3.route.js';
 import { initializeSocket } from './config/socketConfig.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 
 dotenv.config({ path: '../.env' });
 
@@ -43,6 +44,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('trust proxy', 1); // Trust the first proxy
 
@@ -67,7 +69,6 @@ app.use(session({
 app.use((req, res, next) => {
   console.log('Cookies:', req.cookies);
   console.log('Session ID:', req.sessionID);
-  console.log('Session Data:', req.session);
   next();
 });
 
