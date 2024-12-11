@@ -20,6 +20,7 @@ export const checkAuth = (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json({ authenticated: true, user: req.user });
   } else {
+    console.log("User not authenticated [auth.controller.js]");
     res.status(401).json({ authenticated: false });
   }
 };
