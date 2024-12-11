@@ -81,15 +81,15 @@ app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
 
-// // Serve static files from the React app
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-// app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// Serve static files from the React app
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// // Catch-all handler to serve the index.html file for all non-API routes
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
-// });
+// Catch-all handler to serve the index.html file for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
 
 // Start the server
 const server = httpServer.listen(port, () => {
