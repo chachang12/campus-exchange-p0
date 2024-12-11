@@ -32,18 +32,29 @@ const httpServer = createServer(app);
 connectDB();
 
 // CORS configuration
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     const allowedOrigins = [
+//       'https://campus-exchange-p0.onrender.com',
+//       'https://campus-exchange-p0-1.onrender.com'
+//     ];
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+// }));
+
+
 app.use(cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      'https://campus-exchange-p0.onrender.com',
-      'https://campus-exchange-p0-1.onrender.com'
-    ];
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'https://campus-exchange-p0.onrender.com',
+    'https://campus-exchange-p0-1.onrender.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -81,15 +92,15 @@ app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
 
-// Serve static files from the React app
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// // Serve static files from the React app
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Catch-all handler to serve the index.html file for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
-});
+// // Catch-all handler to serve the index.html file for all non-API routes
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+// });
 
 // Start the server
 const server = httpServer.listen(port, () => {
