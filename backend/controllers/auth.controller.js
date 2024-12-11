@@ -1,18 +1,27 @@
 // backend/controllers/auth.controller.js
 
 import passport from 'passport';
+import dotenv from 'dotenv';
+
+// Ensure the correct .env file is loaded
+const ENV = process.env.NODE_ENV || 'development';
+let envFile = '../.env.development';
+if (ENV === 'production') {
+  envFile = '../.env.production';
+}
+dotenv.config({ path: envFile });
 
 export const googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
 
-export const googleAuthCallback = passport.authenticate('google', { failureRedirect: 'https://campus-exchange-p0-1.onrender.com/login' });
+export const googleAuthCallback = passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_URL}/login` });
 
 export const googleAuthRedirect = (req, res) => {
   if (req.isAuthenticated()) {
     console.log('User authenticated [auth.controller.js]:', req.user);
-    res.redirect('https://campus-exchange-p0-1.onrender.com/profile');
+    res.redirect(`${process.env.FRONTEND_URL}/profile`); // Use environment variable
   } else {
     console.log('Authentication failed. [auth.controller.js]');
-    res.redirect('/login');
+    res.redirect(`${process.env.FRONTEND_URL}/login`);
   }
 };
 
@@ -28,14 +37,9 @@ export const checkAuth = (req, res) => {
 export const logout = (req, res) => {
   req.logout((err) => {
     if (err) {
-      return res.status(500).json({ message: 'Logout failed' });
+      console.error('Logout Error:', err);
+      return res.status(500).json({ message: 'Error logging out.' });
     }
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Session destruction failed' });
-      }
-      res.clearCookie('connect.sid', { path: '/' }); // Ensure the path matches your session cookie
-      res.status(200).json({ message: 'Logout successful' });
-    });
+    res.redirect(`${process.env.FRONTEND_URL}/login`);
   });
 };
