@@ -25,7 +25,7 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: 'https://campus-exchange-p0.onrender.com/auth/google/callback',
 }, async (accessToken, refreshToken, profile, done) => {
-  console.log('Profile: ' profile);
+  console.log('Profile: ', profile);
   try {
     const existingUser = await User.findOne({ googleId: profile.id });
     if (existingUser) return done(null, existingUser);
