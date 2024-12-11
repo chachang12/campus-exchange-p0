@@ -107,40 +107,47 @@ const server = httpServer.listen(port, () => {
   console.log(`Server started at https://campus-exchange-p0.onrender.com`);
 });
 
-const io = new Server(server, { cors: "https://campus-exchange-p0-1.onrender.com" });
+// const io = new Server(server, { cors: 
+//   {
+//     "https://campus-exchange-p0-1.onrender.com",
+//     methods: ["GET", "POST"],
+//     credentials: true
 
-let onlineUsers = [];
+//   }
+//  });
 
-io.on("connection", (socket) => {
+// let onlineUsers = [];
 
-    socket.on("addNewUser", (userId) => {
-        !onlineUsers.some((user) => user.userId === userId) &&
-        onlineUsers.push({
-            userId,
-            socketId: socket.id
-        });
+// io.on("connection", (socket) => {
 
-        io.emit("getOnlineUsers", onlineUsers);
-    });
+//     socket.on("addNewUser", (userId) => {
+//         !onlineUsers.some((user) => user.userId === userId) &&
+//         onlineUsers.push({
+//             userId,
+//             socketId: socket.id
+//         });
 
-    socket.on("sendMessage", (message) => {
-        const user = onlineUsers.find(user => user.userId === message.recipientId);
+//         io.emit("getOnlineUsers", onlineUsers);
+//     });
 
-        if(user) {
-            io.to(user.socketId).emit("getMessage", message);
-            io.to(user.socketId).emit("getNotification", {
-                senderId: message.senderId,
-                isRead: false,
-                date: new Date(),
-                text: message.text,
-                chatId: message.chatId
-            });
-        }
-    });
+//     socket.on("sendMessage", (message) => {
+//         const user = onlineUsers.find(user => user.userId === message.recipientId);
 
-    socket.on("disconnect", () => {
-        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
+//         if(user) {
+//             io.to(user.socketId).emit("getMessage", message);
+//             io.to(user.socketId).emit("getNotification", {
+//                 senderId: message.senderId,
+//                 isRead: false,
+//                 date: new Date(),
+//                 text: message.text,
+//                 chatId: message.chatId
+//             });
+//         }
+//     });
 
-        io.emit("getOnlineUsers", onlineUsers);
-    })
-});
+//     socket.on("disconnect", () => {
+//         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
+
+//         io.emit("getOnlineUsers", onlineUsers);
+//     })
+// });
