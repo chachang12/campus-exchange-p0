@@ -16,17 +16,25 @@ export const googleAuthRedirect = (req, res) => {
   }
 };
 
+export const checkAuth = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({ authenticated: true, user: req.user });
+  } else {
+    res.status(401).json({ authenticated: false });
+  }
+};
+
 export const logout = (req, res) => {
-    req.logout((err) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Logout failed' });
+    }
+    req.session.destroy((err) => {
       if (err) {
-        return res.status(500).json({ message: 'Logout failed' });
+        return res.status(500).json({ message: 'Session destruction failed' });
       }
-      req.session.destroy((err) => {
-        if (err) {
-          return res.status(500).json({ message: 'Session destruction failed' });
-        }
-        res.clearCookie('connect.sid', { path: '/' }); // Ensure the path matches your session cookie
-        res.status(200).json({ message: 'Logout successful' });
-      });
+      res.clearCookie('connect.sid', { path: '/' }); // Ensure the path matches your session cookie
+      res.status(200).json({ message: 'Logout successful' });
     });
+  });
 };

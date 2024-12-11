@@ -10,33 +10,33 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // frontend/src/context/UserContext.jsx
+  const checkUserLoggedIn = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get('https://campus-exchange-p0.onrender.com/auth/check', {
+        withCredentials: true,
+      });
+      const data = res.data;
+      setUser(data.user);
+      if (data.user) {
+        Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'None' });
+      }
+    } catch (error) {
+      console.error('Error checking user:', error);
+      setUser(null);
+      Cookies.remove('user');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('https://campus-exchange-p0.onrender.com/user/current', {
-          withCredentials: true,
-        });
-        if (response.data) {
-          setUser(response.data);
-          Cookies.set('user', JSON.stringify(response.data), { expires: 7, secure: true, sameSite: 'None' });
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-        setUser(null);
-        Cookies.remove('user');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const storedUser = Cookies.get('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       setLoading(false);
     } else {
-      fetchUser();
+      checkUserLoggedIn();
     }
   }, []);
 
@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, logout, loading }}>
+    <UserContext.Provider value={{ user, setUser, login, logout, loading, checkUserLoggedIn }}>
       {children}
     </UserContext.Provider>
   );

@@ -27,9 +27,8 @@ const App = () => {
 
   const shouldHideNavbar = hideNavbarRoutes.some(route => matchPath(route, location.pathname));
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // Ensure that you are not immediately redirected to the home page after logging in
+  if (loading) { return null; }
 
   return (
     <ChatContextProvider user={user}>
