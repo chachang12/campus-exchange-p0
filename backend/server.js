@@ -32,24 +32,6 @@ const httpServer = createServer(app);
 connectDB();
 
 // CORS configuration
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     const allowedOrigins = [
-//       'https://campus-exchange-p0.onrender.com',
-//       'https://campus-exchange-p0-1.onrender.com'
-//     ];
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-// }));
-
-
 app.use(cors({
   origin: [
     'https://campus-exchange-p0.onrender.com',
@@ -81,7 +63,9 @@ app.use(session({
   }),
 }));
 
+// Middleware to log cookies
 app.use((req, res, next) => {
+  console.log('Cookies:', req.cookies);
   console.log('Session ID:', req.sessionID);
   console.log('Session Data:', req.session);
   next();
