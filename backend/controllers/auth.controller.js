@@ -4,7 +4,7 @@ import passport from 'passport';
 
 export const googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
 
-export const googleAuthCallback = passport.authenticate('google', { failureRedirect: '/' });
+export const googleAuthCallback = passport.authenticate('google', { failureRedirect: 'https://campus-exchange-p0-1.onrender.com/login' });
 
 export const googleAuthRedirect = (req, res) => {
   if (req.isAuthenticated()) {
