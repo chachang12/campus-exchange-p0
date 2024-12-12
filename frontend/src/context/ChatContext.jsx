@@ -6,8 +6,9 @@ import axios from 'axios';
 
 export const ChatContext = createContext();
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://localhost:8080',
   // baseURL: 'https://campus-exchange-p0.onrender.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, // Ensure cookies are sent with requests
 });
 
@@ -32,8 +33,9 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     try {
-      const newSocket = io("http://localhost:8080", {
+      // const newSocket = io("http://localhost:8080", {
         // const newSocket = io("https://campus-exchange-p0.onrender.com", {
+        const newSocket = io("/", {
         reconnectionAttempts: 1,
         timeout: 10000,
       });

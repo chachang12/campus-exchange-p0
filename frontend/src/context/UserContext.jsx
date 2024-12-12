@@ -1,61 +1,66 @@
+// frontend/src/context/UserContext.jsx
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const UserContext = createContext();
 
+// Create an Axios instance with baseURL set to '/'
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Relative base URL
+  withCredentials: true, // Ensure cookies are sent with requests
+});
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
-        // const { data } = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
-
-        console.log('User data: ', data);
-        setUser(data);
-        Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
-      } catch (error) {
-        setUser(null);
-        Cookies.remove('user'); // Remove user session from cookies if fetch fails
-      } finally {
-        setLoading(false);
+  const checkUserLoggedIn = async () => {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get('/auth/check'); // Updated to include /api/
+      const data = res.data;
+      setUser(data.user);
+      if (data.user) {
+        Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'None' });
       }
-    };
+    } catch (error) {
+      console.error('Error checking user:', error);
+      setUser(null);
+      Cookies.remove('user');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     const storedUser = Cookies.get('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       setLoading(false);
     } else {
-      fetchUser();
+      checkUserLoggedIn();
     }
   }, []);
 
-  const login = async (credentials) => {
-    try {
-      const { data } = await axios.post('http://localhost:8080/auth/login', credentials, { withCredentials: true });
-      setUser(data);
-      Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
-    } catch (error) {
-      console.error('Login error:', error);
-    }
+  const login = async () => {
+    // Redirect to Google OAuth using relative path with /api/
+    window.location.href = '/api/auth/google';
   };
 
   const logout = async () => {
     try {
-      await axios.get('http://localhost:8080/auth/logout', { withCredentials: true });
+      await axiosInstance.get('/auth/logout'); // Updated to include /api/
       setUser(null);
-      Cookies.remove('user'); // Remove user session from cookies
+      Cookies.remove('user');
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, logout, loading }}>
+    <UserContext.Provider value={{ user, setUser, login, logout, loading, checkUserLoggedIn }}>
       {children}
     </UserContext.Provider>
   );

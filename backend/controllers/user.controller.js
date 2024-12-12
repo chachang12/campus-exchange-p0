@@ -4,18 +4,23 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 
+// backend/controllers/user.controller.js
+
 export const getCurrentUser = async (req, res) => {
     try {
-        if (req.isAuthenticated()) {
-            res.json(req.user); // Send user data as JSON
-        } else {
-            res.status(401).json({ success: false, message: 'Unauthorized: User is not authenticated' });
-        }
+        
+      console.log('Authenticated: [user.controller]', req.isAuthenticated());
+      console.log('User: [user.controller]', req.user);
+      if (req.isAuthenticated()) {
+        res.json(req.user);
+      } else {
+        res.status(401).json({ success: false, message: 'Unauthorized [user.controller]: User is not authenticated' });
+      }
     } catch (error) {
-        console.error('Error fetching current user:', error);
-        res.status(500).json({ success: false, message: 'Server error: Unable to fetch current user', error: error.message });
+      console.error('Error fetching current user:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
     }
-};
+  };
 
 export const findUser = async(req, res) => {
     const userId = req.params.userId;

@@ -1,15 +1,16 @@
 import axios from 'axios';
 
-// Set the base URL for Axios
+console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
+
+// Set the base URL for Axios using Vite's environment variables
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
-  // baseURL: 'https://campus-exchange-p0.onrender.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Use VITE_API_BASE_URL
   withCredentials: true, // Ensure cookies are sent with requests
 });
 
 export const fetchProducts = async () => {
   try {
-    const res = await axiosInstance.get('/api/products');
+    const res = await axiosInstance.get('/products');
     return res.data.data;
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -29,7 +30,7 @@ export const createProduct = async (newProduct) => {
   }
 
   try {
-    const res = await axiosInstance.post('/api/products', newProduct, {
+    const res = await axiosInstance.post('/products', newProduct, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -43,7 +44,7 @@ export const createProduct = async (newProduct) => {
 
 export const deleteProduct = async (pid) => {
   try {
-    const res = await axiosInstance.delete(`/api/products/${pid}`);
+    const res = await axiosInstance.delete(`/products/${pid}`);
     return res.data;
   } catch (error) {
     console.error('Error deleting product:', error);
@@ -53,7 +54,7 @@ export const deleteProduct = async (pid) => {
 
 export const updateProduct = async (pid, updatedProduct) => {
   try {
-    const res = await axiosInstance.put(`/api/products/${pid}`, updatedProduct, {
+    const res = await axiosInstance.put(`/products/${pid}`, updatedProduct, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -67,7 +68,7 @@ export const updateProduct = async (pid, updatedProduct) => {
 
 export const getProductsByCreatorId = async (creatorId) => {
   try {
-    const res = await axiosInstance.get(`/api/products/creator/${creatorId}`);
+    const res = await axiosInstance.get(`/products/creator/${creatorId}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -87,7 +88,7 @@ export const getUserById = async (userId) => {
 
 export const getProductById = async (productId) => {
   try {
-    const res = await axiosInstance.get(`/api/products/${productId}`);
+    const res = await axiosInstance.get(`/products/${productId}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching product:', error);
@@ -107,7 +108,7 @@ export const updateUserUniversity = async (userId, universityId) => {
 
 export const fetchUniversities = async () => {
   try {
-    const res = await axiosInstance.get('/api/universities');
+    const res = await axiosInstance.get('/universities');
     return res.data.data;
   } catch (error) {
     console.error('Error fetching universities:', error);
@@ -117,7 +118,7 @@ export const fetchUniversities = async () => {
 
 export const createReview = async (reviewData) => {
   try {
-    const res = await axiosInstance.post('/api/reviews', reviewData);
+    const res = await axiosInstance.post('/reviews', reviewData);
     return res.data;
   } catch (error) {
     console.error('Error creating review:', error);
@@ -127,7 +128,7 @@ export const createReview = async (reviewData) => {
 
 export const getReviewsByUser = async (userId) => {
   try {
-    const res = await axiosInstance.get(`/api/reviews/user/${userId}`);
+    const res = await axiosInstance.get(`/reviews/user/${userId}`);
     return res.data.data;
   } catch (error) {
     console.error('Error fetching reviews by user:', error);
@@ -137,7 +138,7 @@ export const getReviewsByUser = async (userId) => {
 
 export const getReviewsByProduct = async (productId) => {
   try {
-    const res = await axiosInstance.get(`/api/reviews/product/${productId}`);
+    const res = await axiosInstance.get(`/reviews/product/${productId}`);
     return res.data.data;
   } catch (error) {
     console.error('Error fetching reviews by product:', error);
@@ -181,7 +182,7 @@ export const uploadImage = async (file) => {
   formData.append('image', file);
 
   try {
-    const res = await axiosInstance.post('/api/s3/upload', formData, {
+    const res = await axiosInstance.post('/s3/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -198,7 +199,7 @@ export const uploadProfilePicture = async (file) => {
   formData.append('image', file);
 
   try {
-    const res = await axiosInstance.post('/api/s3/upload-profile-picture', formData, {
+    const res = await axiosInstance.post('/s3/upload-profile-picture', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
