@@ -8,7 +8,7 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <div className='fixed inset-x-0 bottom-6 flex justify-center'>
+    <div className='fixed inset-x-0 bottom-6 z-50 flex justify-center'>
       <div className='flex flex-row justify-center space-x-8 backdrop-blur-md bg-opacity-50 bg-[#1F1F1F] w-[365px] rounded-full py-2 border border-white border-opacity-40'>
         <div className={location.pathname === '/create' ? 'p-1 rounded-full bg-white' : 'p-1 rounded-full border-transparent'}>
           <TagIcon color={location.pathname === '/create' ? '#1A1E26' : 'white'} className='w-[35px] relative z-10 top-1' onClick={() => navigate('/create')} />

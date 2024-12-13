@@ -52,38 +52,37 @@ const httpServer = createServer(app);
 connectDB();
 
 // Middleware to parse JSON and cookies
-// app.use(express.json());
-// app.use(cookieParser());
+app.use(express.json());
+app.use(cookieParser());
 
 // Trust the first proxy (useful if behind a proxy like Nginx)
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 
 // Create Redis client
-// const redisClient = createClient({ url: process.env.REDIS_URL });
-// redisClient.connect().catch(console.error);
+const redisClient = createClient({ url: process.env.REDIS_URL });
+redisClient.connect().catch(console.error);
 
 // Use Redis for session storage
-// app.use(session({
-//   secret: process.env.SESSION_SECRET,
-//   resave: false,
-//   saveUninitialized: false,
-//   store: new RedisStore({ client: redisClient }),
-//   cookie: {
-//     maxAge: 24 * 60 * 60 * 1000, // 1 day
-//     sameSite: 'none',
-//     secure: true,
-//     domain: 'onrender.com'
-//   }
-// }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new RedisStore({ client: redisClient }),
+  // cookie: {
+  //   maxAge: 24 * 60 * 60 * 1000, // 1 day
+  //   sameSite: 'none',
+  //   secure: true,
+  // }
+}));
 
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+// app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 // Initialize Passport for authentication
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cors({
-  origin: [process.env.CLIENT_BASE_URL_FTB, process.env.CLIENT_BASE_URL ],
+  origin: [ 'http://localhost:5173', 'http://localhost:8080' ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
