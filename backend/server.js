@@ -20,18 +20,6 @@ import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import initializeSocket from './config/socket.js'; // Use default import
 
-
-dotenv.config();
-
-// Determine the environment
-const ENV = process.env.NODE_ENV || 'development';
-
-// Set the path to the appropriate .env file within the backend directory
-let envFile = './.env.development';
-if (ENV === 'production') {
-  envFile = './.env.production';
-}
-
 // Load environment variables from the specified .env file
 dotenv.config({ path: './.env.production' });
 
@@ -48,14 +36,12 @@ const httpServer = createServer(app);
 // Connect to the database
 connectDB();
 
-
 // Middleware to parse JSON and cookies
 app.use(express.json());
 app.use(cookieParser());
 
 // Trust the first proxy (useful if behind a proxy like Nginx)
 app.set('trust proxy', 1);
-
 
 // Middleware to log cookies and session ID
 app.use((req, res, next) => {
@@ -83,9 +69,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.use(cors({
-  origin: process.env.VITE_CORS_ORIGIN,
+  origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -100,7 +85,6 @@ app.use('/api/products', productRoutes);
 app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
-
 
 // Start the server
 const server = httpServer.listen(port, () => {
