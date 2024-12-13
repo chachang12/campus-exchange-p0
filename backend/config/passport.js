@@ -19,12 +19,18 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    scope: ['profile', 'email'], // Request email scope
   },
   async (accessToken, refreshToken, profile, cb) => {
     try {
-      const user = await User.findOrCreate(profile);
+      const email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
+      if (!email) {
+        throw new Error('Email is required');
+      }
+      const user = await User.findOrCreate(profile, email);
       return cb(null, user);
     } catch (err) {
+      console.error('Error in Google OAuth strategy:', err);
       return cb(err, null);
     }
   }
