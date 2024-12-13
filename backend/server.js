@@ -23,7 +23,7 @@ import initializeSocket from './config/socket.js'; // Use default import
 // Load environment variables from the specified .env file
 dotenv.config({ path: './.env.production' });
 
-console.log(`Running in ${ENV} mode`);
+console.log(`Running in PRODUCTION mode`);
 console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
 
 // Initialize Express app
