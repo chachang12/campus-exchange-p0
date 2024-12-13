@@ -15,12 +15,12 @@ router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: process.env.CLIENT_BASE_URL + "/login" }),
+  passport.authenticate("google", { failureRedirect: process.env.CLIENT_BASE_URL_FTB + "/login" }),
   async function (req, res) {
     req.session.loggedIn = true;
     req.session.user = req.user; // Set the session user as the newly logged-in user
     await req.session.save(); // Save the session after successful authentication
-    res.redirect(process.env.CLIENT_BASE_URL + "/home");
+    res.redirect(process.env.CLIENT_BASE_URL_FTB + "/home");
   }
 );
 
