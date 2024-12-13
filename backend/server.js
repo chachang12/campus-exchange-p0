@@ -33,7 +33,7 @@ if (ENV === 'production') {
 }
 
 // Load environment variables from the specified .env file
-dotenv.config({ path: envFile });
+dotenv.config({ path: './.env.production' });
 
 console.log(`Running in ${ENV} mode`);
 console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
@@ -74,8 +74,8 @@ app.use(session({
   }),
   cookie: {
     maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: 'lax', // Adjust based on your needs
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    sameSite: 'none', // Adjust based on your needs
+    secure: true, // Use secure cookies in production
   }
 }));
 

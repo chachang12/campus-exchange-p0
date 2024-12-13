@@ -4,12 +4,7 @@ import dotenv from "dotenv";
 
 const router = express.Router();
 
-const ENV = process.env.NODE_ENV || 'development';
-let envFile = './.env.development';
-if (ENV === 'production') {
-  envFile = './.env.production';
-}
-dotenv.config({ path: envFile });
+dotenv.config({ path: './.env.production' });
 
 router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 
