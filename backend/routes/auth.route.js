@@ -11,7 +11,8 @@ router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: process.env.CLIENT_BASE_URL + "/login" }),
-  function (req, res) {
+  async function (req, res) {
+    await req.session.save(); // Save the session after successful authentication
     res.redirect(process.env.CLIENT_BASE_URL);
   }
 );
@@ -20,8 +21,8 @@ router.get("/check", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json({ authenticated: true, user: req.user });
   } else {
-      res.send({ user: null });
-    }
+    res.send({ user: null });
+  }
 });
 
 router.get("/logout", (req, res) => {
