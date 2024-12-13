@@ -9,8 +9,8 @@ import googlelogo from '../assets/google.png';
 const LoginPage = () => {
 
     const handleLogin = () => {
-        // Use updated relative path with /api/ prefix for Google OAuth
-        window.open("/api/auth/google", "_self");
+        const backendUrl = import.meta.env.VITE_API_BASE_URL;
+        window.open(`${backendUrl}auth/google`, "_self");
     };
 
     return (
