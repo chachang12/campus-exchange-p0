@@ -13,7 +13,7 @@ router.get(
   passport.authenticate("google", { failureRedirect: process.env.CLIENT_BASE_URL + "/login" }),
   async function (req, res) {
     req.session.loggedIn = true;
-    req.session.user = user;
+    req.session.user = req.user; // Set the session user as the newly logged-in user
     await req.session.save(); // Save the session after successful authentication
     res.redirect(process.env.CLIENT_BASE_URL);
   }
