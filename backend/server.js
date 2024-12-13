@@ -14,11 +14,11 @@ import './config/passport.js';
 import reviewRoutes from './routes/review.route.js';
 import s3Routes from './routes/s3.route.js';
 import cors from 'cors';
-import MongoStore from 'connect-mongo';
+import RedisStore from 'connect-redis';
+import { createClient } from 'redis';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
-import initializeSocket from './config/socket.js'; // Use default import
 
 // Load environment variables from the specified .env file
 dotenv.config({ path: './.env.production' });
@@ -43,25 +43,20 @@ app.use(cookieParser());
 // Trust the first proxy (useful if behind a proxy like Nginx)
 app.set('trust proxy', 1);
 
-// Middleware to log cookies and session ID
-app.use((req, res, next) => {
-  // console.log('Cookies:', req.cookies);
-  // console.log('Session ID:', req.session);
-  next();
-});
+// Create Redis client
+const redisClient = createClient({ url: process.env.REDIS_URL });
+redisClient.connect().catch(console.error);
 
+// Use Redis for session storage
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: false, // Do not save session if unmodified
-  saveUninitialized: false, // Do not create session until something stored
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URI,
-    collectionName: 'sessions',
-  }),
+  resave: false,
+  saveUninitialized: false,
+  store: new RedisStore({ client: redisClient }),
   cookie: {
     maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: 'none', // Adjust based on your needs
-    secure: true, // Use secure cookies in production
+    sameSite: 'none',
+    secure: true,
   }
 }));
 
@@ -70,7 +65,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: process.env.CLIENT_BASE_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
