@@ -15,7 +15,6 @@ if (ENV === 'production') {
 // Load environment variables from the specified .env file
 dotenv.config({ path: envFile });
 
-
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -23,16 +22,7 @@ passport.use(new GoogleStrategy({
   },
   async (accessToken, refreshToken, profile, cb) => {
     try {
-      let user = await User.findOne({ googleId: profile.id });
-      if (!user) {
-        user = await User.create({
-          googleId: profile.id,
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
-          email: profile.emails[0].value,
-          profilePicture: profile.photos[0].value,
-        });
-      }
+      const user = await User.findOrCreate(profile);
       return cb(null, user);
     } catch (err) {
       return cb(err, null);
