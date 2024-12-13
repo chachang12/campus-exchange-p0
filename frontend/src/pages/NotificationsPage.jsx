@@ -4,28 +4,35 @@ import { ChatContext } from "../context/ChatContext";
 import { useUser } from "../context/UserContext";
 import { unreadNotificationsFunc } from "../utils/unreadNotifications";
 import moment from "moment";
-
 import { useNavigate } from 'react-router-dom';
+import { unreadNotificationsSpecificChat } from "../utils/unreadNotifications";
 
 
 
 const NotificationsPage = () => {
     const {user} = useUser();
-    const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead } = useContext(ChatContext);
-
-    const unreadNotifications = unreadNotificationsFunc(notifications, user);
+    const {notifications, userChats, allUsers, markAllNotificationsAsRead, updateCurrentChat, markThisChatNotificationsAsRead } = useContext(ChatContext);
     const navigate = useNavigate();
 
+    const handleNotiClick = (chatId) => {
+        const thisChat = userChats.find((ch) => ch?._id === chatId)
+        const unreadNotifications = unreadNotificationsSpecificChat(notifications, user, thisChat);
 
-    const modifiedNotifications = notifications.map((n) => {
-        const sender = allUsers.find((user) => user._id === n.senderId)
+        updateCurrentChat(thisChat);
+        markThisChatNotificationsAsRead(unreadNotifications, notifications, thisChat)
+        navigate(`/chat/${chatId}`);
+    };
 
-        return{
-            ...n,
-            senderName: sender?.firstName,
-            senderPicture: sender?.profilePicture,
-        };
-    });
+
+    const modifiedNotifications = notifications
+        .filter((n) => n.senderId !== user._id) // Exclude notifications from the current user
+        .map((n) => {
+            const sender = allUsers.find((user) => user._id === n.senderId);
+            return {
+                ...n,
+                senderName: sender?.firstName,
+            };
+        });
 
 
     return ( <div className="text-white">
@@ -41,14 +48,13 @@ const NotificationsPage = () => {
                 {modifiedNotifications?.length === 0 ? <div className="absolute inset-0 flex items-center justify-center">No new notifications</div> : null}
                 {modifiedNotifications && modifiedNotifications.map((n, index) => {
 
-                    return <div onClick = {()=> navigate(`/chat/${n.chatId}`)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
-
+                    return <div onClick = {()=> handleNotiClick(n.chatId)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
                         <img src={n.senderPicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
                         <div className="flex-1">
                             <div>{`${n.senderName}`}</div>
                             <div className="text-gray-300 text-sm truncate">{`${n.text}`}</div>
                         </div>
-                        <div className="text-gray-400 text-xs absolute top-2 right-2">{moment(n.date).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}</div>
+                        <div className="text-gray-400 text-xs absolute top-2 right-2">{moment(n.createdAt).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}</div>
                         {n.isRead ? null : <div className="absolute top-8 right-2 rounded-full bg-blue-500 w-4 h-4"> </div>}
                     </div>
                 })}

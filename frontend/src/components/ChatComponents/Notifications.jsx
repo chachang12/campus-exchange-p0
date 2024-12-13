@@ -11,14 +11,15 @@ const Notification = () => {
     const {notifications, userChats, allUsers, markAllNotificationsAsRead, markNotificationAsRead } = useContext(ChatContext);
     const unreadNotifications = unreadNotificationsFunc(notifications, user);
 
-    const modifiedNotifications = notifications.map((n) => {
-        const sender = allUsers.find((user) => user._id == n.senderId)
-
-        return{
-            ...n,
-            senderName: sender?.firstName
-        };
-    });
+    const modifiedNotifications = notifications
+        .filter((n) => n.senderId !== user._id)
+        .map((n) => {
+            const sender = allUsers.find((user) => user._id === n.senderId);
+            return {
+                ...n,
+                senderName: sender?.firstName,
+            };
+        });
 
 
     return ( <div className="text-white">
