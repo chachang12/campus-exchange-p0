@@ -14,11 +14,12 @@ import './config/passport.js';
 import reviewRoutes from './routes/review.route.js';
 import s3Routes from './routes/s3.route.js';
 import cors from 'cors';
-import RedisStore from 'connect-redis';
+import {RedisStore} from "connect-redis"
 import { createClient } from 'redis';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
+import initializeSocket from './config/socket.js';
 
 // Load environment variables from the specified .env file
 dotenv.config({ path: './.env.production' });
