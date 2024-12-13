@@ -20,11 +20,8 @@ router.get("/check", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json({ authenticated: true, user: req.user });
   } else {
-    if (req.session && req.session.passport) {
-      console.log("User not authenticated");
+      res.send({ user: null });
     }
-    res.status(401).json({ authenticated: false });
-  }
 });
 
 router.get("/logout", (req, res) => {
