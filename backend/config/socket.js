@@ -11,7 +11,7 @@ dotenv.config({ path: envFile });
 const initializeSocket = (server) => {
   const io = new Server(server, { 
     cors: {
-      origin: process.env.CLIENT_BASE_URL_FTB,
+      origin: process.env.CLIENT_BASE_URL,
       methods: ["GET", "POST"],
       credentials: true
     }
