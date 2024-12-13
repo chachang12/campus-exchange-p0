@@ -23,7 +23,7 @@ router.get("/check", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json({ authenticated: true, user: req.user });
   } else {
-    res.send({ user: null });
+    res.status(401).json({ message: 'Not authenticated' });
   }
 });
 
