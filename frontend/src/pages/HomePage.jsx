@@ -6,7 +6,6 @@ import { useUser } from "../context/UserContext";
 import { Logo } from "../components/icons";
 import { CategoriesScrollBar } from "../components/HomePageComponents";
 import { Link } from "react-router-dom";
-import './HomePage.css'
 import { useNavigate } from "react-router-dom";
 import { IoNotifications } from "react-icons/io5";
 import { ChatContext } from "../context/ChatContext";
@@ -20,7 +19,7 @@ const HomePage = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const { notifications } = useContext(ChatContext)
 
-  const unreadNotifications = unreadNotificationsFunc(notifications, user);
+  const unreadNotifications = unreadNotificationsFunc(notifications, user); // Should this be in a use effect?
   const navigate = useNavigate();
 
   const categories = [
@@ -37,6 +36,7 @@ const HomePage = () => {
         const products = await fetchProducts();
         setProducts(products);
         setFilteredProducts(products);
+        console.log("products", products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -56,7 +56,7 @@ const HomePage = () => {
     }
   }, [selectedCategories, products]);
 
-  console.log("products", products);
+  
 
   return (
     <div className="">

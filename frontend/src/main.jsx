@@ -7,15 +7,12 @@ import './index.css';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from './context/UserContext';
 
-
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-
+  // <StrictMode>
+    <BrowserRouter>
       <UserProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </UserProvider>
-
-  </StrictMode>
+    </BrowserRouter>
+  // </StrictMode>
 );

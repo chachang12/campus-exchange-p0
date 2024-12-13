@@ -1,14 +1,14 @@
 import express from 'express';
-import { getCurrentUser, findUser, getUsers, getUserById, updateUserUniversity, addFavorite, removeFavorite, getFavorites, updateUser } from '../controllers/user.controller.js';
+import { findUser, getUsers, getUserById, updateUserUniversity, addFavorite, removeFavorite, getFavorites,  } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
-router.get('/current', getCurrentUser); 
+// router.get('/current', getCurrentUser); 
 router.get('/find/:userId', findUser);
-router.get('/', getUsers);
+router.get('/getAllUsers', getUsers);
 router.get('/:id', getUserById);
 router.put('/:id/university', updateUserUniversity);
-router.put('/:id', updateUser); 
+// router.put('/:id', updateUser); 
 router.post('/favorites/add', addFavorite); 
 router.post('/favorites/remove', removeFavorite);
 router.get('/:userId/favorites', getFavorites);

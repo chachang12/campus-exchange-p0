@@ -1,10 +1,7 @@
 import express from 'express';
 import { getProducts, createProduct, updateProduct, deleteProduct, getProductsByCreatorId, getProductById } from '../controllers/product.controller.js';
-import { ensureAuthenticated } from '../middleware/authMiddleware.js';
 
 const router = express.Router(); // Initializes the express router
-
-router.use(ensureAuthenticated); // Protects the routes below this line
 
 router.get('/', getProducts);
 

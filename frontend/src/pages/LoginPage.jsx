@@ -10,7 +10,7 @@ const LoginPage = () => {
 
     const handleLogin = () => {
         // Use updated relative path with /api/ prefix for Google OAuth
-        window.location.href = '/api/auth/google';
+        window.open("/api/auth/google", "_self");
     };
 
     return (
