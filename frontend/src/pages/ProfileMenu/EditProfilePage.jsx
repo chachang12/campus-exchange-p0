@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useUser } from '../../context/UserContext';
-import { updateUser } from '../../utils/fetchUtils';
+import { updateUser, uploadProfilePicture } from '../../utils/fetchUtils';
 import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from "react-icons/sl";
 import ProfilePicturePopup from './ProfilePicturePopup';
@@ -15,7 +15,14 @@ const EditProfilePage = () => {
 
   const handleProfilePictureUpload = async (file) => {
     try {
-      // Your upload logic here
+      const response = await uploadProfilePicture(file);
+      if (response.success) {
+        const updatedUser = { ...user, profilePicture: response.imageUrl };
+        setUser(updatedUser);
+        alert('Profile picture uploaded successfully');
+      } else {
+        alert(`Error: ${response.message}`);
+      }
     } catch (error) {
       console.error('Error uploading profile picture:', error);
       alert('Error uploading profile picture.');

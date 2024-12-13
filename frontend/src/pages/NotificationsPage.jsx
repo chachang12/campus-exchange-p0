@@ -31,6 +31,7 @@ const NotificationsPage = () => {
             return {
                 ...n,
                 senderName: sender?.firstName,
+                senderPicture: sender?.profilePicture,
             };
         });
 
