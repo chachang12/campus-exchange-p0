@@ -1,7 +1,7 @@
 import express from 'express';
-import { Server } from "socket.io"
+import session from 'express-session';
 import dotenv from 'dotenv';
-import cors from 'cors';
+import passport from 'passport';
 import { createServer } from 'http';
 import { connectDB } from './config/db.js';
 import productRoutes from './routes/product.route.js';
@@ -10,17 +10,40 @@ import authRoutes from './routes/auth.route.js';
 import chatRoutes from './routes/chat.route.js';
 import messageRoutes from './routes/message.route.js';
 import universityRoutes from './routes/university.route.js';
-import passport from 'passport';
 import './config/passport.js';
-import session from 'express-session';
 import reviewRoutes from './routes/review.route.js';
 import s3Routes from './routes/s3.route.js';
-import { initializeSocket } from './config/socketConfig.js';
+import cors from 'cors';
+import {RedisStore} from "connect-redis"
+import { createClient } from 'redis';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
+import initializeSocket from './config/socket.js';
 
-dotenv.config({ path: '../.env' });
+dotenv.config();
 
+// Determine the environment
+const ENV = process.env.NODE_ENV || 'development';
+
+// Set the path to the appropriate .env file within the backend directory
+let envFile = './.env.development';
+if (ENV === 'production') {
+  envFile = './.env.production';
+}
+
+// Load environment variables from the specified .env file
+dotenv.config({ path: envFile });
+
+console.log(`Running in ${ENV} mode`);
+console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
+
+console.log(process.env.CLIENT_BASE_URL_FTB);
+
+// Initialize Express app
 const app = express();
 const port = process.env.PORT || 8080;
+
 
 // Create HTTP server
 const httpServer = createServer(app);
@@ -28,111 +51,70 @@ const httpServer = createServer(app);
 // Connect to the database
 connectDB();
 
-// app.use(cors({
-//   origin: 'https://localhost:5173',
-//   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-//   allowedHeaders: ['Content-Type', 'Access-Control-Allow-Credentials'],
-//   credentials: true,
-// }));
+// Middleware to parse JSON and cookies
+// app.use(express.json());
+// app.use(cookieParser());
 
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://localhost:5173',
-    'https://campus-exchange-p0.onrender.com',
-  ];
-  
-  app.use(
-    cors({
-      origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin) || !origin) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-    })
-  );
+// Trust the first proxy (useful if behind a proxy like Nginx)
+// app.set('trust proxy', 1);
 
-app.use(express.json());
+// Create Redis client
+// const redisClient = createClient({ url: process.env.REDIS_URL });
+// redisClient.connect().catch(console.error);
 
+// Use Redis for session storage
 // app.use(session({
 //   secret: process.env.SESSION_SECRET,
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: { secure: false },
+//   resave: false,
+//   saveUninitialized: false,
+//   store: new RedisStore({ client: redisClient }),
+//   cookie: {
+//     maxAge: 24 * 60 * 60 * 1000, // 1 day
+//     sameSite: 'none',
+//     secure: true,
+//     domain: 'onrender.com'
+//   }
 // }));
 
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
-app.set('trust proxy', 1); // Trust the first proxy
-
-app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        secure: true,      // Ensure the browser only sends the cookie over HTTPS
-        sameSite: 'none',  // Allow sending cookies in cross-origin requests
-      },
-    })
-  );
-
+// Initialize Passport for authentication
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(cors({
+  origin: [process.env.CLIENT_BASE_URL_FTB, process.env.CLIENT_BASE_URL ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Prefix all API routes with /api/
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api/messages', messageRoutes);
 app.use('/api/products', productRoutes);
-app.use('/user', userRoutes);
-app.use('/auth', authRoutes);
-app.use('/chats', chatRoutes);
-app.use('/messages', messageRoutes);
 app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
 
+const __dirname = path.resolve();
+
+// Adjust the path to serve static files from the correct location
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+// Catch-all handler to serve index.html for any route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+});
+
+
+
 // Start the server
 const server = httpServer.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
+  console.log(`Server started on port ${port}`);
 });
 
-const io = new Server(server, { cors: "https://localhost:5173" });
-
-let onlineUsers = [];
-
-io.on("connection", (socket) => {
-
-    socket.on("addNewUser", (userId) => {
-        !onlineUsers.some((user) => user.userId === userId) &&
-        onlineUsers.push({
-            userId,
-            socketId: socket.id
-        });
-
-        io.emit("getOnlineUsers", onlineUsers);
-    });
-
-//add message
-
-    socket.on("sendMessage", (message) => {
-        const user = onlineUsers.find(user => user.userId === message.recipientId);
-
-        if(user) {
-            io.to(user.socketId).emit("getMessage", message);
-            io.to(user.socketId).emit("getNotification", {
-                senderId: message.senderId,
-                isRead: false,
-                date: new Date(),
-                text: message.text,
-                chatId: message.chatId
-            });
-        }
-    });
-
-    socket.on("disconnect", () => {
-        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
-
-        io.emit("getOnlineUsers", onlineUsers);
-    })
-});
+// Initialize Socket.io
+initializeSocket(httpServer);

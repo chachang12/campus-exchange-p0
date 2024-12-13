@@ -1,3 +1,5 @@
+// frontend/src/pages/LoginPage.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CXLogo from '../components/icons/Logo';
@@ -7,8 +9,8 @@ import googlelogo from '../assets/google.png';
 const LoginPage = () => {
 
     const handleLogin = () => {
-        // window.location.href = 'http://localhost:8080/auth/google';
-        window.location.href = 'https://campus-exchange-p0.onrender.com/auth/google';
+        const backendUrl = import.meta.env.VITE_API_BASE_URL;
+        window.open(`/api/auth/google`, "_self");
     };
 
     return (
@@ -17,7 +19,6 @@ const LoginPage = () => {
                 <CXLogo className='' width="100" height="100" fill="white" />
                 <div>
                     <h1 className='text-3xl mt-4'>Sign In</h1>
-                    {/* <h1 className='text-3xl'>Campus Exchange</h1> */}
                 </div>
             </div>
             <div className='flex flex-row gap-2 mb-20'>

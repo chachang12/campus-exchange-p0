@@ -24,27 +24,6 @@ const ChatWindow = () => {
   }
 
   useEffect(() => {
-    if (chatId) {
-      const chat = userChats.find(chat => chat._id === chatId);
-      if (chat) {
-        updateCurrentChat(chat);
-      }
-    }
-  }, [chatId, userChats, updateCurrentChat]);
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const chatBox = document.getElementById('chat-box');
-  //     if (chatBox) {
-  //       chatBox.scrollTop = chatBox.scrollHeight;
-  //     }
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
-
-  useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }

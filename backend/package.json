@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "set NODE_ENV=development&& nodemon server.js",
+    "start": "set NODE_ENV=production&& node server.js"
   },
   "type": "module",
   "keywords": [],
@@ -17,9 +18,12 @@
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "connect-mongo": "^5.1.0",
+    "connect-redis": "^8.0.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "express-session": "^1.18.1",
     "google-auth-library": "^9.14.2",
     "googleapis": "^144.0.0",
@@ -29,6 +33,7 @@
     "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "redis": "^4.7.0",
     "socket-io": "^1.0.0",
     "socket.io": "^4.8.1",
     "uuid": "^11.0.3"

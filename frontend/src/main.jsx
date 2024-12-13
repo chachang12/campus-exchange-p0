@@ -3,19 +3,16 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-import { AuthContextProvider } from './context/AuthContext';
+
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from './context/UserContext';
 
-
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-      {/* <AuthContextProvider> */}
+  // <StrictMode>
+    <BrowserRouter>
       <UserProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </UserProvider>
-      {/* </AuthContextProvider> */}
-  </StrictMode>
+    </BrowserRouter>
+  // </StrictMode>
 );

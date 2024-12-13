@@ -4,51 +4,40 @@ import Cookies from 'js-cookie';
 
 const UserContext = createContext();
 
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true, // Ensure cookies are sent with requests
+});
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const checkUserLoggedIn = async () => {
+      setLoading(true);
       try {
-        // const { data } = await axios.get('http://localhost:8080/user/current', { withCredentials: true });
-        const { data } = await axios.get('https://campus-exchange-p0.onrender.com/user/current', { withCredentials: true });
-
-        console.log('User data: ', data);
-        setUser(data);
-        Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
+        const res = await axiosInstance.get("/auth/check");
+        const data = await res.data;
+        setUser(data.user);
       } catch (error) {
-        setUser(null);
-        Cookies.remove('user'); // Remove user session from cookies if fetch fails
+        console.log("Check user logged in error:", error);
       } finally {
         setLoading(false);
       }
     };
-
-    const storedUser = Cookies.get('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setLoading(false);
-    } else {
-      fetchUser();
-    }
+    checkUserLoggedIn();
   }, []);
 
-  const login = async (credentials) => {
-    try {
-      const { data } = await axios.post('https://campus-exchange-p0.onrender.com/auth/login', credentials, { withCredentials: true });
-      setUser(data);
-      Cookies.set('user', JSON.stringify(data), { expires: 7 }); // Store user session in cookies
-    } catch (error) {
-      console.error('Login error:', error);
-    }
+  const login = async () => {
+    window.location.href = '/auth/google';
   };
 
   const logout = async () => {
     try {
-      await axios.get('https://campus-exchange-p0.onrender.com/auth/logout', { withCredentials: true });
+      await axiosInstance.get('/auth/logout');
       setUser(null);
-      Cookies.remove('user'); // Remove user session from cookies
+      Cookies.remove('user');
     } catch (error) {
       console.error('Logout error:', error);
     }
