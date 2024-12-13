@@ -6,9 +6,8 @@ import Cookies from 'js-cookie';
 
 const UserContext = createContext();
 
-// Create an Axios instance with baseURL set to '/'
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // Relative base URL
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, // Ensure cookies are sent with requests
 });
 
@@ -16,42 +15,29 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const checkUserLoggedIn = async () => {
-    setLoading(true);
-    try {
-      const res = await axiosInstance.get('/auth/check'); // Updated to include /api/
-      const data = res.data;
-      setUser(data.user);
-      if (data.user) {
-        Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'None' });
-      }
-    } catch (error) {
-      console.error('Error checking user:', error);
-      setUser(null);
-      Cookies.remove('user');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    const storedUser = Cookies.get('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setLoading(false);
-    } else {
-      checkUserLoggedIn();
-    }
+    const checkUserLoggedIn = async () => {
+      setLoading(true);
+      try {
+        const res = await axiosInstance.get("/auth/check");
+        const data = await res.data;
+        setUser(data.user);
+      } catch (error) {
+        console.log("Check user logged in error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkUserLoggedIn();
   }, []);
 
   const login = async () => {
-    // Redirect to Google OAuth using relative path with /api/
-    window.location.href = '/api/auth/google';
+    window.location.href = '/auth/google';
   };
 
   const logout = async () => {
     try {
-      await axiosInstance.get('/auth/logout'); // Updated to include /api/
+      await axiosInstance.get('/auth/logout');
       setUser(null);
       Cookies.remove('user');
     } catch (error) {

@@ -4,24 +4,6 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 
-// backend/controllers/user.controller.js
-
-export const getCurrentUser = async (req, res) => {
-    try {
-        
-      console.log('Authenticated: [user.controller]', req.isAuthenticated());
-      console.log('User: [user.controller]', req.user);
-      if (req.isAuthenticated()) {
-        res.json(req.user);
-      } else {
-        res.status(401).json({ success: false, message: 'Unauthorized [user.controller]: User is not authenticated' });
-      }
-    } catch (error) {
-      console.error('Error fetching current user:', error);
-      res.status(500).json({ success: false, message: 'Server error' });
-    }
-  };
-
 export const findUser = async(req, res) => {
     const userId = req.params.userId;
     try
@@ -153,28 +135,28 @@ export const getFavorites = async (req, res) => {
     }
 };
 
-export const updateUser = async (req, res) => {
-    const { id } = req.params;
-    const { firstName, lastName, profilePicture, review } = req.body;
+// export const updateUser = async (req, res) => {
+//     const { id } = req.params;
+//     const { firstName, lastName, profilePicture, review } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ success: false, message: 'Invalid User ID' });
-    }
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//         return res.status(400).json({ success: false, message: 'Invalid User ID' });
+//     }
 
-    try {
-        const updatedUser = await User.findByIdAndUpdate(
-            id,
-            { firstName, lastName, profilePicture, review },
-            { new: true }
-        );
+//     try {
+//         const updatedUser = await User.findByIdAndUpdate(
+//             id,
+//             { firstName, lastName, profilePicture, review },
+//             { new: true }
+//         );
 
-        if (!updatedUser) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
+//         if (!updatedUser) {
+//             return res.status(404).json({ success: false, message: 'User not found' });
+//         }
 
-        res.status(200).json({ success: true, data: updatedUser });
-    } catch (error) {
-        console.error(`Error updating user: ${error.message}`);
-        res.status(500).json({ success: false, message: 'Server Error' });
-    }
-};
+//         res.status(200).json({ success: true, data: updatedUser });
+//     } catch (error) {
+//         console.error(`Error updating user: ${error.message}`);
+//         res.status(500).json({ success: false, message: 'Server Error' });
+//     }
+// };

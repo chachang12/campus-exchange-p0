@@ -33,25 +33,23 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     try {
-      // const newSocket = io("http://localhost:8080", {
-        // const newSocket = io("https://campus-exchange-p0.onrender.com", {
-        const newSocket = io("/", {
+      const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
         reconnectionAttempts: 1,
         timeout: 10000,
       });
-
+  
       newSocket.on("connect_error", (error) => {
         console.error("Socket connection error:", error);
         setSocket(null);
       });
-
+  
       newSocket.on("connect_failed", () => {
         console.error("Socket connection failed");
         setSocket(null);
       });
-
+  
       setSocket(newSocket);
-
+  
       return () => {
         newSocket.disconnect();
       };
@@ -60,9 +58,10 @@ export const ChatContextProvider = ({ children, user }) => {
     }
   }, [user]);
 
+    // Very much required but theres got to be a better or more defined way to do this. Maybe query for smth more specific than all users.
   useEffect(() => {
     const getUsers = async () => {
-      const response = await axiosInstance.get(`/user`);
+      const response = await axiosInstance.get(`/user/GetAllUsers`);
       if (response.error) {
         return console.log("Error fetching users", response);
       }
@@ -87,27 +86,6 @@ export const ChatContextProvider = ({ children, user }) => {
 
     getUsers();
   }, [userChats]);
-
-  // useEffect(() => {
-  //   const getUserChats = async () => {
-  //     if (user?._id) {
-  //       setIsUserChatsLoading(true);
-  //       setUserChatsError(null);
-
-  //       const response = await axiosInstance.get(`/chats/${user?._id}`);
-
-  //       setIsUserChatsLoading(false);
-
-  //       if (response.error) {
-  //         return setUserChatsError(response.data);
-  //       }
-
-  //       setUserChats(response.data);
-  //     }
-  //   };
-
-  //   getUserChats();
-  // }, [user], [userChats]);
 
   useEffect(() => {
     const getUserChats = async () => {

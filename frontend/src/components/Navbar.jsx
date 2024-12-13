@@ -1,10 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUser } from "../context/UserContext";
 
 import { HomeIcon, ProfileIcon, SearchIcon, TagIcon, MessageIcon } from '../components/icons';
 
 const Navbar = () => {
-  const { user } = useUser();
 
   const navigate = useNavigate();
   const location = useLocation();
