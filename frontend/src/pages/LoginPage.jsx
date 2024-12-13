@@ -10,7 +10,7 @@ const LoginPage = () => {
 
     const handleLogin = () => {
         const backendUrl = import.meta.env.VITE_API_BASE_URL;
-        window.open(`${backendUrl}auth/google`, "_self");
+        window.open(`/api/auth/google`, "_self");
     };
 
     return (

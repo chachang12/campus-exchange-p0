@@ -3,7 +3,18 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 import User from "../models/user.model.js";
 
-dotenv.config({ path: './.env.production' });
+// Determine the environment
+const ENV = process.env.NODE_ENV || 'development';
+
+// Set the path to the appropriate .env file within the backend directory
+let envFile = './.env.development';
+if (ENV === 'production') {
+  envFile = './.env.production';
+}
+
+// Load environment variables from the specified .env file
+dotenv.config({ path: envFile });
+
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
