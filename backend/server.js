@@ -45,8 +45,8 @@ app.set('trust proxy', 1);
 
 // Middleware to log cookies and session ID
 app.use((req, res, next) => {
-  // console.log('Cookies:', req.cookies);
-  // console.log('Session ID:', req.session);
+  console.log('Cookies:', req.cookies);
+  console.log('Session ID:', req.session);
   next();
 });
 
