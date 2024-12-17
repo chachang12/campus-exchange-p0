@@ -52,7 +52,7 @@ const ChatWindow = () => {
       Loading messages...
     </div>
   ) : (
-    <section className="flex flex-col h-screen items-center">
+    <section className="flex flex-col h-screen min-h-[700px] items-center">
       <section className="fixed top-0 w-full z-10">
         <ChatHeader />
       </section>
