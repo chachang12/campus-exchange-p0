@@ -17,7 +17,8 @@ const SearchPage = () => {
         try {
           const products = await fetchProducts();
           const filteredProducts = products.filter(product =>
-            product.name.toLowerCase().includes(query.toLowerCase())
+            product.name.toLowerCase().includes(query.toLowerCase()) ||
+            product.categories.some(category => category.toLowerCase().includes(query.toLowerCase()))
           );
           setResults(filteredProducts);
         } catch (error) {
@@ -62,7 +63,7 @@ const SearchPage = () => {
               </Link>
             ))
           ) : (
-            <p className="text-xl text-center font-bold text-darkgray mt-4">No results found.</p>
+            <p>No results found.</p>
           )}
         </div>
       )}
