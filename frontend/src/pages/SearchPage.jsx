@@ -63,7 +63,7 @@ const SearchPage = () => {
               </Link>
             ))
           ) : (
-            <p>No results found.</p>
+            <p className="text-xl text-center font-bold text-darkgray mt-4">No products found.</p>
           )}
         </div>
       )}
