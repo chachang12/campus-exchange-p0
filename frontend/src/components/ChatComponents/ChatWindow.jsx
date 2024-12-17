@@ -52,7 +52,7 @@ const ChatWindow = () => {
       Loading messages...
     </div>
   ) : (
-    <section className="flex flex-col h-screen min-h-[700px] items-center">
+    <section className="flex flex-col h-screen min-h-[700px] items-center p-4">
       <section className="fixed top-0 w-full z-10">
         <ChatHeader />
       </section>
@@ -69,7 +69,7 @@ const ChatWindow = () => {
         ))}
         <div ref={messagesEndRef} />
       </section>
-      <section className="chat-input p-2 flex items-center fixed bottom-0 w-full mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+      <section className="chat-input p-2 flex items-center fixed bottom-0 w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
         <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
         <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => sendTextMessage(textMessage, user, currentChat._id, setTextMessage)}>
           <FaArrowUp />
