@@ -34,11 +34,11 @@ const ChatWindow = () => {
         Loading messages...
     </div>
     ) : (
-    <section className="flex flex-col h-screen items-center">
-      <section className="fixed w-full">
+    <section className="flex flex-col h-full items-center">
+      <section className="fixed w-full flex-shrink-0">
         <ChatHeader />
       </section>
-        <section id="chat-box" className="overscroll-y-auto flex-1 pb-14 flex-col p-4 items-start w-full pt-[90px]">
+        <section id="chat-box" className="overscroll-y-auto flex-1 pb-20 flex-col p-4 items-start w-full pt-24">
         {messages && messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "text-right" : "text-left"}`}>
             <div className={`inline-block px-4 py-2 rounded-full ${message?.senderId === user?._id ? "bg-blue-500 text-white" : "bg-gray-700 text-white"}`}>

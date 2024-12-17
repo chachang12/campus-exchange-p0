@@ -163,10 +163,10 @@ const ProductPage = () => {
 
       <div className={`fixed z-50 pl-4 pr-4 left-0 bottom-0 w-full overflow-hidden transition-all duration-500 origin-bottom bg-[#121212] ${isChatExpanded ? "scale-y-100 h-[100vh]" : "scale-y-0 h-0"}`}>
         {doesChatExist? (
-          <div><img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} /><ChatBox></ChatBox></div>
+          <div><img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => {setIsChatExpanded((curr) => !curr); updateCurrentChat(null)}} /><ChatBox></ChatBox></div>
         ) : (
           <div>
-            <img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => setIsChatExpanded((curr) => !curr)} />
+            <img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => {setIsChatExpanded((curr) => !curr); updateCurrentChat(null)}} />
               <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
                 <div className="flex items-center space-x-3">
                 <img crossOrigin="anonymous" src={creator?.profilePicture} alt="creator" className='rounded-full w-[40px] h-[40px] object-cover object-center' />

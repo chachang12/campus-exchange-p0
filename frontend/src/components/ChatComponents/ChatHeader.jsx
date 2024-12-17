@@ -20,7 +20,7 @@ const ChatHeader = () => {
 
   return (
     <div className="flex items-center p-4 w-full backdrop-blur bg-opacity-30" >
-      <div className='mr-4'>
+      <div onClick={() => updateCurrentChat(null)} className='mr-4'>
         <BackButton />
       </div>
       
