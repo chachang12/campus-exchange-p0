@@ -121,10 +121,11 @@ const ProductPage = () => {
       </div>
 
       <div className='flex flex-row justify-between mb-4'>
-        <button onClick={() => { setIsChatExpanded((curr) => !curr); checkExistingChat() }} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
+        {user?._id == creator?._id ? null : 
+          <button onClick={() => { setIsChatExpanded((curr) => !curr); checkExistingChat() }} className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
           <FiMessageCircle size={20} />
           <span>Message</span>
-        </button>
+        </button>}
         <button className='flex items-center py-2 px-4 outline outline-1 outline-gray-500 rounded-full bg-[#1F1F1F] gap-1'>
           <IoIosShareAlt size={20} />
           <span>Share</span>
