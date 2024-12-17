@@ -29,16 +29,34 @@ const ChatWindow = () => {
     }
   }, [messages]);
 
-  return isMessagesLoading? (
+  useEffect(() => {
+    const handleResize = () => {
+      const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      document.documentElement.style.width = `${w}px`;
+      document.documentElement.style.height = `${h}px`;
+      document.body.style.width = `${w}px`;
+      document.body.style.height = `${h}px`;
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call to set the dimensions
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return isMessagesLoading ? (
     <div className="text-center text-white">
-        Loading messages...
+      Loading messages...
     </div>
-    ) : (
-    <section className="flex flex-col h-full items-center">
-      <section className="fixed w-full flex-shrink-0">
+  ) : (
+    <section className="flex flex-col h-screen items-center">
+      <section className="fixed top-0 w-full z-10">
         <ChatHeader />
       </section>
-        <section id="chat-box" className="overscroll-y-auto flex-1 pb-20 flex-col p-4 items-start w-full pt-24">
+      <section id="chat-box" className="flex-1 overflow-y-auto w-full pt-24 pb-20">
         {messages && messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "text-right" : "text-left"}`}>
             <div className={`inline-block px-4 py-2 rounded-full ${message?.senderId === user?._id ? "bg-blue-500 text-white" : "bg-gray-700 text-white"}`}>
@@ -51,7 +69,7 @@ const ChatWindow = () => {
         ))}
         <div ref={messagesEndRef} />
       </section>
-      <section className="p-2 flex items-center fixed bottom-0 h=[5%] w-[95%] mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
+      <section className="chat-input p-2 flex items-center fixed bottom-0 w-full mb-2 border border-white border-opacity-20 rounded-full bg-[#1A1E26] backdrop-blur-md bg-opacity-30">
         <input className="flex-1 px-2 py-2 rounded-full bg-inherit text-white outline-none" placeholder="Message" type="text" value={textMessage} onChange={(e) => setTextMessage(e.target.value)} />
         <button className="ml-4 p-2 bg-blue-500 text-white rounded-full" onClick={() => sendTextMessage(textMessage, user, currentChat._id, setTextMessage)}>
           <FaArrowUp />
