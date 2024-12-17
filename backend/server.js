@@ -81,12 +81,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use(cors({
-//   origin: [ 'http://localhost:5173', 'http://localhost:8080' ],
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-// }));
+app.use(cors({
+  origin: [ 'http://localhost:5173', 'http://localhost:8080' ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Prefix all API routes with /api/
 app.use('/api/user', userRoutes);

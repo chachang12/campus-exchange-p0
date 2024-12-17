@@ -23,11 +23,21 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const categories = [
-    "Clothing",
-    "Shoes",
-    "Textbooks",
-    "Electronics",
-    "Household",
+    "Clothing",  
+    "Shoes",  
+    "Textbooks",  
+    "Books",  
+    "Electronics",  
+    "Household",  
+    "Notes",  
+    "Service",  
+    "Furniture",  
+    "Accessories",  
+    "Cosmetics",  
+    "Sports",  
+    "Games",  
+    "Music",  
+    "Automotive",  
   ];
 
   useEffect(() => {

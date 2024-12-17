@@ -75,7 +75,7 @@ const ProfileMenu = () => {
           View Favorited Listings
           <SlArrowRight size={20} />
         </button>
-        <button
+        {/* <button
           className={buttonStyle}
           onClick={handleViewActiveListings}
         >
@@ -88,14 +88,14 @@ const ProfileMenu = () => {
         >
           View Archived Listings
           <SlArrowRight size={20} />
-        </button>
-        <button
+        </button> */}
+        {/* <button
           className={buttonStyle}
           onClick={handleViewReviews}
         >
           View Reviews
           <SlArrowRight size={20} />
-        </button>
+        </button> */}
       </div>
       <button
         className="w-full py-2 px-4 bg-red-500 text-white rounded-lg mt-4"
