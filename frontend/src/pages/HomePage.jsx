@@ -100,7 +100,7 @@ const HomePage = () => {
         </section>
       </div>
       
-      <div className="flex flex-col gap-4 p-4 bg-inherit mt-[125px] items-center">
+      <div className="flex flex-col gap-4 p-8 bg-inherit mt-[145px] items-center">
         {filteredProducts.map((product) => (
           <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
             <ProductCard product={product} />

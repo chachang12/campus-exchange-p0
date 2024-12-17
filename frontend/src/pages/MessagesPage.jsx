@@ -34,7 +34,7 @@ const MessagesPage = () => {
                         ))
                     ) : (
                         <div className='flex flex-col justify-center items-center space-y-3 pt-5'>
-                            <p className="text-white">No conversations found.</p>
+                            <p className="text-xl text-center font-bold text-darkgray mt-4">No messages found.</p>
                         </div>
                     )
                 }
