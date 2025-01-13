@@ -59,15 +59,15 @@ app.use(cookieParser());
 app.set('trust proxy', 1);
 
 // Create Redis client
-const redisClient = createClient({ url: process.env.REDIS_URL });
-redisClient.connect().catch(console.error);
+// const redisClient = createClient({ url: process.env.REDIS_URL });
+// redisClient.connect().catch(console.error);
 
 // Use Redis for session storage
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: new RedisStore({ client: redisClient }),
+  // store: new RedisStore({ client: redisClient }),
   // cookie: {
   //   maxAge: 24 * 60 * 60 * 1000, // 1 day
   //   sameSite: 'none',
