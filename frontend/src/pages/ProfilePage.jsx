@@ -116,7 +116,7 @@ const Profile = () => {
                 ))}
               </div>
             ) : (
-              <p>No listings found.</p>
+              <p className="text-xl text-center font-bold text-darkgray mt-4">No listings found.</p>
             )}
           </div>
         ) : (
@@ -136,7 +136,7 @@ const Profile = () => {
                 ))}
               </div>
             ) : (
-              <p>No reviews found.</p>
+              <p className="text-xl text-center font-bold text-darkgray mt-4">No reviews found.</p>
             )}
           </div>
         )}

@@ -5,10 +5,10 @@ import { ChatContext } from '../../context/ChatContext';
 
 const BackButton = () => {
   const navigate = useNavigate();
-  const {updateCurrentChat} = useContext(ChatContext);
+  // const {updateCurrentChat} = useContext(ChatContext);
 
   const handleClick = () => {
-    updateCurrentChat(null);
+    // updateCurrentChat(null);
     navigate(-1);
   }
 

@@ -40,6 +40,8 @@ export const useFetchRecipientUser = (chat, user) => {
     getUser();
   }, [recipientId]);
 
+  //put this in its own file eventually
+
   useEffect(() => {
     const getProduct = async () => {
       if (!productId) return null;
