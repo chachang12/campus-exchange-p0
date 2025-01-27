@@ -18,9 +18,6 @@ if (ENV === 'production') {
 // Load environment variables from the specified .env file
 dotenv.config({ path: envFile });
 
-console.log(`Running in ${ENV} mode`);
-console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
-
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(
@@ -28,8 +25,21 @@ router.get(
   passport.authenticate("google", { failureRedirect: process.env.CLIENT_BASE_URL_FTB + "/login" }),
   async function (req, res) {
     req.session.loggedIn = true;
-    req.session.user = req.user; // Set the session user as the newly logged-in user
-    await req.session.save(); // Save the session after successful authentication
+    req.session.user = req.user;
+    await req.session.save();
+    res.redirect(process.env.CLIENT_BASE_URL_FTBH);
+  }
+);
+
+router.get("/microsoft", passport.authenticate("microsoft", { scope: ["user.read"] }));
+
+router.get(
+  "/microsoft/callback",
+  passport.authenticate("microsoft", { failureRedirect: process.env.CLIENT_BASE_URL_FTB + "/login" }),
+  async function (req, res) {
+    req.session.loggedIn = true;
+    req.session.user = req.user;
+    await req.session.save();
     res.redirect(process.env.CLIENT_BASE_URL_FTBH);
   }
 );

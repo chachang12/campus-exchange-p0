@@ -1,16 +1,19 @@
-// frontend/src/pages/LoginPage.jsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CXLogo from '../components/icons/Logo';
-import './WelcomePage.css'; 
+import './WelcomePage.css';
 import googlelogo from '../assets/google.png';
+import microsoft from '../assets/microsoft.png';
+
 
 const LoginPage = () => {
 
-    const handleLogin = () => {
-        const backendUrl = import.meta.env.VITE_API_BASE_URL;
+    const handleGoogleLogin = () => {
         window.open(`/api/auth/google`, "_self");
+    };
+
+    const handleMicrosoftLogin = () => {
+        window.open(`/api/auth/microsoft`, "_self");
     };
 
     return (
@@ -22,9 +25,13 @@ const LoginPage = () => {
                 </div>
             </div>
             <div className='flex flex-row gap-2 mb-20'>
-                <button onClick={handleLogin} className='flex flex-row gap-2 border-white px-8 py-4 rounded-full border-[0.5px]'>
+                <button onClick={handleGoogleLogin} className='flex flex-row gap-2 border-white px-8 py-4 rounded-full border-[0.5px]'>
                     <img src={googlelogo} alt="google" className="w-6 h-6" />
                     <h1>Login with Google</h1>
+                </button>
+                <button onClick={handleMicrosoftLogin} className='flex flex-row gap-2 border-white px-8 py-4 rounded-full border-[0.5px] items-center'>
+                    <img src={microsoft} alt="microsoft" className="w-6 h-6" />
+                    <h1>Login with Microsoft</h1>
                 </button>
             </div>
         </div>

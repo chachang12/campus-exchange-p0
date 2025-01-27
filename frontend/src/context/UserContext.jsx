@@ -6,7 +6,7 @@ const UserContext = createContext();
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true, // Ensure cookies are sent with requests
+  withCredentials: true,
 });
 
 export const UserProvider = ({ children }) => {
@@ -29,8 +29,12 @@ export const UserProvider = ({ children }) => {
     checkUserLoggedIn();
   }, []);
 
-  const login = async () => {
+  const loginWithGoogle = async () => {
     window.location.href = '/auth/google';
+  };
+
+  const loginWithMicrosoft = async () => {
+    window.location.href = '/auth/microsoft';
   };
 
   const logout = async () => {
@@ -44,7 +48,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, logout, loading }}>
+    <UserContext.Provider value={{ user, setUser, loginWithGoogle, loginWithMicrosoft, logout, loading }}>
       {children}
     </UserContext.Provider>
   );

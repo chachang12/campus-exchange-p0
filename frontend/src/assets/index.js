@@ -6,6 +6,7 @@ import close from './close.png';
 import share from './share.png';
 import edit from './edit.png';
 import deleteIcon from './delete.png';
+import microsoft from './microsoft.png';
 
 
 export {
@@ -16,5 +17,6 @@ export {
     close,
     share,
     edit,
-    deleteIcon
+    deleteIcon,
+    microsoft
 };
