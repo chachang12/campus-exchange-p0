@@ -35,8 +35,11 @@ const userSchema = mongoose.Schema({
     favorites: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
-    }]
-    // Add other fields as necessary
+    }],
+    isAdmin : {
+        type: Boolean,
+        default: false
+    }
 });
 
 // Static method to find or create a user based on Google profile

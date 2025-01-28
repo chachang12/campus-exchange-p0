@@ -15,6 +15,8 @@ import EditProfilePage from './pages/ProfileMenu/EditProfilePage';
 import OtherUserProfilePage from './pages/OtherUserProfilePage';
 import ChatActions from './components/ChatComponents/ChatActions';
 import ReviewCreationPage from './pages/ReviewCreationPage';
+import BugReportPage from './pages/BugReportPage.jsx';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 
 const App = () => {
   const { user, loading } = useUser();
@@ -22,6 +24,7 @@ const App = () => {
   const hideNavbarRoutes = ['/welcome', '/login', '/register', '/chat/:chatId'];
 
   const shouldHideNavbar = hideNavbarRoutes.some(route => matchPath(route, location.pathname));
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   // Ensure that you are not immediately redirected to the home page after logging in
   if (loading) { return null; }
@@ -37,10 +40,11 @@ const App = () => {
           element={
             <ChatContextProvider user={user}>
               <div className="h-screen font-inter bg-[#121212]">
-                {!shouldHideNavbar && <Navbar />}
+                {!shouldHideNavbar && !isAdminRoute && <Navbar />}
                 <Routes>
                   <Route path="/" element={user ? <HomePage /> : <Navigate to="/welcome" />} />
                   <Route path="home" element={user ? <HomePage /> : <Navigate to="/login" />} />
+                  <Route path="/admin/*" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/home" />} />
                   <Route path="/create" element={user ? <CreatePage /> : <Navigate to="/login" />} />
                   <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
                   <Route path="/messages" element={<MessagesPage />} />
@@ -55,6 +59,7 @@ const App = () => {
                   <Route path="/user/:userId" element={<OtherUserProfilePage />} />
                   <Route path="/write-review" element={<ReviewCreationPage />} />
                   <Route path="/notifications" element={user ? <NotificationsPage /> : <Navigate to="/login" />} />
+                  <Route path="/bug-report" element={<BugReportPage />} />
                 </Routes>
               </div>
             </ChatContextProvider>

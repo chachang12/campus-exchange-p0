@@ -33,10 +33,12 @@ const ProfileMenu = () => {
     navigate('/account-settings');
   };
 
-  const handleViewArchivedListings = () => {
+  const handleViewBugReportMenu = () => {
     // Navigate to archived listings page
-    navigate('/archived-listings');
+    navigate('/bug-report');
   };
+
+  
 
   const buttonStyle = 'flex justify-between w-full py-2 px-4 text-white text-left';
   return (
@@ -73,6 +75,13 @@ const ProfileMenu = () => {
           onClick={handleViewFavoritedListings}
         >
           View Favorited Listings
+          <SlArrowRight size={20} />
+        </button>
+        <button
+          className={buttonStyle}
+          onClick={handleViewBugReportMenu}
+        >
+          Report a Bug
           <SlArrowRight size={20} />
         </button>
         {/* <button

@@ -20,6 +20,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import initializeSocket from './config/socket.js';
+import bugReportRoutes from './routes/bugReport.route.js';
+
 
 dotenv.config();
 
@@ -97,6 +99,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
+app.use('/api/bug-reports', bugReportRoutes);
 
 // const __dirname = path.resolve();
 
