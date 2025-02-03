@@ -50,14 +50,16 @@ const ChatBox = () => {
             </div>
             <section className="flex-1 p-4 overflow-y-auto">
                 {messages && messages.map((message, index) => (
-                    <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "text-right" : "text-left"}`}>
-                        <div className={`inline-block px-4 py-2 rounded-full ${message?.senderId === user?._id ? "bg-blue-500 text-white" : "bg-gray-700 text-white"}`}>
-                            {message.text}
-                        </div>
-                        <div className="text-gray-400 text-xs mt-1">
-                            {moment(message.createdAt).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}
-                        </div>
+                <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "flex justify-end" : "flex justify-start"}`}>
+                    <div className={`flex flex-col w-9/12 ${message?.senderId === user?._id ? "items-end" : "items-start"}`}>
+                    <div className={`inline-block s:max-w-md px-4 py-2 rounded-2xl ${message?.senderId === user?._id ? "bg-blue-500 text-white" : "bg-gray-700 text-white"}`}>
+                        {message.text}
                     </div>
+                    <div className="text-gray-400 text-xs mt-1">
+                        {moment(message.createdAt).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}
+                    </div>
+                    </div>
+                </div>
                 ))}
                 <div ref={messagesEndRef} />
             </section>

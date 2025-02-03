@@ -98,15 +98,15 @@ app.use('/api/universities', universityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/s3', s3Routes);
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
-// Adjust the path to serve static files from the correct location
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// // Adjust the path to serve static files from the correct location
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// Catch-all handler to serve index.html for any route
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
-});
+// // Catch-all handler to serve index.html for any route
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+// });
 
 
 
