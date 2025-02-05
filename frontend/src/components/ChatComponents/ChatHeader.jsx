@@ -31,8 +31,6 @@ const ChatHeader = () => {
               {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}
             </div>
         </div>
-
-      
     </div>
   );
 };

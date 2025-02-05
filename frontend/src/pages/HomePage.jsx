@@ -100,25 +100,29 @@ const HomePage = () => {
         </section>
       </div>
       
-      <div className="flex flex-col gap-4 p-8 bg-inherit mt-[145px] items-center">
-        {filteredProducts.map((product) => (
-          <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
-            <ProductCard product={product} />
-          </Link>
-        ))}
-        {filteredProducts.length === 0 && (
-          <p className="text-xl text-center font-bold text-darkgray mt-4">No products found.</p>
-        )}
-        <span className="flex flex-col items-center">
-          <h1 className="text-gray-500 font-light mb-2">
-            You've reached the end of the page.
-          </h1>
-          <div className='mb-[100px]'>
-            <Logo fill={'white'} width={40} height={40} />
-          </div>
-
-        </span>
+      <div className="flex justify-center w-full p-8 bg-inherit mt-[145px]">
+        <div className="w-[1280px]">
+          {filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
+              {filteredProducts.map((product) => (
+                <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
+                  <ProductCard product={product} />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xl text-center font-bold text-darkgray mt-4">No products found.</p>
+          )}
+        </div>
       </div>
+      <span className="flex flex-col items-center">
+            <h1 className="text-gray-500 font-light mb-2">
+              You've reached the end of the page.
+            </h1>
+            <div className='mb-[100px]'>
+              <Logo fill={'white'} width={40} height={40} />
+            </div>
+          </span>
     </div>
   );
 };

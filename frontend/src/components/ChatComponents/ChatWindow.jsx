@@ -5,12 +5,11 @@ import { ChatContext } from "../../context/ChatContext";
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
 import moment from "moment";
 import { FaArrowUp } from "react-icons/fa6";
-import ChatHeader from "./ChatHeader";
+import { SlArrowLeft } from 'react-icons/sl';
 
 const ChatWindow = () => {
   const { user } = useUser();
-  const { userChats, currentChat, isMessagesLoading, messages, sendTextMessage, updateCurrentChat, product, isUserChatsLoading } = useContext(ChatContext);
-  const { chatId } = useParams();
+  const { userChats, currentChat, isMessagesLoading, messages, sendTextMessage, updateCurrentChat, product, isProductLoading } = useContext(ChatContext);
   const { recipientUser } = useFetchRecipientUser(currentChat, user);
   const [textMessage, setTextMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -23,7 +22,7 @@ const ChatWindow = () => {
   }
 
   useEffect(() => {
-    if (userChats && window.innerWidth > 640) {
+    if (userChats && window.innerWidth > 640 && !currentChat) {
       updateCurrentChat(userChats[0])
     }
   })
@@ -34,17 +33,18 @@ const ChatWindow = () => {
     }
   }, [messages]);
 
-  if (isMessagesLoading) {
-    return (
-      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 m:hidden">
-        Loading messages...
-      </p>
-    )
-  }
-  else if (!currentChat) {
+
+  if (!currentChat) {
     return (
       <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4">
         No chat selected.
+      </p>
+    )
+  }
+  else if (isMessagesLoading || isProductLoading) {
+    return (
+      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 m:hidden">
+        Loading messages...
       </p>
     )
   }
@@ -52,7 +52,19 @@ const ChatWindow = () => {
     return (
       <section className="flex flex-col w-full h-screen min-h-[700px] items-center p-4">
         <section className="top-0 w-full z-10">
-          <ChatHeader/>
+          <div className="flex items-center p-4 w-full backdrop-blur bg-opacity-30" >
+            <div onClick={() => updateCurrentChat(null)} className='mr-4 w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500 sm:hidden'>
+              <SlArrowLeft size={20} color={'white'}/>
+            </div>
+            
+              <div className='flex' onClick={() => navigate(`/chat/${currentChat?._id}/actions`)}>
+                <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center" />
+                  <div>
+                    <strong className="text-white text-lg">{recipientUser?.firstName}</strong>
+                    {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}
+                  </div>
+              </div>
+          </div>
         </section>
         <section id="chat-box" className="flex-1 overflow-y-auto w-full pt-8 pb-20">
           {messages && messages.map((message, index) => (

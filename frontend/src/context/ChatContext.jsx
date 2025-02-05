@@ -12,8 +12,6 @@ const axiosInstance = axios.create({
   withCredentials: true, // Ensure cookies are sent with requests
 });
 
-
-
 export const ChatContextProvider = ({ children, user }) => {
   const [userChats, setUserChats] = useState([]);
   const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
@@ -27,6 +25,7 @@ export const ChatContextProvider = ({ children, user }) => {
   const [newMessage, setNewMessage] = useState(null);
   const [socket, setSocket] = useState(null);
   const [product, setProduct] = useState(null);
+  const [isProductLoading, setIsProductLoading] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]); // Define onlineUsers state
   const [notifications, setNotifications] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -161,6 +160,7 @@ export const ChatContextProvider = ({ children, user }) => {
   
   useEffect(() => {
     const fetchProduct = async () => {
+      setIsProductLoading(true);
       if (currentChat?.productId) {
         try {
           const productData = await getProductById(currentChat.productId);
@@ -168,6 +168,7 @@ export const ChatContextProvider = ({ children, user }) => {
         } catch (error) {
           console.error('Error fetching product:', error);
         }
+        setIsProductLoading(false)
       }
     };
 
@@ -391,6 +392,7 @@ export const ChatContextProvider = ({ children, user }) => {
         sendTextMessage,
         onlineUsers,
         product,
+        isProductLoading,
         notifications,
         allUsers,
         markAllNotificationsAsRead,

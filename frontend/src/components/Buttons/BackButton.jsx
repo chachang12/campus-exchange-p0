@@ -13,7 +13,7 @@ const BackButton = () => {
   }
 
   return (
-    <button onClick={() => handleClick()} className="w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500">
+    <button onClick={() => handleClick()} className="w-10 h-10 bg-[#1F1F1F] cursor-pointer rounded-full flex items-center justify-center outline outline-1 outline-gray-500">
       <SlArrowLeft size={20} color={'white'}/>
     </button>
   );
