@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
 
 export const useFetchRecipientUser = (chat, user) => {
   const [recipientUser, setRecipientUser] = useState(null);
+  const [isRecipientUserLoading, setIsRecipientUserLoading] = useState(null);
   const [mostRecentMessage, setMostRecentMessage] = useState(null);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [error, setError] = useState(null);
@@ -21,6 +22,7 @@ export const useFetchRecipientUser = (chat, user) => {
 
   useEffect(() => {
     const getUser = async () => {
+      setIsRecipientUserLoading(true)
       if (!recipientId) return null;
 
       try {
@@ -30,6 +32,7 @@ export const useFetchRecipientUser = (chat, user) => {
           return setError(response.error);
         }
 
+        setIsRecipientUserLoading(false)
         setRecipientUser(response.data);
       } catch (error) {
         console.error('Error fetching recipient user:', error);

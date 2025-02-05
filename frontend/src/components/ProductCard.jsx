@@ -51,37 +51,10 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
   };
 
   return (
-    <div className="flex flex-row shadow-lg rounded-xl overflow-hidden text-white w-full bg-[#1F1F1F]">
-      <img crossOrigin="anonymous" src={product.image} alt={product.name} className="w-[150px] h-[150px] object-cover" />
-      <section className="flex w-[200px]">
-        <div className="flex flex-col pl-3 items-start justify-start pt-2 flex-grow">
-          <p className="text-xl font-light">
-            {product.name}
-          </p>
-          <p className="text-lg text-white font-semibold">
-            ${product.price}
-          </p>
-          <p>
-            {product.size}
-          </p>
-          <p className="text-gray-500">
-            {capitalizeFirstLetter(product.condition)}
-          </p>
-          {showButtons && (
-            <div className="flex space-x-2 mt-2">
-              <button onClick={handleEditProduct} className="text-blue-500">
-                <img src={edit} className="w-4"/>
-              </button>
-              <button onClick={() => handleDeleteProduct(product._id)} className="text-red-500">
-                <img src={deleteIcon} className="w-4"/>
-              </button>
-              <button onClick={() => onMarkAsSold(product._id)} className="text-green-500">
-                Mark as Sold
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+    <div className="shadow-lg rounded-xl overflow-hidden text-white">
+        <img crossOrigin="anonymous" src={product.image} alt={product.name} className="aspect-square object-cover rounded-lg"/>
+        <p className="truncate">{product.name}</p>
+        <p>${product.price}</p>
 
       <EditListingPopup
         isOpen={isEditPopupOpen}
