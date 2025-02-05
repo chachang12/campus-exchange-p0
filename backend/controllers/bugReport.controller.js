@@ -1,4 +1,3 @@
-// backend/controllers/bugReport.controller.js
 import BugReport from '../models/bugReport.model.js';
 
 export const createBugReport = async (req, res) => {
@@ -34,6 +33,17 @@ export const getBugReports = async (req, res) => {
     return res.status(200).json({ success: true, data: bugReports });
   } catch (error) {
     console.error('Error fetching bug reports:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const deleteBugReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await BugReport.findByIdAndDelete(id);
+    return res.status(200).json({ success: true, message: 'Bug report deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting bug report:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };

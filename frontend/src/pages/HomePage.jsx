@@ -101,6 +101,9 @@ const HomePage = () => {
         <div className='mb-[50px]'>
           <Logo fill={'white'} width={40} height={40} />
         </div>
+        <p className="text-gray-500 font-light text-sm">
+          Version 1.0.0
+        </p>
       </span>
     </div>
   );

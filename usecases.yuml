@@ -13,6 +13,7 @@
 // Use cases for Unauthenticated User
 [Unauthenticated User]-(Register)
 [Unauthenticated User]-(Login)
+[Unauthenticated User]-(View Listings)
 
 // Use cases for Authenticated User
 [Authenticated User]-(Logout)
@@ -20,6 +21,9 @@
 [Authenticated User]-(View Messages)
 [Authenticated User]-(Send Messages)
 [Authenticated User]-(View Notifications)
+[Authenticated User]-(View Profiles)
+[Authenticated User]-(Make Offer)
+[Authenticated User]-(Report Bugs)
 
 // Use cases for Buyer
 [Buyer]-(Search Products)
@@ -27,16 +31,27 @@
 [Buyer]-(Make Offer)
 [Buyer]-(Favorite Products)
 [Buyer]-(View Favorites)
+[Buyer]-(View Listings)
+[Buyer]-(Make Offer)
+[Buyer]-(Favorite Products)
 
 // Use cases for Seller
 [Seller]-(List Product)
-[Seller]-(Manage Listings)
 [Seller]-(View Sales)
 [Seller]-(Mark Product as Sold)
-
+[Seller]-(Create Listings)
+[Seller]-(Edit Listings)
+[Seller]-(Delete Listings)
 
 // Use cases for Admin
 [Admin]-(Manage Users)
-[Admin]-(Manage Products)
-[Admin]-(View Reports)
 [Admin]-(Manage Listings)
+[Admin]-(View Reports)
+[Admin]-(View Tickets)
+[Admin]-(Resolve Tickets)
+[Admin]-(Award Bounties)
+
+// Manage Users sub-use cases
+[Manage Users]-(Delete Accounts)
+[Manage Users]-(Block from Listing)
+[Manage Users]-(Mutate Ratings)

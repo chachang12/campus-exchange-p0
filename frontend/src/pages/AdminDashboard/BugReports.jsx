@@ -22,10 +22,15 @@ const BugReports = () => {
     fetchBugReports();
   }, []);
 
+  const handleDelete = (reportId) => {
+    setBugReports(bugReports.filter(report => report._id !== reportId));
+    setSelectedReport(null);
+  };
+
   return (
     <div className="flex h-full">
       <BugCardColumn bugReports={bugReports} onSelectReport={setSelectedReport} />
-      <BugReviewMenu report={selectedReport} />
+      <BugReviewMenu report={selectedReport} onDelete={handleDelete} />
     </div>
   );
 };

@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', createBugReport);
 router.get('/', getBugReports);
+router.delete('/:id', deleteBugReport);
 
 export default router;

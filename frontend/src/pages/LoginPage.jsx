@@ -27,11 +27,9 @@ const LoginPage = () => {
             <div className='flex flex-row gap-2 mb-20'>
                 <button onClick={handleGoogleLogin} className='flex flex-row gap-2 border-white px-8 py-4 rounded-full border-[0.5px]'>
                     <img src={googlelogo} alt="google" className="w-6 h-6" />
-                    <h1>Login with Google</h1>
                 </button>
                 <button onClick={handleMicrosoftLogin} className='flex flex-row gap-2 border-white px-8 py-4 rounded-full border-[0.5px] items-center'>
                     <img src={microsoft} alt="microsoft" className="w-6 h-6" />
-                    <h1>Login with Microsoft</h1>
                 </button>
             </div>
         </div>
