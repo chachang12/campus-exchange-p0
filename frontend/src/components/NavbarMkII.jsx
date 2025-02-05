@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useContext, useState } from "react";
 import { HomeIcon, ProfileIcon, SearchIcon, TagIcon, MessageIcon, Logo } from '../components/icons';
-import { IoNotifications, IoMenu, IoClose } from 'react-icons/io5';
+import { IoNotifications, IoMenu, IoClose, IoPersonCircleOutline } from 'react-icons/io5';
 import { ChatContext } from "../context/ChatContext";
 import { useUser } from "../context/UserContext";
 import { unreadNotificationsFunc } from "../utils/unreadNotifications";
@@ -23,10 +23,13 @@ const NavbarMkII = () => {
 
   return (
     <div className='w-full top-0 flex justify-between items-center backdrop-blur-md bg-opacity-50 bg-inherit p-4 z-50'>
-      <div className='flex items-center space-x-4'>
+      <div className='flex items-center space-x-4 cursor-pointer'>
         <Logo fill={'white'} width={30} height={30} onClick={() => handleNavigate('/home')} />
+        <div className='w-8 h-8'>
+
+        </div>
       </div>
-      <div className='hidden md:flex items-center space-x-4'>
+      <div className='hidden md:flex items-center space-x-4 cursor-pointer'>
         <div className='p-2' onClick={() => handleNavigate('/home')}>
           <span className='text-white'>Home</span>
         </div>
@@ -39,15 +42,18 @@ const NavbarMkII = () => {
         <div className='p-2' onClick={() => handleNavigate('/messages')}>
           <span className='text-white'>Messages</span>
         </div>
-      
       </div>
-      <div className='flex items-center space-x-4'>
-        <img
-          src={user.profilePicture}
-          alt="Profile"
-          className='w-8 h-8 object-cover object-center rounded-full'
-          onClick={() => handleNavigate('/profile')}
-        />
+      <div className='flex items-center space-x-4 cursor-pointer'>
+        {user && user.profilePicture ? (
+          <img
+            src={user.profilePicture}
+            alt="Profile"
+            className='w-8 h-8 object-cover object-center rounded-full'
+            onClick={() => handleNavigate('/profile')}
+          />
+        ) : (
+          <IoPersonCircleOutline size={150} />
+        )}
         <div className='relative'>
           <IoIosNotificationsOutline className='w-8 h-8 text-white' onClick={() => handleNavigate('/notifications')} />
           {unreadNotifications.length > 0 && (

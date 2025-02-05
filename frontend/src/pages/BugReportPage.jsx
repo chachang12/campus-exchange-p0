@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { IoClose } from "react-icons/io5";
+
 
 const BugReportPage = () => {
   const [title, setTitle] = useState('');
@@ -43,13 +45,14 @@ const BugReportPage = () => {
   return (
     <div className="flex flex-col max-w-lg mx-auto p-4 text-white justify-between">
       <div className="flex flex-row mb-4 justify-between items-center">
-        <a className="" href="/home">
-          Cancel
-        </a>
-        <h1 className="text-xl font-semibold mx-auto">
+      <h1 className="text-xl font-semibold">
           File a Bug Report
         </h1>
-        <div className="w-[60px]"></div>
+        <a className="" href="/home">
+          <IoClose size={30}/>
+        </a>
+        
+        
       </div>
       <div className="space-y-8">
         <div className="w-full">

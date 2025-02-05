@@ -60,8 +60,12 @@ const Profile = () => {
   const flooredReview = Math.floor(user.review);
 
   return (
-    <div className='mx-4 text-white flex flex-col'>
-      <section className='bg-[#121212]'>
+    <div className='mx-2 text-white flex flex-col'>
+      
+
+      <section className='flex justify-center'>
+        <div className='w-full sm:w-[1280px]'>
+        <section className='bg-[#121212]'>
         <div className='flex justify-between space-x-8 mt-2'>
           <h1 className='text-xl '>
             Profile
@@ -75,10 +79,7 @@ const Profile = () => {
           </button>
         </div>
       </section>
-
-      <section className='flex justify-center'>
-        <div className='w-full sm:w-[1280px]'>
-          <div className='flex flex-row items-center justify-start pl-2 py-4'>
+          <div className='flex flex-row items-center justify-center md:justify-start pl-2 py-4'>
               {user.profilePicture ? (
                 <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='w-[120px] h-[120px] object-cover object-center rounded-full outline outline-[1px] outline-gray-500' />
               ) : (
@@ -98,7 +99,7 @@ const Profile = () => {
 
 
             {/* Tab bar */}
-            <div className='flex space-x-4 mb-4 px-4'>
+            <div className='flex space-x-4 mb-4 px-4 justify-center md:justify-start  '>
               <button
                 className={`py-2 px-4 rounded-3xl ${selectedTab === 'listings' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
                 onClick={() => setSelectedTab('listings')}

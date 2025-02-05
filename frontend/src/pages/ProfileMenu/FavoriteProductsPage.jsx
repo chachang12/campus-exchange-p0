@@ -39,7 +39,6 @@ const FavoriteProductsPage = () => {
   return (
     <div className="p-4 text-white">
       <div className='flex justify-between items-center mb-4'>
-        <BackButton />
         <h1 className="text-white text-xl font-semibold">Favorite Products</h1>
         <div className='w-10 h-10'></div>
       </div>

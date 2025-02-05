@@ -36,7 +36,7 @@ const ChatWindow = () => {
 
   if (!currentChat) {
     return (
-      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4">
+      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 hidden md:flex">
         No chat selected.
       </p>
     )

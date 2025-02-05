@@ -17,7 +17,7 @@ const CategoriesScrollBar = ({ categories, selectedCategories, setSelectedCatego
           <div
             key={index}
             className={` py-2 px-4 rounded-3xl outline outline-1 outline-gray-500 ${
-              selectedCategories.includes(category) ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white'
+              selectedCategories.includes(category) ? 'bg-[#426A8C] text-white' : 'bg-[#1F1F1F] text-white'
             }`}
             onClick={() => handleCategoryChange(category)}
           >

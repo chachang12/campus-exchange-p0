@@ -42,9 +42,6 @@ const AccountSettingsPage = () => {
   return (
     <div className="flex flex-col items-center min-h-screen px-4 mt-1 text-white bg-dark-blue pb-28 p-4">
       <div className="flex justify-between w-full mb-4 items-center">
-        <button onClick={() => navigate(-1)} className="w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500">
-          <SlArrowLeft size={20} />
-        </button>
         <h1 className="text-white text-xl font-semibold">Account Settings</h1>
         <button
           onClick={handleSave}

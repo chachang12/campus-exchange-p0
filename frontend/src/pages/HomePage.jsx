@@ -82,7 +82,7 @@ const HomePage = () => {
       <div className="flex justify-center w-full px-6 bg-inherit">
         <div className="w-[1280px]">
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
               {filteredProducts.map((product) => (
                 <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
                   <ProductCard product={product} />
@@ -94,14 +94,14 @@ const HomePage = () => {
           )}
         </div>
       </div>
-      <span className="flex flex-col items-center">
-            <h1 className="text-gray-500 font-light mb-2">
-              You've reached the end of the page.
-            </h1>
-            <div className='mb-[100px]'>
-              <Logo fill={'white'} width={40} height={40} />
-            </div>
-          </span>
+      <span className="flex flex-col items-center mt-10">
+        <h1 className="text-gray-500 font-light mb-2">
+          You've reached the end of the page.
+        </h1>
+        <div className='mb-[50px]'>
+          <Logo fill={'white'} width={40} height={40} />
+        </div>
+      </span>
     </div>
   );
 };

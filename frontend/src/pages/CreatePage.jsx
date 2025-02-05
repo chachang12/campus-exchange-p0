@@ -3,6 +3,8 @@ import { createProduct, uploadImage } from "../utils/fetchUtils";
 import { useUser } from "../context/UserContext";
 import CategoriesScrollBar from "../components/CreatePageComponents/CategoriesScrollBar"; // Import the CategoriesScrollBar component
 import { IoMdPhotos } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+
 
 
 const CreatePage = () => {
@@ -74,13 +76,13 @@ const CreatePage = () => {
   return (
     <div className="flex flex-col max-w-lg mx-auto p-4 text-white justify-between">
       <div className="flex flex-row mb-4 justify-between items-center">
-        <a className="" href="/home">
-          Cancel
-        </a>
-        <h1 className="text-xl font-semibold mx-auto">
+        
+        <h1 className="text-xl font-semibold ">
           Listing Details
         </h1>
-        <div className="w-[60px]"></div>
+        <a className="" href="/home">
+        <IoClose size={30}/>
+        </a>
       </div>
       <div className="space-y-8">
         <div className="w-full">

@@ -56,7 +56,7 @@ const ReviewCreationPage = () => {
   return (
     <div className="p-4 text-white">
       <div className="flex justify-between items-center mb-4">
-        <BackButton />
+        <IoClose />
         <h1 className="text-xl font-semibold">Write a Review</h1>
         <button onClick={handleSubmit} className="">Submit</button>
       </div>
