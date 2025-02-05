@@ -1,6 +1,6 @@
 // backend/routes/bugReport.route.js
 import express from 'express';
-import { createBugReport, getBugReports } from '../controllers/bugReport.controller.js';
+import { createBugReport, getBugReports, deleteBugReport } from '../controllers/bugReport.controller.js';
 
 const router = express.Router();
 
