@@ -60,16 +60,8 @@ const Profile = () => {
   const flooredReview = Math.floor(user.review);
 
   return (
-    <div className=' text-white flex flex-col pt-4 w-screen'>
-      <section className='fixed top-0 left-0 right-0 z-10 bg-[#121212] pt-4'>
-        <div className="flex flex-row mb-2 justify-between items-center mx-4">
-          <div className=''>
-            <Logo fill={'white'} width={40} height={40}/>
-          </div>
-          <button className='w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500' onClick={() => navigate('/profile-menu')}>
-            <IoIosMenu size={30} />
-          </button>
-        </div> */}
+    <div className='mx-4 text-white flex flex-col'>
+      <section className='bg-[#121212]'>
         <div className='flex justify-between space-x-8 mt-2'>
           <h1 className='text-xl '>
             Profile
@@ -86,7 +78,7 @@ const Profile = () => {
 
       <section className='flex justify-center'>
         <div className='w-full sm:w-[1280px]'>
-          <div className='flex flex-row items-center justify-start pl-2 py-4 pt-16'>
+          <div className='flex flex-row items-center justify-start pl-2 py-4'>
               {user.profilePicture ? (
                 <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='w-[120px] h-[120px] object-cover object-center rounded-full outline outline-[1px] outline-gray-500' />
               ) : (

@@ -27,18 +27,19 @@ const NavbarMkII = () => {
         <Logo fill={'white'} width={30} height={30} onClick={() => handleNavigate('/home')} />
       </div>
       <div className='hidden md:flex items-center space-x-4'>
-        <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/home')}>
-          <HomeIcon className='w-6 h-6 text-white' />
+        <div className='p-2' onClick={() => handleNavigate('/home')}>
           <span className='text-white'>Home</span>
         </div>
-        <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/create')}>
-          <TagIcon className='w-6 h-6 text-white' />
+        <div className='p-2' onClick={() => handleNavigate('/search')}>
+          <span className='text-white'>Search</span>
+        </div>
+        <div className='p-2' onClick={() => handleNavigate('/create')}>
           <span className='text-white'>Create</span>
         </div>
-        <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/messages')}>
-          <MessageIcon className='w-6 h-6 text-white' />
+        <div className='p-2' onClick={() => handleNavigate('/messages')}>
           <span className='text-white'>Messages</span>
         </div>
+      
       </div>
       <div className='flex items-center space-x-4'>
         <img
