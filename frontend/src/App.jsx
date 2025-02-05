@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useLocation, matchPath } from 'react-router-do
 import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
 import Navbar from './components/Navbar';
+import NavbarMkII from './components/NavbarMkII';
 import { WelcomePage, MessagesPage, ProductPage, SearchPage, NotificationsPage } from './pages';
 import { LoginPage, RegisterPage } from './pages';
 import ProfilePage from './pages/ProfilePage';
@@ -40,7 +41,7 @@ const App = () => {
           element={
             <ChatContextProvider user={user}>
               <div className="h-screen font-inter bg-[#121212]">
-                {!shouldHideNavbar && !isAdminRoute && <Navbar />}
+                {!shouldHideNavbar && !isAdminRoute && <NavbarMkII />}
                 <Routes>
                   <Route path="/" element={user ? <HomePage /> : <Navigate to="/welcome" />} />
                   <Route path="home" element={user ? <HomePage /> : <Navigate to="/login" />} />

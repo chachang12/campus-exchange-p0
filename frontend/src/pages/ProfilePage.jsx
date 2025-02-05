@@ -7,6 +7,10 @@ import { getProductsByCreatorId, updateProduct, getReviewsByUser } from '../util
 import ProductCard from '../components/ProductCard';
 import { star } from '../assets';
 import { Logo } from '../components/icons';
+import { IoGrid } from "react-icons/io5";
+import { MdKeyboardArrowRight } from "react-icons/md";
+
+
 
 const Profile = () => {
   const { user, logout } = useUser();
@@ -54,9 +58,9 @@ const Profile = () => {
   const flooredReview = Math.floor(user.review);
 
   return (
-    <div className='mx-4 text-white flex flex-col pb-40 pt-4'>
-      <section className='fixed top-0 left-0 right-0 z-10 bg-[#121212] pt-4'>
-        <div className="flex flex-row mb-2 justify-between items-center mx-4">
+    <div className='mx-4 text-white flex flex-col'>
+      <section className='bg-[#121212]'>
+        {/* <div className="flex flex-row mb-2 justify-between items-center mx-4">
           <div className=''>
             <Logo fill={'white'} width={40} height={40}/>
           </div>
@@ -66,6 +70,18 @@ const Profile = () => {
           </h1>
           <button className='w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500' onClick={() => navigate('/profile-menu')}>
             <IoIosMenu size={30} />
+          </button>
+        </div> */}
+        <div className='flex justify-between space-x-8 mt-2'>
+          <h1 className='text-xl '>
+            Profile
+          </h1>
+          <button
+            className={`flex items-center text-sm text-[#426A8C]`}
+            onClick={() => navigate('/profile-menu')}
+          >
+            Account Settings
+            <MdKeyboardArrowRight size={20}/>
           </button>
         </div>
         <div className='flex flex-row items-center justify-center py-4'>
@@ -78,7 +94,7 @@ const Profile = () => {
             <h1 className='text-white font-semibold text-xl'>{user.firstName}</h1>
             <div className='flex flex-row'>
               <h4 className=''>{listings.length}</h4>
-              <h4 className='font-light ml-1 opacity-60'> listings</h4>
+              <h4 className='font-light ml-1'> listings</h4>
             </div>
             <div className='flex flex-row items-center'>
               {Array.from({ length: flooredReview }).map((_, index) => (
@@ -88,8 +104,9 @@ const Profile = () => {
           </div>
         </div>
 
+
         {/* Tab bar */}
-        <div className='flex justify-center space-x-4 mb-4'>
+        <div className='flex justify-center space-x-8 mb-4'>
           <button
             className={`py-2 px-4 rounded-3xl ${selectedTab === 'listings' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
             onClick={() => setSelectedTab('listings')}
@@ -106,7 +123,7 @@ const Profile = () => {
       </section>
       
       {/* Conditional content */}
-      <section className='mt-[270px]'>
+      <section className=''>
         {selectedTab === 'listings' ? (
           <div>
             {listings.length > 0 ? (

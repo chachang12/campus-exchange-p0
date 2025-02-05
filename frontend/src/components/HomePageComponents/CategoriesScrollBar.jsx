@@ -14,15 +14,15 @@ const CategoriesScrollBar = ({ categories, selectedCategories, setSelectedCatego
     <div className="w-full overflow-x-scroll custom-scrollbar">
       <div className="flex space-x-4 p-4">
         {categories.map((category, index) => (
-          <button
+          <div
             key={index}
-            className={`flex-shrink-0 py-2 px-4 rounded-3xl outline outline-1 outline-gray-500 ${
+            className={` py-2 px-4 rounded-3xl outline outline-1 outline-gray-500 ${
               selectedCategories.includes(category) ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white'
             }`}
             onClick={() => handleCategoryChange(category)}
           >
             {category}
-          </button>
+          </div>
         ))}
       </div>
     </div>

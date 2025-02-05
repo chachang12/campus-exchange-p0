@@ -106,7 +106,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="p-4 text-white">
+    <div className="p-4 mt-[80px] text-white">
       <div className='mb-4 p-3 bg-[#1F1F1F] w-[40px] flex items-center justify-center rounded-full outline outline-1 outline-gray-500'>
         <SlArrowLeft onClick={handleBack} />
       </div>

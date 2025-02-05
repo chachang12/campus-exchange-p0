@@ -141,7 +141,7 @@ const CreatePage = () => {
               setSelectedCategories={(selectedCategories) => setNewProduct({ ...newProduct, categories: selectedCategories })}
             />
             <button
-              className="w-full p-2 bg-darkblue text-white rounded"
+              className="w-full p-2 bg-[#426A8C] text-white rounded"
               onClick={handleAddProduct}
             >
               Publish
@@ -149,7 +149,7 @@ const CreatePage = () => {
           </div>
         </div>
       </div>
-      <p className="opacity-50 text-center font-light">
+      <p className="opacity-50 text-center font-light pt-2">
         Please note that by publishing this listing, you agree to our Terms of Service and Privacy Policy.
       </p>
     </div>

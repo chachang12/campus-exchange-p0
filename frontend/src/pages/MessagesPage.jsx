@@ -21,7 +21,7 @@ const MessagesPage = () => {
     }, [notifications, newMessage]);
 
     return (
-        <section className="flex flex-col h-screen">
+        <section className="flex flex-col h-screen z-10">
             <div className="w-full overflow-y-auto">
                 <h2 className="text-white text-xl font-semibold mb-4 text-center pt-4">Messages</h2>
                 {isUserChatsLoading ? (

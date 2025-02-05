@@ -70,28 +70,8 @@ const HomePage = () => {
 
   return (
     <div className="">
-      <div className="fixed top-0 left-0 right-0 z-10 backdrop-blur-md bg-opacity-50 bg-inherit pt-4">
-        <section className="flex flex-col border-b border-gray-500">
-          <div className="flex justify-between mx-4">
-            <div className="flex items-center justify-center">
-              <img crossOrigin="anonymous" src={user.profilePicture} className="w-[54px] h-[54px] object-cover object-center rounded-full mr-2" />
-              <div>
-                <h1 className="text-white font-medium text-[20px]">
-                  Welcome, {user.firstName}
-                </h1>
-                {/* <h2 className="text-gray-500 text-[14px]">
-                  Picks for you
-                </h2> */}
-                <h2 className="text-gray-500 text-[14px]">
-                  {user.university}
-                </h2>
-              </div>
-            </div>
-            <div onClick={() => navigate('/notifications')} className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
-            <IoNotifications color='#ffffff' size={20}></IoNotifications>
-            {unreadNotifications.length > 0 ? <div className="absolute top-4 right-4 w-5 rounded-full bg-blue-500 text-sm text-white text-center">{unreadNotifications.length}</div> : (null)}
-            </div>
-          </div>
+      <div className="">
+        <section className="flex flex-col">
           <CategoriesScrollBar
             categories={categories}
             selectedCategories={selectedCategories}
@@ -99,8 +79,7 @@ const HomePage = () => {
           />
         </section>
       </div>
-      
-      <div className="flex flex-col gap-4 p-8 bg-inherit mt-[145px] items-center">
+      <div className="flex flex-col gap-4 px-6 bg-inherit items-center">
         {filteredProducts.map((product) => (
           <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
             <ProductCard product={product} />
