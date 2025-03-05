@@ -12,6 +12,7 @@ const EditProfilePage = () => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [bio, setBio] = useState(user.bio)
 
   const handleProfilePictureUpload = async (file) => {
     try {
@@ -31,7 +32,7 @@ const EditProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      const updatedUser = { ...user, firstName, lastName };
+      const updatedUser = { ...user, firstName, lastName, bio };
       const response = await updateUser(updatedUser);
       if (response.success) {
         setUser(response.data);
@@ -75,7 +76,13 @@ const EditProfilePage = () => {
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
-        
+        <h2 className='font-[600]'>Bio</h2>
+        <input
+          className="w-full p-2 rounded-md bg-inherit border border-white border-opacity-50"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder='Max 150 characters.'
+        />
       </div>
 
       <ProfilePicturePopup

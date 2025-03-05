@@ -21,6 +21,7 @@ import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import initializeSocket from './config/socket.js';
 import bugReportRoutes from './routes/bugReport.route.js';
+import User from './models/user.model.js';
 
 
 dotenv.config();
@@ -110,8 +111,6 @@ app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
-
-
 
 // Start the server
 const server = httpServer.listen(port, () => {

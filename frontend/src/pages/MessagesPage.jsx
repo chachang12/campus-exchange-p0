@@ -25,7 +25,7 @@ const MessagesPage = () => {
     }, [currentChat])
 
     return (
-        <section className="grid h-screen grid-cols-1 sm:grid-cols-[30%_70%] z-10">
+        <section className="grid h-[calc(100dvh-4rem)] grid-cols-1 sm:grid-cols-[30%_70%] z-10">
             <div className="w-full overflow-y-auto">
                 <h2 className="text-white text-xl font-semibold mb-4 text-center pt-4">Messages</h2>
                 {isUserChatsLoading ? (
