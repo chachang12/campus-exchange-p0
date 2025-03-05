@@ -22,7 +22,6 @@
 [Authenticated User]-(Send Messages)
 [Authenticated User]-(View Notifications)
 [Authenticated User]-(View Profiles)
-[Authenticated User]-(Make Offer)
 [Authenticated User]-(Report Bugs)
 
 // Use cases for Buyer
@@ -32,8 +31,6 @@
 [Buyer]-(Favorite Products)
 [Buyer]-(View Favorites)
 [Buyer]-(View Listings)
-[Buyer]-(Make Offer)
-[Buyer]-(Favorite Products)
 
 // Use cases for Seller
 [Seller]-(List Product)
