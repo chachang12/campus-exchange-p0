@@ -137,7 +137,7 @@ export const getFavorites = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, profilePicture, review } = req.body;
+    const { firstName, lastName, profilePicture, review, bio } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ success: false, message: 'Invalid User ID' });
@@ -146,7 +146,7 @@ export const updateUser = async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(
             id,
-            { firstName, lastName, profilePicture, review },
+            { firstName, lastName, profilePicture, review, bio },
             { new: true }
         );
 

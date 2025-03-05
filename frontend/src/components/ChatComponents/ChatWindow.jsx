@@ -10,7 +10,10 @@ import { SlArrowLeft } from 'react-icons/sl';
 const ChatWindow = () => {
   const { user } = useUser();
   const { userChats, currentChat, isMessagesLoading, messages, sendTextMessage, updateCurrentChat, product, isProductLoading } = useContext(ChatContext);
-  const { recipientUser } = useFetchRecipientUser(currentChat, user);
+  const [page, setPage] = useState(1)
+  const [visibleMessages, setVisibleMessages] = useState([])
+  const scrollRef = useRef(null)
+  const { recipientUser, isRecipientUserLoading } = useFetchRecipientUser(currentChat, user);
   const [textMessage, setTextMessage] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -28,35 +31,54 @@ const ChatWindow = () => {
   })
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
+    loadMoreMessages();
+  }, [messages, currentChat])
 
+  const loadMoreMessages = () => {
+    if (messages) {
+      const itemsPerPage = 20;
+      const newMessages = messages.slice(
+        Math.max(0, messages.length - page * itemsPerPage),
+        messages.length - (page - 1) * itemsPerPage
+      );
+      setVisibleMessages(prev => [...newMessages, ...prev]);
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current.scrollTop === 0) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (page > 1) {
+      loadMoreMessages();
+    }
+  }, [page]);
 
   if (!currentChat) {
     return (
-      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 hidden md:flex">
+      <p className="text-2xl items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 hidden sm:flex">
         No chat selected.
       </p>
     )
   }
-  else if (isMessagesLoading || isProductLoading) {
+  else if (isMessagesLoading || isProductLoading || isRecipientUserLoading) {
     return (
-      <p className="text-2xl flex items-center justify-center text-center font-bold text-darkgray mt-4 h-3/4 m:hidden">
+      <p className="text-2xl sm:flex items-center justify-center text-center font-bold hidden text-darkgray mt-4 h-3/4">
         Loading messages...
       </p>
     )
   }
   else {
     return (
-      <section className="flex flex-col w-full h-screen min-h-[700px] items-center p-4">
-        <section className="top-0 w-full z-10">
+      <section className="flex flex-col w-full h-[calc(100dvh-4rem)] items-center p-4">
+        <section className="top-0 w-full">
           <div className="flex items-center p-4 w-full backdrop-blur bg-opacity-30" >
             <div onClick={() => updateCurrentChat(null)} className='mr-4 w-10 h-10 bg-[#1F1F1F] rounded-full flex items-center justify-center outline outline-1 outline-gray-500 sm:hidden'>
               <SlArrowLeft size={20} color={'white'}/>
             </div>
-            
               <div className='flex' onClick={() => navigate(`/chat/${currentChat?._id}/actions`)}>
                 <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center" />
                   <div>
@@ -66,7 +88,7 @@ const ChatWindow = () => {
               </div>
           </div>
         </section>
-        <section id="chat-box" className="flex-1 overflow-y-auto w-full pt-8 pb-20">
+        <section id="chat-box" ref={scrollRef} onScroll={handleScroll} className="flex-1 overflow-y-auto w-full pt-8">
           {messages && messages.map((message, index) => (
             <div key={index} className={`mb-4 ${message?.senderId === user?._id ? "flex justify-end" : "flex justify-start"}`}>
               <div className={`flex flex-col w-9/12 ${message?.senderId === user?._id ? "items-end" : "items-start"}`}>

@@ -39,6 +39,12 @@ const userSchema = mongoose.Schema({
     isAdmin : {
         type: Boolean,
         default: false
+    },
+    bio : {
+        type: String,
+        default: null,
+        required: false,
+        maxlength: 150
     }
 });
 

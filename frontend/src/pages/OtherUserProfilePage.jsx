@@ -8,12 +8,14 @@ import { Logo } from '../components/icons';
 import RatingStars from '../components/RatingStars';
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { getFavorites } from '../utils/fetchUtils';
 
 const OtherUserProfilePage = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [listings, setListings] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [selectedTab, setSelectedTab] = useState('listings');
 
   useEffect(() => {
@@ -44,9 +46,23 @@ const OtherUserProfilePage = () => {
       }
     };
 
+    const fetchFavorites = async () => {
+      try {
+        const response = await getFavorites(user._id);
+        setFavorites(response.data || []);
+        console.log('Favorites:', response.data); // Add this line to log the fetched favorites
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+        setError('Failed to fetch favorite products.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchUser();
     fetchListings();
     fetchReviews();
+    fetchFavorites();
   }, [userId]);
 
   if (!user) {
@@ -74,8 +90,8 @@ const OtherUserProfilePage = () => {
             )}
             <div className='flex-col ml-4'>
               <h1 className='text-white font-semibold text-xl sm:text-2xl'>{user.firstName}</h1>
-              <div className='flex'>
-                <RatingStars rating={Math.floor(user.rating)} />
+              <div className='flex gap-1 items-center'>
+                <RatingStars rating={Math.floor(user.review)} /> <div className='text-sm'>({reviews.length})</div>
               </div>
               <div className='flex flex-row pt-1'>
                 <h4 className=''>{listings.length}</h4>
@@ -97,7 +113,14 @@ const OtherUserProfilePage = () => {
               onClick={() => setSelectedTab('reviews')}
             >
               Reviews
-            </button> 
+            </button>
+
+            <button
+                className={`py-2 px-4 rounded-3xl ${selectedTab === 'favorites' ? 'bg-white text-black' : 'bg-[#1F1F1F] text-white outline outline-[1px] outline-gray-500'}`}
+                onClick={() => setSelectedTab('favorites')}
+              >
+                Favorites
+              </button> 
           </div>
 
           {/* Conditional content */}
@@ -116,7 +139,7 @@ const OtherUserProfilePage = () => {
                   <p className="text-xl text-center font-bold text-darkgray mt-4">No listings found.</p>
                 )}
               </div>
-            ) : (
+            ) : selectedTab === 'reviews' ? (
               <div>
                 {reviews.length > 0 ? (
                   <div className='space-y-4'>
@@ -136,8 +159,22 @@ const OtherUserProfilePage = () => {
                   <p className="text-xl text-center font-bold text-darkgray mt-4">No reviews found.</p>
                 )}
               </div>
-            )}
-          </section>
+            ) : selectedTab === 'favorites' ? (
+                <div className='pl-2 pr-2 w-full'>
+                  {favorites.length > 0 ? (
+                    <div className='grid grid-cols-2 sm:grid-cols-4 gap-2 w-full'>
+                      {favorites.map((product) => (
+                        <Link to={`/product/${product._id}`} state={{ product }} key={product._id}>
+                          <ProductCard product={product} />
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xl text-center font-bold text-darkgray mt-4">No listings found.</p>
+                  )}
+                </div>
+            ) : null}
+            </section>
         </div>
       </section>
     </div>
