@@ -1,11 +1,11 @@
 import { React, useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
 import { messageIcon, close, share, star } from '../assets';
 import { IoIosShareAlt } from "react-icons/io";
 import { FiMessageCircle } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
 import { ChatContext } from '../context/ChatContext';
-import { getUserById, addFavorite, removeFavorite, getFavorites, updateProduct, deleteProduct } from '../utils/fetchUtils';
+import { getUserById, addFavorite, removeFavorite, getFavorites, updateProduct, deleteProduct, getProductById } from '../utils/fetchUtils';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { fetchChat } from '../utils/fetchChat';
@@ -17,8 +17,11 @@ import { IoClose } from "react-icons/io5";
 const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams();
   const { createChat } = useContext(ChatContext);
-  const { product } = location.state || {}; // Add a fallback to avoid destructuring null
+  // const { product } = location.state || {}; // Add a fallback to avoid destructuring null
+  const [product, setProduct] = useState(null);
+
   const [isFavorite, setIsFavorite] = useState(false);
   const [doesChatExist, setDoesChatExist] = useState(false);
   const { user } = useUser();
@@ -54,6 +57,22 @@ const ProductPage = () => {
       checkIfFavorite();
     }
   }, [product, user._id]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      console.log(id)
+      if (!product) {
+        try {
+          const response = await getProductById(id);
+          setProduct(response.data);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [id, product]);
 
   const checkExistingChat = async () => {
     if (product) {
