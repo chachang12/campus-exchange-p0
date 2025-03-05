@@ -66,13 +66,13 @@ const ProfileMenu = () => {
           <SlArrowRight size={20} />
         </button>
         <h2 className='font-[600]'>Your activity</h2>
-        <button
+        {/* <button
           className={buttonStyle}
           onClick={handleViewFavoritedListings}
         >
           View Favorited Listings
           <SlArrowRight size={20} />
-        </button>
+        </button> */}
         <button
           className={buttonStyle}
           onClick={handleViewBugReportMenu}
