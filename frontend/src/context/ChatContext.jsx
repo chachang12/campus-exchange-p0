@@ -71,7 +71,9 @@ export const ChatContextProvider = ({ children, user }) => {
 
         if (userChats) {
           isChatCreated = userChats?.some((chat) => {
-            return chat.members[0] === u._id || chat.members[1] === u._id;
+            if (chat) {
+              return chat.members[0] === u._id || chat.members[1] === u._id;
+            }
           });
         }
 
@@ -80,7 +82,6 @@ export const ChatContextProvider = ({ children, user }) => {
       setPotentialChats(pChats);
 
       setAllUsers(response.data);
-
     };
 
     getUsers();

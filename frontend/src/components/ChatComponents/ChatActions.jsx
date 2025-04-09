@@ -60,12 +60,12 @@ const ChatActions = () => {
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Chat Members</h2>
         <div className="flex items-center">
-          <img src={user?.profilePicture} alt={user?.firstName} crossOrigin='anonymous' className="w-10 h-10 rounded-full mr-2 object-cover" />
+          <img src={user?.profilePicture} alt={user?.firstName} className="w-10 h-10 rounded-full mr-2 object-cover" />
           <span>{user?.firstName}</span>
         </div>
         {recipientUser && (
           <div className="flex items-center mt-2">
-            <img src={recipientUser?.profilePicture} alt={recipientUser?.firstName} crossOrigin='anonymous' className="w-10 h-10 rounded-full mr-2 object-cover" />
+            <img src={recipientUser?.profilePicture} alt={recipientUser?.firstName} className="w-10 h-10 rounded-full mr-2 object-cover" />
             <span>{recipientUser?.firstName}</span>
           </div>
         )}

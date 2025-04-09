@@ -56,7 +56,7 @@ const EditProfilePage = () => {
 
       <div className="space-y-4 w-full flex flex-col">
         <div className="flex justify-center items-center w-full">
-          <img src={user.profilePicture} crossOrigin='anonymous' alt="Profile" className="w-20 h-20 object-cover rounded-full" />
+          <img src={user.profilePicture} alt="Profile" className="w-20 h-20 object-cover rounded-full" />
         </div>
         <button
           onClick={() => setIsPopupOpen(true)}

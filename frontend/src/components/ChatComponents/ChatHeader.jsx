@@ -25,7 +25,7 @@ const ChatHeader = () => {
       </div>
       
         <div className='flex' onClick={() => navigate(`/chat/${currentChat._id}/actions`)}>
-          <img src={recipientUser?.profilePicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center" />
+          <img src={recipientUser?.profilePicture} className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center" />
             <div>
               <strong className="text-white text-lg">{recipientUser?.firstName}</strong>
               {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}

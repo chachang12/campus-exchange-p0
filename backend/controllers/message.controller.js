@@ -1,4 +1,5 @@
 import messageModel from "../models/message.model.js";
+import chatModel from "../models/chat.model.js";
 
 export const createMessage = async(req, res) =>{
     const {chatId, senderId, text} = req.body
@@ -74,4 +75,27 @@ export const setAllMessagesRead = async (req, res) => {
     }
 };
 
-export default { createMessage, getMessages, getMostRecentMessage, setAllMessagesRead };
+export const deleteInvalidMessages = async (req, res) => {
+    try {
+        const messages = await messageModel.find();
+
+        let deletedCount = 0;
+
+        for (const message of messages) {
+            const chatExists = await chatModel.exists({ _id: message.chatId });
+
+            if (!chatExists) {
+                await messageModel.deleteOne({ _id: message._id });
+                deletedCount++;
+                console.log(`Deleted message ${message._id} - chat ${message.chatId} not found`);
+            }
+        }
+
+        res.status(200).json({ message: "Invalid messages deleted", deletedCount });
+    } catch (error) {
+        console.error('Error deleting invalid messages:', error);
+        res.status(500).json({ message: 'Failed to delete invalid messages' });
+    }
+};
+
+export default { createMessage, getMessages, getMostRecentMessage, setAllMessagesRead, deleteInvalidMessages };

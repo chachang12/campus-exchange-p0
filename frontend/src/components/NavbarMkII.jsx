@@ -23,11 +23,8 @@ const NavbarMkII = () => {
 
   return (
     <div className='w-full top-0 flex justify-between items-center backdrop-blur-md bg-opacity-50 bg-inherit p-4 relative z-50'>
-      <div className='flex items-center space-x-4 cursor-pointer'>
-        <Logo fill={'white'} width={30} height={30} onClick={() => handleNavigate('/home')} />
-        <div className='w-8 h-8'>
-
-        </div>
+      <div onClick={() => handleNavigate('/home')} className='flex items-center space-x-4 cursor-pointer'>
+        <Logo fill={'white'} width={30} height={30} />
       </div>
       <div className='hidden md:flex items-center space-x-4 cursor-pointer'>
         <div className='p-2' onClick={() => handleNavigate('/home')}>

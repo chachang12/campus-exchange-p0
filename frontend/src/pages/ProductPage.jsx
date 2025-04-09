@@ -85,10 +85,6 @@ const ProductPage = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   const handleCreateChat = async (textMessage, user, setTextMessage) => {
     try {
       await createChat(user._id, product.creatorId, product._id);
@@ -152,7 +148,7 @@ const ProductPage = () => {
         <IoClose onClick={handleBack} />
       </div> */}
       <div className='flex flex-col md:flex-row md:space-x-8'>
-        <img crossOrigin="anonymous" src={product.image} alt={product.name} className="w-full md:w-1/2 h-auto rounded-xl mb-2" />
+        <img src={product.image} alt={product.name} className="w-full md:w-1/2 h-auto rounded-xl mb-2" />
         <div className='flex flex-col'>
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="text-lg font-semibold">${product.price}</p>
@@ -165,7 +161,7 @@ const ProductPage = () => {
           {creator && (
             <Link to={`/user/${creator._id}`} className='flex flex-row items-center'>
               {creator.profilePicture ? (
-                <img crossOrigin="anonymous" src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px] h-[50px] object-cover object-center' />
+                <img src={creator.profilePicture} alt="Creator" className='rounded-full w-[50px] h-[50px] object-cover object-center' />
               ) : (
                 <IoPersonCircleOutline size={50} />
               )}
@@ -228,12 +224,12 @@ const ProductPage = () => {
             <img src={close} alt="Close" className="fixed left-5 top-5 mr-auto w-6 h-6 cursor-pointer" onClick={() => {setIsChatExpanded((curr) => !curr); updateCurrentChat(null)}} />
               <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
                 <div className="flex items-center space-x-3">
-                <img crossOrigin="anonymous" src={creator?.profilePicture} alt="creator" className='rounded-full w-[40px] h-[40px] object-cover object-center' />
+                <img src={creator?.profilePicture} alt="creator" className='rounded-full w-[40px] h-[40px] object-cover object-center' />
                 <h2 className='text-white font-semibold text-lg'>{creator?.firstName} {creator?.lastName}</h2>
                 </div>
             </div>
             <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
-            <img crossOrigin="anonymous" src={product?.image} alt={product?.name} className="w-16 h-16 mb-2 object-cover object-center" />
+            <img src={product?.image} alt={product?.name} className="w-16 h-16 mb-2 object-cover object-center" />
             <div className='truncate'>
                 <p className='font-bold truncate'>{product?.name}</p>
                 <p className='font-normal truncate'>{product?.description}</p>

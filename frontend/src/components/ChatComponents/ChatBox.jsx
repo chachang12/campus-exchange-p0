@@ -36,12 +36,12 @@ const ChatBox = () => {
         <section className="flex flex-col h-screen pb-10">
             <div className='mb-4 flex items-center justify-center p-4 border-b border-gray-700'>
                 <div className="flex items-center space-x-3">
-                <img crossOrigin="anonymous" src={recipientUser?.profilePicture} alt="recipientUser" className='rounded-full w-[40px] h-[40px] object-cover object-center' />
+                <img src={recipientUser?.profilePicture} alt="recipientUser" className='rounded-full w-[40px] h-[40px] object-cover object-center' />
                 <h2 className='text-white font-semibold text-lg'>{recipientUser?.firstName} {recipientUser?.lastName}</h2>
                 </div>
             </div>
             <div className='pt-2 p-4 flex space-x-4 items-center border-b border-gray-700'>
-            <img crossOrigin="anonymous" src={currentProduct?.image} alt={currentProduct?.name} className="w-16 h-16 mb-2 object-cover object-center" />
+            <img src={currentProduct?.image} alt={currentProduct?.name} className="w-16 h-16 mb-2 object-cover object-center" />
             <div className='truncate'>
                 <p className='font-bold truncate'>{currentProduct?.name}</p>
                 <p className='font-normal truncate'>{currentProduct?.description}</p>

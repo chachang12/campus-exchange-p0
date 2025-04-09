@@ -52,7 +52,7 @@ const ProductCard = ({ product, showButtons, onMarkAsSold }) => {
 
   return (
     <div className="shadow-lg rounded-md overflow-hidden text-white">
-        <img crossOrigin="anonymous" src={product.image} alt={product.name} className="aspect-square object-cover rounded-lg"/>
+        <img src={product.image} alt={product.name} className="aspect-square object-cover rounded-lg"/>
         <p className="truncate">{product.name}</p>
         <p>${product.price}</p>
 

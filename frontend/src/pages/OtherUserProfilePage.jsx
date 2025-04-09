@@ -84,7 +84,7 @@ const OtherUserProfilePage = () => {
             </div>
           </section>
           <div className='flex flex-row items-center justify-center md:justify-start pl-2 py-4'>            {user.profilePicture ? (
-              <img crossOrigin="anonymous" src={user.profilePicture} alt="Profile" className='w-[120px] h-[120px] object-cover object-center rounded-full outline outline-[1px] outline-gray-500' />
+              <img src={user.profilePicture} alt="Profile" className='w-[120px] h-[120px] object-cover object-center rounded-full outline outline-[1px] outline-gray-500' />
             ) : (
               <IoPersonCircleOutline size={150} />
             )}

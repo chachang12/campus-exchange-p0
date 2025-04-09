@@ -15,7 +15,7 @@ const UserChat = ({ chat, user }) => {
     return (
         <section onClick= {() => {if(unreadNotifications?.length !== 0) {markThisChatNotificationsAsRead(unreadNotifications, notifications, chat)}}}role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
             <div className="flex">
-                <img src={currentProduct?.image} crossOrigin="anonymous" className="w-[50px] h-[50px] aspect-square mr-4 object-cover" />
+                <img src={currentProduct?.image} className="w-[50px] h-[50px] aspect-square mr-4 object-cover" />
                 <div className="flex-1 truncate">
                     <div className="text-white font-semibold truncate"><span className="font-normal"></span> {recipientUser?.firstName}</div>
                     <div className="text-gray-300 text-sm truncate">{latestMessage?.text}</div>

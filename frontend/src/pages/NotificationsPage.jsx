@@ -18,7 +18,7 @@ const NotificationsPage = () => {
 
         updateCurrentChat(thisChat);
         markThisChatNotificationsAsRead(unreadNotifications, notifications, thisChat)
-        navigate(`/chat/${chatId}`);
+        navigate(`/messages`);
     };
 
     const modifiedNotifications = notifications
@@ -47,7 +47,7 @@ const NotificationsPage = () => {
                     ) : (
                         modifiedNotifications.map((n, index) => (
                             <div onClick={() => handleNotiClick(n.chatId)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
-                                <img src={n.senderPicture} crossOrigin="anonymous" className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
+                                <img src={n.senderPicture} className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
                                 <div className="flex-1">
                                     <div>{`${n.senderName}`}</div>
                                     <div className="text-gray-300 text-sm truncate">{`${n.text}`}</div>

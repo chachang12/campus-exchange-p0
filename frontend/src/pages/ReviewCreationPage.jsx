@@ -66,7 +66,7 @@ const ReviewCreationPage = () => {
       <div className="mb-4">
         <div className='flex flex-col items-center justify-center'>
           <h2 className="text-2xl font-semibold mb-2">{product.name}</h2>
-          <img src={product.image} alt={product.name} crossOrigin='anonymous' className="w-40 h-40 object-cover rounded-md" />
+          <img src={product.image} alt={product.name} className="w-40 h-40 object-cover rounded-md" />
         </div>
       </div>
       <div className="mb-4">
