@@ -5,13 +5,19 @@ import { useUser } from "../context/UserContext";
 import UserChat from "../components/ChatComponents/UserChat";
 import ChatWindow from '../components/ChatComponents/ChatWindow';
 import { useNavigate } from 'react-router-dom';
+import { unreadNotificationsSpecificChat } from '../utils/unreadNotifications';
 
 const MessagesPage = () => {
     const { user } = useUser();
-    const { userChats, isUserChatsLoading, updateCurrentChat, currentChat, notifications, newMessage } = useContext(ChatContext);
+    const { userChats, isUserChatsLoading, updateCurrentChat, currentChat, notifications, markThisChatNotificationsAsRead } = useContext(ChatContext);
     const navigate = useNavigate();
     const [isChatExpanded, setIsChatExpanded] = useState(false);
+
     const handleChatClick = (chat) => {
+        const unreadNotifications = unreadNotificationsSpecificChat(notifications, user, chat);
+        if (unreadNotifications.length > 0) {
+            markThisChatNotificationsAsRead(unreadNotifications, notifications, chat._id);
+        }
         updateCurrentChat(chat);
     };
 

@@ -3,18 +3,25 @@ import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage"
 import moment from "moment";
 import "../../index.css";
 import { ChatContext } from "../../context/ChatContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { unreadNotificationsFunc, unreadNotificationsSpecificChat } from "../../utils/unreadNotifications";
 
 const UserChat = ({ chat, user }) => {
     const { recipientUser, currentProduct } = useFetchRecipientUser(chat, user);
     const { latestMessage } = useFetchLatestMessage(chat)
-    const { notifications, markThisChatNotificationsAsRead } = useContext(ChatContext);
-    const unreadNotifications = unreadNotificationsSpecificChat(notifications, user, chat);
+    const { notifications } = useContext(ChatContext);
+    const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+    useEffect(() => {
+        if (user && notifications) {
+          const unread = unreadNotificationsSpecificChat(notifications, user, chat);
+          setUnreadNotifications(unread);
+        }
+      }, [notifications, user]);
 
     return (
-        <section onClick= {() => {if(unreadNotifications?.length !== 0) {markThisChatNotificationsAsRead(unreadNotifications, notifications, chat)}}}role="button" className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
-            <div className="flex">
+        <section className="rounded p-4 mb-2 hover:bg-gray-600 cursor-pointer">
+            <div className="flex relative">
                 <img src={currentProduct?.image} className="w-[50px] h-[50px] aspect-square mr-4 object-cover" />
                 <div className="flex-1 truncate">
                     <div className="text-white font-semibold truncate"><span className="font-normal"></span> {recipientUser?.firstName}</div>

@@ -45,8 +45,10 @@ const NotificationsPage = () => {
                     {modifiedNotifications.length === 0 ? (
                         <div className="mt-60 flex items-center justify-center">No new notifications</div>
                     ) : (
-                        modifiedNotifications.map((n, index) => (
-                            <div onClick={() => handleNotiClick(n.chatId)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700">
+                        [...modifiedNotifications]
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                        .map((n, index) => (
+                            <div onClick={() => handleNotiClick(n.chatId)} key={index} className="relative flex w-screen items-center p-4 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition rounded">
                                 <img src={n.senderPicture} className="w-[50px] h-[50px] rounded-full mr-4 object-cover" />
                                 <div className="flex-1">
                                     <div>{`${n.senderName}`}</div>

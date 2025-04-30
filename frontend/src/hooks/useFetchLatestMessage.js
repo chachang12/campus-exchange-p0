@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { ChatContext } from "../context/ChatContext";
 
 const axiosInstance = axios.create({
     // baseURL: 'http://localhost:8080',
@@ -10,6 +11,7 @@ const axiosInstance = axios.create({
 
 export const useFetchLatestMessage = (chat) => {
     const [latestMessage, setLatestMessage] = useState(null)
+    const {notifications} = useContext(ChatContext)
 
     const chatId = chat?._id
 
@@ -23,7 +25,7 @@ export const useFetchLatestMessage = (chat) => {
             }
         };
         getMostRecentMessage();
-    }, [chatId]);
+    }, [chatId, notifications]);
 
     return { latestMessage };
 };

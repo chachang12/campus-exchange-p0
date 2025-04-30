@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { HomeIcon, ProfileIcon, SearchIcon, TagIcon, MessageIcon, Logo } from '../components/icons';
 import { IoNotifications, IoMenu, IoClose, IoPersonCircleOutline } from 'react-icons/io5';
 import { ChatContext } from "../context/ChatContext";
@@ -10,11 +10,18 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 
 const NavbarMkII = () => {
   const { user } = useUser();
-  const { notifications } = useContext(ChatContext);
+  const { notifications, messages } = useContext(ChatContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const unreadNotifications = unreadNotificationsFunc(notifications, user);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+  useEffect(() => {
+    if (user && notifications) {
+      const unread = unreadNotificationsFunc(notifications, user);
+      setUnreadNotifications(unread);
+    }
+  }, [notifications, messages, user]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -70,16 +77,16 @@ const NavbarMkII = () => {
       {menuOpen && (
         <div className='absolute top-16 left-0 right-0 bg-[#121212] p-4 md:hidden transition-all duration-300 ease-in-out transform z-50'>
           <div className='flex flex-col space-y-4'>
-            <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/home')}>
+            <div className={`flex items-center space-x-2 p-2 cursor-pointer`} onClick={() => handleNavigate('/home')}>
               <span className='text-white'>Home</span>
             </div>
-            <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/search')}>
+            <div className={`flex items-center space-x-2 p-2 cursor-pointer `} onClick={() => handleNavigate('/search')}>
               <span className='text-white'>Search</span>
             </div>
-            <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/create')}>
+            <div className={`flex items-center space-x-2 p-2 cursor-pointer `} onClick={() => handleNavigate('/create')}>
               <span className='text-white'>Create</span>
             </div>
-            <div className={`flex items-center space-x-2 p-2 `} onClick={() => handleNavigate('/messages')}>
+            <div className={`flex items-center space-x-2 p-2 cursor-pointer `} onClick={() => handleNavigate('/messages')}>
               <span className='text-white'>Messages</span>
             </div>
           </div>

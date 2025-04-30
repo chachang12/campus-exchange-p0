@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { ChatContext } from "../../context/ChatContext";
@@ -25,14 +25,9 @@ const ChatWindow = () => {
   }
 
   useEffect(() => {
-    if (userChats && window.innerWidth > 640 && !currentChat) {
-      updateCurrentChat(userChats[0])
-    }
-  })
-
-  useEffect(() => {
     loadMoreMessages();
-  }, [messages, currentChat])
+  
+  }, [messages, currentChat, userChats]);
 
   const loadMoreMessages = () => {
     if (messages) {
@@ -45,17 +40,51 @@ const ChatWindow = () => {
     }
   };
 
+  useEffect(() => {  
+    // Only attempt scroll if messages are loaded, defined, and refs are attached
+    if (
+      messages && // Ensure messages is not undefined
+      messages.length > 0
+    ) {
+      let attempts = 0;
+      const maxAttempts = 5;
+      const delay = 100;
+  
+      const scrollToBottom = () => {
+        attempts++;
+  
+        const scrollHeight = scrollRef.current.scrollHeight;
+        const clientHeight = scrollRef.current.clientHeight;
+  
+        if (scrollHeight > clientHeight && messagesEndRef.current) {
+          requestAnimationFrame(() => {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+            scrollRef.current.scrollTop = scrollHeight; // Fallback
+          });
+        } else {
+          setTimeout(scrollToBottom, delay);
+        }
+      };
+  
+      // Debounce to handle rapid updates
+      const debounceId = setTimeout(scrollToBottom, 100);
+  
+      return () => clearTimeout(debounceId);
+    } else {
+      console.log('Scroll skipped due to:', {
+        hasMessages: !!messages,
+        messagesLength: messages?.length,
+        hasMessagesEndRef: !!messagesEndRef.current,
+        hasScrollRef: !!scrollRef.current,
+      });
+    }
+  }, [messages]);
+
   const handleScroll = () => {
     if (scrollRef.current.scrollTop === 0) {
       setPage(prev => prev + 1);
     }
   };
-
-  useEffect(() => {
-    if (page > 1) {
-      loadMoreMessages();
-    }
-  }, [page]);
 
   if (!currentChat) {
     return (

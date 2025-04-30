@@ -242,7 +242,7 @@ export const ChatContextProvider = ({ children, user }) => {
       }
       else
       {
-        setNotifications(prev => [res, ...prev])
+        setNotifications(prev => [{...res, isRead:false}, ...prev])
       }
     });
 
@@ -345,32 +345,27 @@ export const ChatContextProvider = ({ children, user }) => {
     }
   }, []);
 
-  const markThisChatNotificationsAsRead = useCallback(async (thisUserNotifications, notifications) => {
-    const messageIds = notifications
-    .filter(n => thisUserNotifications.some(u => u.senderId === n.senderId)) // Filter notifications based on senderId
-    .map(n => n._id);
-
+  const markThisChatNotificationsAsRead = useCallback(async (thisUserNotifications, notifications, chatId) => {
+    // Only get unread messages from this specific chat
+    const messageIds = thisUserNotifications
+      .filter(n => n.chatId === chatId && !n.isRead)
+      .map(n => n._id);
+  
     if (messageIds.length > 0) {
       try {
-        const response = await axiosInstance.patch('/messages/read', {
-          messageIds: messageIds,
+        await axiosInstance.patch('/messages/read', {
+          messageIds,
         });
-        
-      const mNotifications = notifications.map(el => {
-        let notification;
   
-        thisUserNotifications.forEach(n => {
-          if (n.senderId === el.senderId && n.chatId === el.chatId) {
-            notification = {...n, isRead: true}
+        // Update notification state to mark only those messages as read
+        const updatedNotifications = notifications.map(n => {
+          if (messageIds.includes(n._id)) {
+            return { ...n, isRead: true };
           }
-          else {
-            notification = el
-          }
-        })
+          return n;
+        });
   
-        return notification
-      })
-      setNotifications(mNotifications);
+        setNotifications(updatedNotifications);
       } catch (error) {
         console.error('Error marking notifications as read:', error);
       }

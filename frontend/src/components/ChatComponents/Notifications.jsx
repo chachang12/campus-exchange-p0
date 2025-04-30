@@ -22,7 +22,8 @@ const Notification = () => {
         });
 
 
-    return ( <div className="text-white">
+    return ( 
+    <div className="text-white">
         <div onClick={() =>setIsOpen(!isOpen)} className="p-4 bg-[#1F1F1F] rounded-full w-[54px] flex items-center justify-center border border-gray-500">
             <IoNotifications color='#ffffff' size={20}/>
         </div>
@@ -36,7 +37,7 @@ const Notification = () => {
             </div>
             {modifiedNotifications?.length === 0 ? <span>No new notifications</span> : null}
             {modifiedNotifications && modifiedNotifications.map((n, index) => {
-                return <div onClick = {()=> markNotificationAsRead(n, userChats, user, notifications)} key={index} className= {n.isRead ? 'notification' : 'notification not-read'}>
+                return <div onClick = {()=> markNotificationAsRead(n, userChats, user, notifications)} key={index} className={n.isRead ? 'notification ' : 'notification not-read'}>
                     <span>{`${n.senderName} sent you a new message`}</span>
                     <span>{moment(n.date).calendar({ sameDay: 'h:mm A', lastDay: '[Yesterday]', lastWeek: 'MMM D', sameElse: 'MMM D, YYYY' })}</span>
                 </div>
