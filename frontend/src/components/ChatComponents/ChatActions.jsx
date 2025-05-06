@@ -79,10 +79,10 @@ const ChatActions = () => {
         Write a Review
         <SlArrowRight size={20} />
       </button>
-      <button className={buttonStyle} onClick={handleDeleteChat}>
+      {/* <button className={buttonStyle} onClick={handleDeleteChat}>
         Delete Chat
         <SlArrowRight size={20} />
-      </button>
+      </button> */}
     </div>
   );
 };

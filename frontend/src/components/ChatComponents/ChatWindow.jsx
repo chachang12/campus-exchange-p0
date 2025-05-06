@@ -16,6 +16,7 @@ const ChatWindow = () => {
   const { recipientUser, isRecipientUserLoading } = useFetchRecipientUser(currentChat, user);
   const [textMessage, setTextMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const navigate = useNavigate();
 
   let productData;
   try {
@@ -109,7 +110,7 @@ const ChatWindow = () => {
               <SlArrowLeft size={20} color={'white'}/>
             </div>
               <div className='flex' onClick={() => navigate(`/chat/${currentChat?._id}/actions`)}>
-                <img src={recipientUser?.profilePicture} className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center" />
+                <img src={recipientUser?.profilePicture} className="w-[50px] h-[50px] rounded-full mr-4 object-cover object-center cursor-pointer" />
                   <div>
                     <strong className="text-white text-lg">{recipientUser?.firstName}</strong>
                     {productData && <p className="text-gray-400 text-sm">{productData.name}</p>}
