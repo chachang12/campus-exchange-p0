@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { updateUser, uploadProfilePicture } from '../../utils/fetchUtils';
 import { useNavigate } from 'react-router-dom';
-import { SlArrowLeft } from "react-icons/sl";
-import ProfilePicturePopup from './ProfilePicturePopup';
-import BackButton from '../../components/Buttons/BackButton';
 
 const EditProfilePage = () => {
   const navigate = useNavigate();

@@ -21,6 +21,17 @@ const CreatePage = () => {
   });
 
   const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    }
+  };
 
   const handleAddProduct = async () => {
     if (!user) {
@@ -109,13 +120,23 @@ const CreatePage = () => {
                 placeholder="Image URL"
                 name="image"
                 type="file"
-                onChange={(e) => setImageFile(e.target.files[0])}
+                onChange={handleImageChange}
                 style={{ display: 'none' }} 
               />
               <label htmlFor="fileInput" className="flex items-center cursor-pointer">
                 <IoMdPhotos size={24} />
                 <span className="ml-2">Choose File</span>
               </label>
+
+              {previewUrl && (
+                <div className="mt-4">
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="max-w-full h-auto rounded-md"
+                  />
+                </div>
+              )}
             </div>
             
             <select

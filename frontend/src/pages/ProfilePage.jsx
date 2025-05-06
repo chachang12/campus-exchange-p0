@@ -22,6 +22,7 @@ const Profile = () => {
   const [reviews, setReviews] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selectedTab, setSelectedTab] = useState('listings');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -87,7 +88,7 @@ const Profile = () => {
             className={`flex items-center text-sm text-[#426A8C]`}
             onClick={() => navigate('/profile-menu')}
           >
-            Account Settings
+            Edit Profile
             <MdKeyboardArrowRight size={20}/>
           </button>
         </div>
