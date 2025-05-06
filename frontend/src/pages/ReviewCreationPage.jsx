@@ -6,6 +6,7 @@ import { IoPersonCircleOutline } from 'react-icons/io5';
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import BackButton from '../components/Buttons/BackButton';
 import { updateAverageReview } from '../utils/reviewUtils';
+import { IoClose } from 'react-icons/io5';
 
 const ReviewCreationPage = () => {
   const location = useLocation();
