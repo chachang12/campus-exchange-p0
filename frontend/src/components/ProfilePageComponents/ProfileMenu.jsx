@@ -1,10 +1,12 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { updateUser, uploadProfilePicture } from '../../utils/fetchUtils';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import ProfilePicturePopup from '../../pages/ProfileMenu/ProfilePicturePopup';
+import { AccountSettingsPage } from '../../pages/ProfileMenu';
+import { updateUserUniversity, fetchUniversities } from '../../utils/fetchUtils';
 
 
 const ProfileMenu = () => {
@@ -15,6 +17,8 @@ const ProfileMenu = () => {
   const [lastName, setLastName] = useState(user.lastName);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [bio, setBio] = useState(user.bio)
+  const [universityId, setUniversityId] = useState(user.universityId || '');
+  const [universities, setUniversities] = useState([]);
 
   const handleEditProfile = () => {
     // Navigate to edit profile page
@@ -45,6 +49,19 @@ const ProfileMenu = () => {
     navigate('/bug-report');
   };
 
+  useEffect(() => {
+    const loadUniversities = async () => {
+      try {
+        const response = await fetchUniversities();
+        setUniversities(response);
+      } catch (error) {
+        console.error('Error fetching universities:', error);
+      }
+    };
+
+    loadUniversities();
+  }, []);
+
   const handleProfilePictureUpload = async (file) => {
     try {
       const response = await uploadProfilePicture(file);
@@ -63,7 +80,7 @@ const ProfileMenu = () => {
 
   const handleSave = async () => {
     try {
-      const updatedUser = { ...user, firstName, lastName, bio };
+      const updatedUser = { ...user, firstName, lastName, bio, universityId};
       const response = await updateUser(updatedUser);
       if (response.success) {
         setUser(response.data);
@@ -119,6 +136,19 @@ const ProfileMenu = () => {
             onChange={(e) => setBio(e.target.value)}
             placeholder='Max 150 characters.'
           />
+          <h2 className='font-[600]'>University</h2>
+          <select
+            value={universityId}
+            onChange={(e) => setUniversityId(e.target.value)}
+            className="w-full p-2 rounded-md bg-inherit border border-white border-opacity-50"
+          >
+            <option value="">Select University</option>
+            {universities.map((university) => (
+              <option key={university._id} value={university._id}>
+                {university.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <ProfilePicturePopup
@@ -126,6 +156,7 @@ const ProfileMenu = () => {
           onClose={() => setIsPopupOpen(false)}
           onUpload={handleProfilePictureUpload}
         />
+
       </div>
         {/* <button
           className={buttonStyle}

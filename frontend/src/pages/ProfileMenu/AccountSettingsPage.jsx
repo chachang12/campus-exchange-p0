@@ -40,9 +40,8 @@ const AccountSettingsPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen px-4 mt-1 text-white bg-dark-blue pb-28 p-4">
+    <div className="space-y-4 w-full flex flex-col">
       <div className="flex justify-between w-full mb-4 items-center">
-        <h1 className="text-white text-xl font-semibold">Account Settings</h1>
         <button
           onClick={handleSave}
           className=""

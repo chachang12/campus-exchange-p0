@@ -101,6 +101,7 @@ const Profile = () => {
               )}
               <div className='flex-col ml-4'>
                 <h1 className='text-white font-semibold text-xl sm:text-2xl'>{user.firstName}</h1>
+                <h1 className='text-white text-s sm:text-s'>{user.university}</h1>
                 <div className='flex gap-1 items-center'>
                   <RatingStars rating={Math.floor(user.review)} /> <div className='text-sm'>({reviews.length})</div>
                 </div>
