@@ -137,16 +137,30 @@ export const getFavorites = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, profilePicture, review, bio } = req.body;
+    const { firstName, lastName, profilePicture, review, bio, universityId } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ success: false, message: 'Invalid User ID' });
     }
 
     try {
+        let universityName = null;
+        if (universityId) {
+            if (!mongoose.Types.ObjectId.isValid(universityId)) {
+                return res.status(400).json({ success: false, message: 'Invalid University ID' });
+            }
+
+            const university = await University.findById(universityId);
+            if (!university) {
+                return res.status(404).json({ success: false, message: 'University not found' });
+            }
+
+            universityName = university.name;
+            console.log('University Name:', universityName); // Log the university name for debugging
+        }
         const updatedUser = await User.findByIdAndUpdate(
             id,
-            { firstName, lastName, profilePicture, review, bio },
+            { firstName, lastName, profilePicture, review, bio, universityId, university: universityName },
             { new: true }
         );
 

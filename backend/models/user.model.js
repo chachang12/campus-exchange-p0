@@ -32,6 +32,10 @@ const userSchema = mongoose.Schema({
         ref: 'University',
         required: false
     },
+    university: {
+        type: String,
+        required: false
+    },
     favorites: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
